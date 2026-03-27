@@ -51,27 +51,37 @@ const Navbar = () => {
                         : 'bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]',
                 ].join(' ')}
             >
-                <div className="relative flex items-center justify-between h-16 px-6 md:px-10">
+                <div className="relative flex items-center h-16 px-6 md:px-10">
 
-                    {/* Left – desktop nav links */}
+                    {/* ── MOBILE LEFT: Hamburger ── */}
+                    <button
+                        aria-label="Open menu"
+                        onClick={() => setMenuOpen(true)}
+                        className="flex md:hidden flex-col gap-[5px] items-start p-1 hover:opacity-50 transition-opacity"
+                    >
+                        <span className="block h-px w-6 bg-neutral-900" />
+                        <span className="block h-px w-4 bg-neutral-900" />
+                    </button>
+
+                    {/* ── DESKTOP LEFT: Nav links ── */}
                     <nav className="hidden md:flex items-center gap-9 flex-1">
                         {['H.', 'Shop', 'Collections', 'About'].map((item) => (
                             <a
                                 key={item}
                                 href="#"
-                                className="text-[14px] font-medium  tracking-[0.12em] uppercase text-neutral-900 hover:opacity-50 transition-opacity"
+                                className="text-[14px] font-medium tracking-[0.12em] uppercase text-neutral-900 hover:opacity-50 transition-opacity"
                             >
                                 {item}
                             </a>
                         ))}
                     </nav>
 
-                    {/* Center – logo */}
+                    {/* Center – logo (absolute for both breakpoints) */}
                     <a
                         href="#"
-                        className="absolute left-1/2 -translate-x-1/2 tracking-[0.22em] uppercase text-neutral-900 whitespace-nowrap select-none font-light text-sm"
+                        className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap select-none"
                     >
-                      <Image src={logo} alt={"asd"}/>
+                        <Image src={logo} alt="logo" />
                     </a>
 
                     {/* Right – icons */}
@@ -90,11 +100,11 @@ const Navbar = () => {
                             <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none">0</span>
                         </button>
 
-                        {/* Hamburger */}
+                        {/* ── DESKTOP RIGHT: Hamburger ── */}
                         <button
                             aria-label="Open menu"
                             onClick={() => setMenuOpen(true)}
-                            className="flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity"
+                            className="hidden md:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity"
                         >
                             <span className="block h-px w-6 bg-neutral-900" />
                             <span className="block h-px w-4 bg-neutral-900" />
@@ -122,8 +132,8 @@ const Navbar = () => {
                             transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
                             className="hidden md:block md:flex-[0_0_50%]"
                         >
-                            <Image src={navMenuBg} alt={"asd"} className={"w-full h-full object-cover"} />
-                    </motion.div>
+                            <Image src={navMenuBg} alt="nav menu background" className="w-full h-full object-cover" />
+                        </motion.div>
 
                         {/* Right content panel */}
                         <motion.div
@@ -135,9 +145,7 @@ const Navbar = () => {
                         >
                             {/* Panel header */}
                             <div className="flex items-center justify-between mb-12">
-                                <span className="text-[13px] tracking-[0.2em] uppercase text-neutral-900">
-                                  <Image src={logo} alt={"asd"}/>
-                                </span>
+                                <Image src={logo} alt="logo" />
                                 <button
                                     onClick={() => setMenuOpen(false)}
                                     aria-label="Close menu"
@@ -147,7 +155,7 @@ const Navbar = () => {
                                 </button>
                             </div>
 
-                            {/* Mobile only – desktop nav links */}
+                            {/* Mobile only – desktop nav links inside menu */}
                             <div className="flex md:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
                                 {['H.', 'Shop', 'Collections', 'About'].map((item) => (
                                     <button
