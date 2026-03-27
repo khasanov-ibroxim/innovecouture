@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, User, Heart, ShoppingBag, X } from 'lucide-react'
 import logo from "@/assets/logo.svg"
-import navMenuBg from "@/assets/home/home_header/home_header.jpg"
+import navMenuBg from "@/assets/navbar/nav_menu_bg.jpg"
 import Image from "next/image";
 
 const Navbar = () => {
@@ -86,16 +86,16 @@ const Navbar = () => {
 
                     {/* Right – icons */}
                     <div className="flex items-center gap-4 flex-1 justify-end">
-                        <button aria-label="Search" className="p-1 text-neutral-900 hover:opacity-50 transition-opacity">
+                        <button aria-label="Search" className="p-1 text-neutral-900 cursor-pointer hover:opacity-50 transition-opacity">
                             <Search size={20} strokeWidth={1.5} />
                         </button>
-                        <button aria-label="Account" className="hidden md:flex p-1 text-neutral-900 hover:opacity-50 transition-opacity">
+                        <button aria-label="Account" className="hidden md:flex p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
                             <User size={20} strokeWidth={1.5} />
                         </button>
-                        <button aria-label="Wishlist" className="hidden md:flex p-1 text-neutral-900 hover:opacity-50 transition-opacity">
+                        <button aria-label="Wishlist" className="hidden md:flex p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
                             <Heart size={20} strokeWidth={1.5} />
                         </button>
-                        <button aria-label="Cart" className="relative p-1 text-neutral-900 hover:opacity-50 transition-opacity">
+                        <button aria-label="Cart" className="relative p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
                             <ShoppingBag size={20} strokeWidth={1.5} />
                             <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none">0</span>
                         </button>
@@ -104,7 +104,7 @@ const Navbar = () => {
                         <button
                             aria-label="Open menu"
                             onClick={() => setMenuOpen(true)}
-                            className="hidden md:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity"
+                            className="hidden md:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity cursor-pointer"
                         >
                             <span className="block h-px w-6 bg-neutral-900" />
                             <span className="block h-px w-4 bg-neutral-900" />
@@ -149,7 +149,7 @@ const Navbar = () => {
                                 <button
                                     onClick={() => setMenuOpen(false)}
                                     aria-label="Close menu"
-                                    className="text-neutral-900 hover:opacity-40 transition-opacity"
+                                    className="text-neutral-900 hover:opacity-40 transition-opacity cursor-pointer"
                                 >
                                     <X size={22} strokeWidth={1.5} />
                                 </button>
