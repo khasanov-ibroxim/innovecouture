@@ -119,34 +119,6 @@ export default function ProductPage() {
     const imageColRef = useRef<HTMLDivElement>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (!product) return;
-
-        const handleScroll = () => {
-            if (!imageColRef.current || !sidebarRef.current) return;
-            const imageRect = imageColRef.current.getBoundingClientRect();
-            const sidebar = sidebarRef.current;
-            const sidebarHeight = sidebar.offsetHeight;
-            const imageBottom = imageColRef.current.offsetTop + imageColRef.current.offsetHeight;
-            const scrollTop = window.scrollY;
-            const navHeight = 64;
-
-            if (scrollTop + navHeight + sidebarHeight >= imageBottom) {
-                // Pin to bottom of image column
-                sidebar.style.position = "absolute";
-                sidebar.style.top = `${imageColRef.current.offsetHeight - sidebarHeight}px`;
-                sidebar.style.bottom = "auto";
-            } else {
-                sidebar.style.position = "sticky";
-                sidebar.style.top = `${navHeight + 20}px`;
-                sidebar.style.bottom = "auto";
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll, {passive: true});
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [product]);
-
     if (!product) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -201,7 +173,7 @@ export default function ProductPage() {
             <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)}/>
             {/* Main content */}
             <div className="px-5 md:px-10 pb-20">
-                <div className="relative flex flex-col md:flex-row gap-8 md:gap-12">
+                <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 md:items-start">
 
                     {/* ── LEFT: Image Gallery ── */}
                     <div ref={imageColRef} className="w-full md:w-[58%] relative">
@@ -273,11 +245,10 @@ export default function ProductPage() {
                     </div>
 
                     {/* ── RIGHT: Sidebar ── */}
-                    <div className="w-full md:w-[42%] md:relative">
+                    <div className="w-full md:w-[42%]">
                         <div
                             ref={sidebarRef}
-                            className="md:sticky"
-                            style={{top: "84px"}}
+                            className="md:sticky md:top-[84px]"
                         >
                             {/* Product info */}
                             <div className="mb-6">
