@@ -63,20 +63,20 @@ const Navbar = () => {
                         : 'bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]',
                 ].join(' ')}
             >
-                <div className="relative flex items-center h-16 px-6 md:px-10">
+                <div className="relative flex items-center h-16 px-6 lg:px-10">
 
                     {/* ── MOBILE LEFT: Hamburger ── */}
                     <button
                         aria-label="Open menu"
                         onClick={() => setMenuOpen(true)}
-                        className="flex md:hidden flex-col gap-[5px] items-start p-1 hover:opacity-50 transition-opacity"
+                        className="flex lg:hidden flex-col gap-[5px] items-start p-1 hover:opacity-50 transition-opacity"
                     >
                         <span className="block h-px w-6 bg-neutral-900" />
                         <span className="block h-px w-4 bg-neutral-900" />
                     </button>
 
                     {/* ── DESKTOP LEFT: Nav links ── */}
-                    <nav className="hidden md:flex items-center gap-9 flex-1">
+                    <nav className="hidden lg:flex items-center gap-9 flex-1">
                         {[
                             { link: "/", label: "H." },
                             { link: "/shop", label: "Shop" },
@@ -121,7 +121,7 @@ const Navbar = () => {
                         <button
                             aria-label="Open menu"
                             onClick={() => setMenuOpen(true)}
-                            className="hidden md:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity cursor-pointer"
+                            className="hidden lg:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity cursor-pointer"
                         >
                             <span className="block h-px w-6 bg-neutral-900" />
                             <span className="block h-px w-4 bg-neutral-900" />
@@ -150,7 +150,7 @@ const Navbar = () => {
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: -40, opacity: 0 }}
                             transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-                            className="hidden md:block md:flex-[0_0_50%]"
+                            className="hidden lg:block lg:flex-[0_0_50%]"
                         >
                             <Image src={navMenuBg} alt="nav menu background" className="w-full h-full object-cover" />
                         </motion.div>
@@ -161,7 +161,7 @@ const Navbar = () => {
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: 40, opacity: 0 }}
                             transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-                            className="flex-1 bg-white flex flex-col px-8 md:px-10 py-6 overflow-y-auto"
+                            className="flex-1 bg-white flex flex-col px-8 lg:px-10 py-6 overflow-y-auto"
                         >
                             {/* Panel header */}
                             <div className="flex items-center justify-between mb-12">
@@ -176,7 +176,7 @@ const Navbar = () => {
                             </div>
 
                             {/* Mobile only – desktop nav links inside menu */}
-                            <div className="flex md:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
+                            <div className="flex lg:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
                                 {['H.', 'Shop', 'Collections', 'About'].map((item) => (
                                     <button
                                         key={item}
@@ -195,7 +195,7 @@ const Navbar = () => {
                                         initial={{ opacity: 0, y: 16 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.15 + i * 0.07, duration: 0.4 }}
-                                        className="text-4xl md:text-5xl font-light tracking-wide uppercase text-neutral-900 text-left hover:opacity-30 transition-opacity leading-tight"
+                                        className="text-4xl lg:text-5xl font-light tracking-wide uppercase text-neutral-900 text-left hover:opacity-30 transition-opacity leading-tight"
                                     >
                                         {item}
                                     </motion.button>

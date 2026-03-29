@@ -4,6 +4,8 @@ import HomeS1 from "@/components/home/home_s1";
 import {HomeS2} from "@/components/home/home_s2";
 import {Locale} from "@/i18n-config";
 import {getCommonDictionary, getHomeDictionary} from "@/lib/dictionary";
+import HomeS3 from "@/components/home/home_s3";
+import HomeS4 from "@/components/home/home_s4";
 
 const Home = async ({ params }: { params: Promise<{ lang: string }> }) => {
     const { lang } = await params;
@@ -14,6 +16,8 @@ const Home = async ({ params }: { params: Promise<{ lang: string }> }) => {
             <HomeHeader/>
             <HomeS1/>
             <HomeS2 lang={lang as Locale} dict={dict}/>
+            <HomeS3/>
+            <HomeS4/>
         </>
     );
 };
