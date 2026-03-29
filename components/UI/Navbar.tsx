@@ -5,13 +5,25 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Search, User, Heart, ShoppingBag, X } from 'lucide-react'
 import logo from "@/assets/logo.svg"
 import navMenuBg from "@/assets/navbar/nav_menu_bg.jpg"
-import Image from "next/image";
+import Image from "next/image"
+import CartDrawer from "@/components/UI/CartDrawer"
+import { getCartCount } from "@/lib/cart"
+import Link from "next/link";
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false)
+    const [cartOpen, setCartOpen] = useState(false)
     const [hidden, setHidden] = useState(false)
     const [isTransparent, setIsTransparent] = useState(true)
+    const [cartCount, setCartCount] = useState(0)
     const lastScrollY = useRef(0)
+
+    useEffect(() => {
+        const update = () => setCartCount(getCartCount())
+        update()
+        window.addEventListener("cartUpdated", update)
+        return () => window.removeEventListener("cartUpdated", update)
+    }, [])
 
     useEffect(() => {
         const handleScroll = () => {
@@ -65,18 +77,23 @@ const Navbar = () => {
 
                     {/* ── DESKTOP LEFT: Nav links ── */}
                     <nav className="hidden md:flex items-center gap-9 flex-1">
-                        {['H.', 'Shop', 'Collections', 'About'].map((item) => (
-                            <a
-                                key={item}
-                                href="#"
+                        {[
+                            { link: "/", label: "H." },
+                            { link: "/shop", label: "Shop" },
+                            { link: "/collections", label: "Collections" },
+                            { link: "/about", label: "About" },
+                        ].map((item, index) => (
+                            <Link
+                                key={index}
+                                href={item.link}
                                 className="text-[14px] font-medium tracking-[0.12em] uppercase text-neutral-900 hover:opacity-50 transition-opacity"
                             >
-                                {item}
-                            </a>
+                                {item.label}
+                            </Link>
                         ))}
                     </nav>
 
-                    {/* Center – logo (absolute for both breakpoints) */}
+                    {/* Center – logo */}
                     <a
                         href="#"
                         className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap select-none"
@@ -86,18 +103,18 @@ const Navbar = () => {
 
                     {/* Right – icons */}
                     <div className="flex items-center gap-4 flex-1 justify-end">
-                        <button aria-label="Search" className="p-1 text-neutral-900 cursor-pointer hover:opacity-50 transition-opacity">
-                            <Search size={20} strokeWidth={1.5} />
-                        </button>
-                        <button aria-label="Account" className="hidden md:flex p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
-                            <User size={20} strokeWidth={1.5} />
-                        </button>
-                        <button aria-label="Wishlist" className="hidden md:flex p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
-                            <Heart size={20} strokeWidth={1.5} />
-                        </button>
-                        <button aria-label="Cart" className="relative p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
+
+                        <button
+                            aria-label="Cart"
+                            onClick={() => setCartOpen(true)}
+                            className="relative p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity"
+                        >
                             <ShoppingBag size={20} strokeWidth={1.5} />
-                            <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none">0</span>
+                            {cartCount > 0 && (
+                                <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none font-medium">
+                                    {cartCount}
+                                </span>
+                            )}
                         </button>
 
                         {/* ── DESKTOP RIGHT: Hamburger ── */}
@@ -112,6 +129,9 @@ const Navbar = () => {
                     </div>
                 </div>
             </motion.header>
+
+            {/* ───── CART DRAWER ───── */}
+            <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
             {/* ───── MENU OVERLAY ───── */}
             <AnimatePresence>
