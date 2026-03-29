@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { products } from "@/lib/products";
 import Image from "next/image";
@@ -11,6 +12,7 @@ interface CardProps {
 }
 
 const ProductCard: React.FC<CardProps> = ({ product }) => {
+    const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const touchStartX = useRef<number | null>(null);
@@ -78,23 +80,7 @@ const ProductCard: React.FC<CardProps> = ({ product }) => {
                     )}
                 </div>
 
-                {/* Wishlist */}
-                <button
-                    className="absolute top-3 left-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    onClick={(e) => e.preventDefault()}
-                    aria-label="Add to wishlist"
-                >
-                    <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                    >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
-                </button>
+
 
                 {/* Default image */}
                 <Image
@@ -145,11 +131,15 @@ const ProductCard: React.FC<CardProps> = ({ product }) => {
                             isHovered ? "flex" : "hidden"
                         }`}
                     >
-                        <Link href={`/en/product/${product.id}`}
-                            className=" w-full bg-white  border-black  border text-center py-2.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                router.push(`/en/product/${product.id}`);
+                            }}
+                            className="w-full bg-white border-black border text-center py-2.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
                         >
                             Select Options
-                        </Link>
+                        </button>
                     </div>
                 )}
             </div>
@@ -176,13 +166,13 @@ const ProductCard: React.FC<CardProps> = ({ product }) => {
     );
 };
 
-const HomeS2 = () => {
+export const HomeS2 = () => {
     return (
         <section className="w-full px-5 md:px-10 py-16">
             {/* Section header */}
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-[22px] md:text-[26px] font-normal uppercase tracking-[0.04em]">
-                    What's New
+                    Whats New
                 </h2>
                 <Link
                     href="#"
@@ -202,4 +192,3 @@ const HomeS2 = () => {
     );
 };
 
-export default HomeS2;

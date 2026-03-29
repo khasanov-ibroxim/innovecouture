@@ -38,7 +38,6 @@ export const products: Product[] = [
         id: "contour-mockneck-longsleeve",
         name: "Contour Mockneck Longsleeve",
         price: 285,
-        originalPrice: 380,
         isNew: true,
         isSale: true,
         colors: ["Ivory", "Black", "Camel"],
