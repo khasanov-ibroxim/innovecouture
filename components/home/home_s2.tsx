@@ -5,13 +5,20 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { products } from "@/lib/products";
 import Image from "next/image";
+import {HomeDictionary} from "@/lib/dictionary";
 
 interface CardProps {
     product: (typeof products)[0];
     index: number;
+    lang:string;
+    dict:HomeDictionary['s2'];
+}
+interface HomeS2Props {
+    lang: string;
+    dict: HomeDictionary['s2'];
 }
 
-const ProductCard: React.FC<CardProps> = ({ product }) => {
+const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
     const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -51,10 +58,10 @@ const ProductCard: React.FC<CardProps> = ({ product }) => {
     const hoverImage = product.images[1] ?? product.images[0];
 
     return (
-        <Link href={`/en/product/${product.id}`} className="group flex flex-col">
+        <Link href={`/${lang}/product/${product.id}`} className="group flex flex-col">
             {/* Image container */}
             <div
-                className="relative overflow-hidden bg-[#f4f3f1] aspect-[3/4] cursor-pointer"
+                className="relative overflow-hidden bg-[#f4f3f1] aspect-[2.5/4] cursor-pointer"
                 onMouseEnter={() => {
                     setIsHovered(true);
                     setActiveIndex(1);
@@ -134,7 +141,7 @@ const ProductCard: React.FC<CardProps> = ({ product }) => {
                         <button
                             onClick={(e) => {
                                 e.preventDefault();
-                                router.push(`/en/product/${product.id}`);
+                                router.push(`/${lang}/product/${product.id}`);
                             }}
                             className="w-full bg-white border-black border text-center py-2.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
                         >
@@ -166,7 +173,7 @@ const ProductCard: React.FC<CardProps> = ({ product }) => {
     );
 };
 
-export const HomeS2 = () => {
+export const HomeS2 = ({lang , dict}:HomeS2Props) => {
     return (
         <section className="w-full px-5 md:px-10 py-16">
             {/* Section header */}
@@ -185,7 +192,7 @@ export const HomeS2 = () => {
             {/* Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
                 {products.map((product, i) => (
-                    <ProductCard key={product.id} product={product} index={i} />
+                    <ProductCard key={product.id} product={product} index={i} lang={lang} dict={dict} />
                 ))}
             </div>
         </section>

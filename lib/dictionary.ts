@@ -1,61 +1,27 @@
+import type {Locale} from '@/i18n-config';
 
-// lib/dictionary.ts
-import { Locale } from '@/i18n-config';
 
-// ✅ Page-specific dictionary paths
-const pageDictionaries = {
-  home: {
-    en: () => import('@/dictionaries/home/en.json').then((m) => m.default),
-    ru: () => import('@/dictionaries/home/ru.json').then((m) => m.default),
-  },
-  common: {
-    en: () => import('@/dictionaries/common/en.json').then((m) => m.default),
-    ru: () => import('@/dictionaries/common/ru.json').then((m) => m.default),
+// ── Loaders ──────────────────────────────────────────────────────────────────
 
-  },
-} as const;
+export const getCommonDictionary = async (locale: Locale) =>
+    (await import(`@/dictionaries/common/${locale}.json`)).default;
 
-export type PageType = keyof typeof pageDictionaries;
+export const getHomeDictionary = async (locale: Locale) =>
+    (await import(`@/dictionaries/home/${locale}.json`)).default;
 
-// ✅ Get dictionary for specific page
-export const getDictionary = async (locale: Locale, page: PageType) => {
-  try {
-    // Check if page exists
-    if (!pageDictionaries[page]) {
-      console.error(`Page "${page}" not found in dictionaries`);
-      throw new Error(`Invalid page: ${page}`);
-    }
+// export const getAboutDictionary = async (locale: Locale) =>
+//     (await import(`@/dictionaries/about/${locale}.json`)).default;
+//
+// export const getProductionDictionary = async (locale: Locale) =>
+//     (await import(`@/dictionaries/production/${locale}.json`)).default;
+//
+// export const getContactDictionary = async (locale: Locale) =>
+//     (await import(`@/dictionaries/contact/${locale}.json`)).default;
 
-    // Check if locale exists for this page
-    if (!pageDictionaries[page][locale]) {
-      console.warn(`Dictionary for ${page}/${locale} not found, falling back to en`);
-      return await pageDictionaries[page].en();
-    }
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-    return await pageDictionaries[page][locale]();
-  } catch (error) {
-    console.error(`Error loading dictionary for ${page}/${locale}:`, error);
-
-    // Fallback to en if page exists
-    if (pageDictionaries[page]) {
-      return await pageDictionaries[page].en();
-    }
-
-    // Return empty object as last resort
-    return {};
-  }
-};
-
-// ✅ Get common dictionary (for navbar, footer, etc)
-export const getCommonDictionary = async (locale: Locale) => {
-  try {
-    if (!pageDictionaries.common[locale]) {
-      console.warn(`Common dictionary for ${locale} not found, falling back to en`);
-      return pageDictionaries.common.en();
-    }
-    return await pageDictionaries.common[locale]();
-  } catch (error) {
-    console.error(`Error loading common dictionary for ${locale}:`, error);
-    return pageDictionaries.common.en();
-  }
-};
+export type CommonDictionary = Awaited<ReturnType<typeof getCommonDictionary>>;
+export type HomeDictionary = Awaited<ReturnType<typeof getHomeDictionary>>;
+// export type AboutDictionary = Awaited<ReturnType<typeof getAboutDictionary>>;
+// export type ProductionDictionary = Awaited<ReturnType<typeof getProductionDictionary>>;
+// export type ContactDictionary = Awaited<ReturnType<typeof getContactDictionary>>;
