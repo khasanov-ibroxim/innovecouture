@@ -4,24 +4,54 @@ import right_img from "@/assets/home/home_s1/right.jpg"
 import Image from "next/image";
 import Link from "next/link";
 
-
 const HomeS1 = () => {
     return (
-        <div className="w-full flex justify-between items-start py-16 px-5  overflow-hidden">
-            <div className="w-1/2 h-full flex flex-col justify-between">
-                <Image src={left_img} alt={"dsad"} width={300} height={200}/>
-                <div className="mt-10">
-                    <h2 className={"text-3xl md:text-5xl font-normal  leading-[49px]   uppercase "}>the story</h2>
-                    <p>One Vintage is a distinctive luxury brand founded by Simone Myson in 2010. This avant-garde label
-                        ingeniously revitalizes antique textiles and relics, seamlessly weaving them into contemporary
-                        and modern masterpieces.</p>
-                    <Link href={"#"} className={"relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em]"}>Discover more</Link>
+        <section className="w-full flex flex-col md:flex-row py-16 px-2 md:px-5">
+
+            {/* ── LEFT COLUMN ── */}
+            <div className="flex flex-col w-full md:w-3/4  md:px-10  pb-14">
+
+                {/* Small image — top left, fixed width */}
+                <div className="w-[240px] md:w-[245px] mb-14 md:mb-20">
+                    <Image
+                        src={left_img}
+                        alt="Story left"
+                        className="w-full h-auto object-cover"
+                        sizes="245px"
+                    />
+                </div>
+
+                {/* Text block */}
+                <div className="max-w-[560px]">
+                    <h2 className="text-[40px] md:text-[52px] font-normal uppercase tracking-tight leading-none mb-8">
+                        The Story
+                    </h2>
+                    <p className="text-[14px] font-normal leading-[1.65] text-neutral-800 mb-2 max-w-[480px]">
+                        One Vintage is a distinctive luxury brand founded by Simone Myson in 2010.
+                        This avant-garde label ingeniously revitalizes antique textiles and relics,
+                        seamlessly weaving them into contemporary and modern masterpieces.
+                    </p>
+                    <Link
+                        href="#"
+                        className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em]"
+                    >
+                        Discover More
+                    </Link>
                 </div>
             </div>
-            <div className="w-1/2 h-full">
-                <Image src={right_img} alt={"as"} className={"w-full object-cover "} height={400}/>
+
+            {/* ── RIGHT COLUMN — full-bleed image ── */}
+            <div className="relative right-0 w-full md:w-[32%] min-h-[420px] md:min-h-0">
+                <Image
+                    src={right_img}
+                    alt="Story right"
+                    fill
+                    className="object-contain "
+                    sizes="(max-width: 768px) 100vw, 42vw"
+                />
             </div>
-        </div>
+
+        </section>
     );
 };
 
