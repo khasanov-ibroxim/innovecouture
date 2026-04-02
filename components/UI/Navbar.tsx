@@ -2,20 +2,60 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, User, Heart, ShoppingBag, X } from 'lucide-react'
+import { ShoppingBag, X } from 'lucide-react'
 import logo from "@/assets/logo.svg"
 import navMenuBg from "@/assets/navbar/nav_menu_bg.jpg"
 import Image from "next/image"
 import CartDrawer from "@/components/UI/CartDrawer"
 import { getCartCount } from "@/lib/cart"
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { i18n, Locale } from "@/i18n-config";
 
 interface Props {
-    dict:string,
-    lang:string
+    dict: string,
+    lang: string
 }
 
-const Navbar = ({dict , lang}:Props) => {
+/* ─── Lang Switcher ─────────────────────────────────────────── */
+function LangSwitcher({ lang }: { lang: string }) {
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const switchTo = (locale: Locale) => {
+        if (locale === lang) return;
+        // Replace current locale segment with new one
+        // pathname = /en/shop/product-id  →  /ru/shop/product-id
+        const segments = pathname.split("/");
+        segments[1] = locale;
+        router.push(segments.join("/"));
+    };
+
+    return (
+        <div className="flex items-center gap-0.5">
+            {i18n.locales.map((locale, idx) => (
+                <React.Fragment key={locale}>
+                    <button
+                        onClick={() => switchTo(locale)}
+                        className={`text-[11px] tracking-[0.1em] uppercase transition-opacity cursor-pointer px-0.5 ${
+                            lang === locale
+                                ? "text-neutral-900 font-semibold opacity-100"
+                                : "text-neutral-500 hover:text-neutral-900 opacity-60 hover:opacity-100"
+                        }`}
+                    >
+                        {locale}
+                    </button>
+                    {idx < i18n.locales.length - 1 && (
+                        <span className="text-neutral-300 text-[10px] select-none">/</span>
+                    )}
+                </React.Fragment>
+            ))}
+        </div>
+    );
+}
+
+/* ─── Navbar ────────────────────────────────────────────────── */
+const Navbar = ({ dict, lang }: Props) => {
     const [menuOpen, setMenuOpen] = useState(false)
     const [cartOpen, setCartOpen] = useState(false)
     const [hidden, setHidden] = useState(false)
@@ -109,6 +149,10 @@ const Navbar = ({dict , lang}:Props) => {
                     {/* Right – icons */}
                     <div className="flex items-center gap-4 flex-1 justify-end">
 
+                        {/* Lang switcher */}
+                        <LangSwitcher lang={lang} />
+
+                        {/* Cart */}
                         <button
                             aria-label="Cart"
                             onClick={() => setCartOpen(true)}
@@ -187,8 +231,9 @@ const Navbar = ({dict , lang}:Props) => {
                                     { link: `/${lang}/shop`, label: "Shop" },
                                     { link: "/collections", label: "Collections" },
                                     { link: `/${lang}/about`, label: "About" },
-                                ].map((item,index) => (
-                                    <Link href={item.link}
+                                ].map((item, index) => (
+                                    <Link
+                                        href={item.link}
                                         key={index}
                                         className="text-[10px] tracking-[0.14em] uppercase text-neutral-900 text-left hover:opacity-40 transition-opacity"
                                     >
