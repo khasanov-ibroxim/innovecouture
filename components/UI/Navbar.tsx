@@ -24,8 +24,6 @@ function LangSwitcher({ lang }: { lang: string }) {
 
     const switchTo = (locale: Locale) => {
         if (locale === lang) return;
-        // Replace current locale segment with new one
-        // pathname = /en/shop/product-id  →  /ru/shop/product-id
         const segments = pathname.split("/");
         segments[1] = locale;
         router.push(segments.join("/"));
@@ -40,7 +38,7 @@ function LangSwitcher({ lang }: { lang: string }) {
                         className={`text-[11px] tracking-[0.1em] uppercase transition-opacity cursor-pointer px-0.5 ${
                             lang === locale
                                 ? "text-neutral-900 font-semibold opacity-100"
-                                : "text-neutral-500 hover:text-neutral-900 opacity-60 hover:opacity-100"
+                                : "text-neutral-500 opacity-60 hover:opacity-100 hover:text-neutral-900"
                         }`}
                     >
                         {locale}
@@ -74,18 +72,14 @@ const Navbar = ({ dict, lang }: Props) => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY
             const windowHeight = window.innerHeight
-
             setIsTransparent(currentScrollY < windowHeight)
-
             if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
                 setHidden(true)
             } else {
                 setHidden(false)
             }
-
             lastScrollY.current = currentScrollY
         }
-
         window.addEventListener('scroll', handleScroll, { passive: true })
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
@@ -125,8 +119,8 @@ const Navbar = ({ dict, lang }: Props) => {
                         {[
                             { link: `/${lang}`, label: "H." },
                             { link: `/${lang}/shop`, label: "Shop" },
-                            { link: "/collections", label: "Collections" },
                             { link: `/${lang}/about`, label: "About" },
+                            { link: `/${lang}/contact`, label: "Contact" },
                         ].map((item, index) => (
                             <Link
                                 key={index}
@@ -149,8 +143,10 @@ const Navbar = ({ dict, lang }: Props) => {
                     {/* Right – icons */}
                     <div className="flex items-center gap-4 flex-1 justify-end">
 
-                        {/* Lang switcher */}
-                        <LangSwitcher lang={lang} />
+                        {/* Lang switcher — ONLY on desktop in navbar */}
+                        <div className="hidden lg:flex">
+                            <LangSwitcher lang={lang} />
+                        </div>
 
                         {/* Cart */}
                         <button
@@ -167,14 +163,14 @@ const Navbar = ({ dict, lang }: Props) => {
                         </button>
 
                         {/* ── DESKTOP RIGHT: Hamburger ── */}
-                        <button
-                            aria-label="Open menu"
-                            onClick={() => setMenuOpen(true)}
-                            className="hidden lg:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity cursor-pointer"
-                        >
-                            <span className="block h-px w-6 bg-neutral-900" />
-                            <span className="block h-px w-4 bg-neutral-900" />
-                        </button>
+                        {/*<button*/}
+                        {/*    aria-label="Open menu"*/}
+                        {/*    onClick={() => setMenuOpen(true)}*/}
+                        {/*    className="hidden lg:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity cursor-pointer"*/}
+                        {/*>*/}
+                        {/*    <span className="block h-px w-6 bg-neutral-900" />*/}
+                        {/*    <span className="block h-px w-4 bg-neutral-900" />*/}
+                        {/*</button>*/}
                     </div>
                 </div>
             </motion.header>
@@ -212,63 +208,41 @@ const Navbar = ({ dict, lang }: Props) => {
                             transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
                             className="flex-1 bg-white flex flex-col px-8 lg:px-10 py-6 overflow-y-auto"
                         >
-                            {/* Panel header */}
+                            {/* Panel header: logo + lang switcher + close */}
                             <div className="flex items-center justify-between mb-12">
                                 <Image src={logo} alt="logo" />
-                                <button
-                                    onClick={() => setMenuOpen(false)}
-                                    aria-label="Close menu"
-                                    className="text-neutral-900 hover:opacity-40 transition-opacity cursor-pointer"
-                                >
-                                    <X size={22} strokeWidth={1.5} />
-                                </button>
+                                <div className="flex items-center gap-5">
+                                    {/* Lang switcher always visible inside menu */}
+                                    <LangSwitcher lang={lang} />
+                                    <button
+                                        onClick={() => setMenuOpen(false)}
+                                        aria-label="Close menu"
+                                        className="text-neutral-900 hover:opacity-40 transition-opacity cursor-pointer"
+                                    >
+                                        <X size={22} strokeWidth={1.5} />
+                                    </button>
+                                </div>
                             </div>
 
-                            {/* Mobile only – desktop nav links inside menu */}
+                            {/* Mobile only – nav links inside menu */}
                             <div className="flex lg:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
                                 {[
                                     { link: `/${lang}`, label: "H." },
                                     { link: `/${lang}/shop`, label: "Shop" },
-                                    { link: "/collections", label: "Collections" },
                                     { link: `/${lang}/about`, label: "About" },
+                                    { link: `/${lang}/contact`, label: "Contact" },
                                 ].map((item, index) => (
                                     <Link
                                         href={item.link}
                                         key={index}
-                                        className="text-[10px] tracking-[0.14em] uppercase text-neutral-900 text-left hover:opacity-40 transition-opacity"
+                                        onClick={() => setMenuOpen(false)}
+                                        className="text-[20px] tracking-[0.14em] uppercase text-neutral-900 text-left hover:opacity-40 transition-opacity"
                                     >
                                         {item.label}
                                     </Link>
                                 ))}
                             </div>
 
-                            {/* Main menu items */}
-                            <nav className="flex flex-col gap-2 mb-10">
-                                {['Sustainability', 'Press', 'Contact'].map((item, i) => (
-                                    <motion.button
-                                        key={item}
-                                        initial={{ opacity: 0, y: 16 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.15 + i * 0.07, duration: 0.4 }}
-                                        className="text-4xl lg:text-5xl font-light tracking-wide uppercase text-neutral-900 text-left hover:opacity-30 transition-opacity leading-tight"
-                                    >
-                                        {item}
-                                    </motion.button>
-                                ))}
-                            </nav>
-
-                            {/* Collection preview */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.38, duration: 0.4 }}
-                                className="mb-10"
-                            >
-                                <div className="w-24 h-32 bg-neutral-300 mb-3" />
-                                <span className="text-[10px] tracking-[0.15em] uppercase underline underline-offset-4 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity">
-                                    Discover Winter 23
-                                </span>
-                            </motion.div>
 
                             {/* Footer links */}
                             <motion.div
