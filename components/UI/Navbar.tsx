@@ -120,6 +120,7 @@ const Navbar = ({ dict, lang }: Props) => {
                             { link: `/${lang}`, label: "H." },
                             { link: `/${lang}/shop`, label: "Shop" },
                             { link: `/${lang}/about`, label: "About" },
+                            { link: `/${lang}/sustainability`, label: "Sustainability" },
                             { link: `/${lang}/contact`, label: "Contact" },
                         ].map((item, index) => (
                             <Link
@@ -230,6 +231,7 @@ const Navbar = ({ dict, lang }: Props) => {
                                     { link: `/${lang}`, label: "H." },
                                     { link: `/${lang}/shop`, label: "Shop" },
                                     { link: `/${lang}/about`, label: "About" },
+                                    { link: `/${lang}/sustainability`, label: "Sustainability" },
                                     { link: `/${lang}/contact`, label: "Contact" },
                                 ].map((item, index) => (
                                     <Link
