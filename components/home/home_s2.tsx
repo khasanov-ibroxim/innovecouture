@@ -58,7 +58,7 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
     const hoverImage = product.images[1] ?? product.images[0];
 
     return (
-        <Link href={`/${lang}/product/${product.id}`} className="group flex flex-col">
+        <Link href={`/${lang}/shop/${product.id}`} className="group flex flex-col">
             {/* Image container */}
             <div
                 className="relative overflow-hidden bg-[#f4f3f1] aspect-[2.5/4] cursor-pointer"
@@ -141,7 +141,7 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
                         <button
                             onClick={(e) => {
                                 e.preventDefault();
-                                router.push(`/${lang}/product/${product.id}`);
+                                router.push(`/${lang}/shop/${product.id}`);
                             }}
                             className="w-full bg-white border-black border text-center py-2.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
                         >

@@ -10,7 +10,12 @@ import CartDrawer from "@/components/UI/CartDrawer"
 import { getCartCount } from "@/lib/cart"
 import Link from "next/link";
 
-const Navbar = () => {
+interface Props {
+    dict:string,
+    lang:string
+}
+
+const Navbar = ({dict , lang}:Props) => {
     const [menuOpen, setMenuOpen] = useState(false)
     const [cartOpen, setCartOpen] = useState(false)
     const [hidden, setHidden] = useState(false)
@@ -78,10 +83,10 @@ const Navbar = () => {
                     {/* ── DESKTOP LEFT: Nav links ── */}
                     <nav className="hidden lg:flex items-center gap-9 flex-1">
                         {[
-                            { link: "/", label: "H." },
-                            { link: "/shop", label: "Shop" },
+                            { link: `/${lang}`, label: "H." },
+                            { link: `/${lang}/shop`, label: "Shop" },
                             { link: "/collections", label: "Collections" },
-                            { link: "/about", label: "About" },
+                            { link: `/${lang}/about`, label: "About" },
                         ].map((item, index) => (
                             <Link
                                 key={index}
@@ -95,7 +100,7 @@ const Navbar = () => {
 
                     {/* Center – logo */}
                     <a
-                        href="#"
+                        href={`/${lang}`}
                         className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap select-none"
                     >
                         <Image src={logo} alt="logo" />
@@ -177,13 +182,18 @@ const Navbar = () => {
 
                             {/* Mobile only – desktop nav links inside menu */}
                             <div className="flex lg:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
-                                {['H.', 'Shop', 'Collections', 'About'].map((item) => (
-                                    <button
-                                        key={item}
+                                {[
+                                    { link: `/${lang}`, label: "H." },
+                                    { link: `/${lang}/shop`, label: "Shop" },
+                                    { link: "/collections", label: "Collections" },
+                                    { link: `/${lang}/about`, label: "About" },
+                                ].map((item,index) => (
+                                    <Link href={item.link}
+                                        key={index}
                                         className="text-[10px] tracking-[0.14em] uppercase text-neutral-900 text-left hover:opacity-40 transition-opacity"
                                     >
-                                        {item}
-                                    </button>
+                                        {item.label}
+                                    </Link>
                                 ))}
                             </div>
 

@@ -25,7 +25,7 @@ export default async function LangLayout({
 
     return (
         <>
-           <Navbar/>
+           <Navbar dict={dict} lang={lang}/>
             {children}
             <Footer />
         </>
