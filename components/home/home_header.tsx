@@ -1,13 +1,13 @@
 "use client"
 import React from 'react';
-import bg from "@/assets/home/home_header/home_header.jpg"
+import bg from "@/assets/home/home_header/IMG_0539.jpg"
 import Image from "next/image";
 import Link from "next/link";
 
 const HomeHeader = () => {
     return (
         <div className={"w-full h-screen overflow-hidden relative"}>
-            <Image src={bg} alt={"home header"} className={"w-full h-full object-cover absolute z-[-10]"} />
+            <Image src={bg} alt={"home header"} className={"w-full h-full object-cover object-top absolute z-[-10]"} />
 
             <div className="z-10 absolute flex flex-col text-center top-[20%] left-0 md:left-6 items-center w-full">
                 <h3 className={"text-2xl md:text-[37px] font-normal  leading-[49px]   uppercase "} >Minimalism and <br/> fantasy</h3>

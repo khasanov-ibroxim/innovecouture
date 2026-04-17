@@ -1,6 +1,6 @@
 "use client"
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, {useRef} from 'react';
+import {motion, useInView} from 'framer-motion';
 import Image, {StaticImageData} from 'next/image';
 
 import left_img from "@/assets/home/home_s5/imgi_121_GettyImages-1758107153.jpg"
@@ -17,9 +17,9 @@ interface HomeS5Props {
     };
 }
 
-const HomeS5 = ({ dict }: HomeS5Props) => {
+const HomeS5 = ({dict}: HomeS5Props) => {
     const ref = useRef(null);
-    const inView = useInView(ref, { once: true, margin: '-60px' });
+    const inView = useInView(ref, {once: true, margin: '-60px'});
 
     return (
         <section ref={ref} className="w-full bg-white overflow-hidden py-16">
@@ -27,9 +27,9 @@ const HomeS5 = ({ dict }: HomeS5Props) => {
 
                 {/* LEFT — Full-height model photo */}
                 <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={inView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    initial={{opacity: 0, x: -30}}
+                    animate={inView ? {opacity: 1, x: 0} : {}}
+                    transition={{duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94]}}
                     className=" w-full md:w-[35%] h-[500px] md:min-h-[650px]"
                 >
                     <Image
@@ -40,16 +40,17 @@ const HomeS5 = ({ dict }: HomeS5Props) => {
                 </motion.div>
 
                 {/* RIGHT — Content + craftsman photo */}
-                <div className="flex flex-col bg-white md:bg-none justify-between h-full md:min-h-screen w-full md:w-[50%] px-2 md:px-14 py-10 md:py-0 gap-6">
+                <div
+                    className="flex flex-col bg-white md:bg-none justify-between h-full md:min-h-screen w-full md:w-[50%] px-2 md:px-14 py-10 md:py-0 gap-6">
 
                     {/* Text block */}
                     <div className="flex flex-col gap-3 ">
 
                         {/* Tag */}
                         <motion.span
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            initial={{opacity: 0, y: 10}}
+                            animate={inView ? {opacity: 1, y: 0} : {}}
+                            transition={{duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="other_font text-[14px] text-black tracking-wide"
                         >
                             Sustainability
@@ -58,25 +59,25 @@ const HomeS5 = ({ dict }: HomeS5Props) => {
 
                         {/* Title */}
                         <motion.h2
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            initial={{opacity: 0, y: 16}}
+                            animate={inView ? {opacity: 1, y: 0} : {}}
+                            transition={{duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="title_font text-[26px] md:text-[44px] font-medium uppercase leading-[1.08] tracking-[5] text-[#1a1a1a]"
                         >
-                            EVERY DETAIL MATTER
+                            Каждая модель
 
                         </motion.h2>
 
                         {/* Description */}
                         <motion.p
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.55, delay: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            initial={{opacity: 0, y: 12}}
+                            animate={inView ? {opacity: 1, y: 0} : {}}
+                            transition={{duration: 0.55, delay: 0.22, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="other_font text-[16px] leading-[1.65] text-black/65 max-w-[380px]"
                         >
-                            Since 2012, Innove Couture products have been made to last across generations, with a no-compromises approach to quality.
-
-
+                            — часть единого языка, в котором форма, пропорции и структура работают как целостный код. От
+                            выбора ткани до последней строчки, от силуэта до тактильного и визуального опыта упаковки —
+                            всё выстроено как продолжение одной идеи.
                         </motion.p>
 
                         {/* Learn More link */}
@@ -90,9 +91,9 @@ const HomeS5 = ({ dict }: HomeS5Props) => {
 
                     {/* Craftsman image */}
                     <motion.div
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={inView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.7, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        initial={{opacity: 0, y: 24}}
+                        animate={inView ? {opacity: 1, y: 0} : {}}
+                        transition={{duration: 0.7, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94]}}
                         className="relative w-full h-[320px] md:h-[380px] p-5 rounded-sm overflow-hidden bg-gray-100"
                     >
                         <Image

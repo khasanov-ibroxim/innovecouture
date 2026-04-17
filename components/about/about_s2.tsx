@@ -2,16 +2,16 @@ import React from "react";
 
 const timelineItems = [
     {
-        year: "2010",
-        text: "Innove Couture marked its inception with the opening of its inaugural boutique at Centrall Centre, a distinguished shopping mall located in New York.",
+        year: "Современный контекст",
+        text: "Мы создаём одежду для сегодняшнего дня — для города, движения и реальной жизни, где Khiva Code становится диалогом между прошлым и настоящим.",
     },
     {
-        year: "2014",
-        text: "Opening our doors to more and more clients, we go national with Innove Couture boutiques across New York.",
+        year: "Формирование бренда",
+        text: "С самого начала мы выстраиваем не просто коллекции, а целостную систему, в которой трикотаж служит основой, аксессуары продолжают идею, а обувь задаёт движение.",
     },
     {
-        year: "2018",
-        text: "Innove Couture around the world — we launch international shipping, opening to markets outside of the United States of America.",
+        year: "Больше, чем одежда",
+        text: "Khiva Code — это не про внешний вид, а про внутреннее ощущение уверенности, спокойствия и структуры — одежду, которая не стремится привлечь внимание, но остаётся надолго.",
     },
 ];
 
@@ -22,12 +22,13 @@ const AboutS2 = () => {
             {/* ── Header ── */}
             <div className="max-w-[600px] mb-16 md:mb-20">
                 <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-normal uppercase tracking-[0.02em] leading-none mb-6">
-                    The Beginning
+                    Перевод в современность
                 </h2>
                 <p className="text-[14px] md:text-[15px] leading-[1.75] text-neutral-700">
-                    The concept was elegantly straightforward: to present exquisite
-                    clothing within inspirational environments, accompanied by
-                    unparalleled service.
+                    Идея Khiva Code — переосмыслить архитектурный язык Хивы и перевести его в одежду. Это не копирование
+                    орнаментов и не этнический стиль, а адаптация ключевых принципов: чистых линий, продуманной формы и
+                    структурного минимализма. Такой подход сохраняет глубину и логику традиции, раскрывая её в
+                    современном контексте через сдержанный, выверенный и интеллектуальный дизайн.
                 </p>
             </div>
 
@@ -37,7 +38,7 @@ const AboutS2 = () => {
                 {timelineItems.map((item, i) => (
                     <div key={i} className="flex flex-col pr-10">
                         {/* Vertical tick line */}
-                        <div className="w-px h-16 bg-neutral-300 mb-6" />
+                        <div className="w-px h-16 bg-neutral-300 mb-6"/>
 
                         {/* Year */}
                         <p className="text-[13px] font-semibold tracking-[0.06em] text-neutral-900 mb-3">
@@ -58,15 +59,15 @@ const AboutS2 = () => {
                     <div key={i} className="flex gap-5">
                         {/* Left: vertical line + dot */}
                         <div className="flex flex-col items-center">
-                            <div className="w-px flex-1 bg-neutral-300" />
+                            <div className="w-px flex-1 bg-neutral-300"/>
                             {i < timelineItems.length - 1 && (
-                                <div className="w-px flex-1 bg-neutral-300" />
+                                <div className="w-px flex-1 bg-neutral-300"/>
                             )}
                         </div>
 
                         {/* Content */}
                         <div className="pb-10">
-                            <div className="w-px h-8 bg-neutral-300 mb-4" />
+                            <div className="w-px h-8 bg-neutral-300 mb-4"/>
                             <p className="text-[13px] font-semibold tracking-[0.06em] text-neutral-900 mb-2">
                                 {item.year}
                             </p>

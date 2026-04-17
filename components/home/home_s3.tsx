@@ -53,12 +53,12 @@ const HomeS3 = () => {
                     {/* DESKTOP: overlapping */}
                     <div
                         className="hidden lg:block relative select-none"
-                        style={{ height: "100vh", maxHeight: 800 }}
+                        style={{height: "100vh", maxHeight: 800}}
                     >
                         {/* Front — main model, left, z on top */}
                         <div
                             className="absolute z-10"
-                            style={{ top: 0, left: 0, width: "60%", height: "100%" }}
+                            style={{top: 0, left: 0, width: "60%", height: "100%"}}
                         >
                             <Image
                                 src={modelMain}
@@ -97,7 +97,7 @@ const HomeS3 = () => {
                     <div className="hidden lg:flex justify-end mb-4">
                         <div
                             className="relative overflow-hidden"
-                            style={{ width: "55%", aspectRatio: "16/9" }}
+                            style={{width: "55%", aspectRatio: "16/9"}}
                         >
                             <Image
                                 src={fabricTexture}
@@ -120,12 +120,12 @@ const HomeS3 = () => {
                             Fall/Winter 23
                         </p>
                         <h2 className="text-[32px] sm:text-[36px] md:text-[40px] lg:text-[50px] font-normal uppercase tracking-tight leading-none mb-5">
-                            Fall Collection
+                            Мы не создаём вещи ради трендов
                         </h2>
                         <p className="text-[13px] leading-[1.8] text-neutral-600 max-w-[440px] mb-8">
-                            Our new Fall/Winter 2023 Collection features vibrant hues and varied textures
-                            in charming plaids and floral prints that pair back to easy-fitting and
-                            thoughtfully tailored silhouettes.
+                            мы выстраиваем систему, основанную на принципах формы, точности и времени. В основе Khiva
+                            Code лежит архитектурное мышление, унаследованное от Хива, где каждая линия подчинена
+                            логике, а каждая деталь имеет значение.
                         </p>
                         <Link
                             href="#"

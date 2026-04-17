@@ -15,31 +15,31 @@ const AboutS3 = () => {
 
                 {/* Main runway image */}
                 <div className="w-full aspect-[3/4] relative overflow-hidden bg-neutral-900">
-                     <Image src={runwayMain} alt="Runway show" fill className="object-cover object-center" />
-                    <div className="w-full h-full bg-neutral-800" />
+                    <Image src={runwayMain} alt="Runway show" fill className="object-cover object-center"/>
+                    <div className="w-full h-full bg-neutral-800"/>
                 </div>
 
                 {/* Small model image */}
                 <div className="w-[55%] aspect-[3/4] relative overflow-hidden bg-neutral-200 self-end">
-                     <Image src={modelSmall} alt="Model" fill className="object-cover object-top" />
-                    <div className="w-full h-full bg-neutral-300" />
+                    <Image src={modelSmall} alt="Model" fill className="object-cover object-top"/>
+                    <div className="w-full h-full bg-neutral-300"/>
                 </div>
 
                 {/* Store image */}
                 <div className="w-full aspect-[16/9] relative overflow-hidden bg-neutral-200">
-                     <Image src={storeRight} alt="Store" fill className="object-cover" />
-                    <div className="w-full h-full bg-neutral-200" />
+                    <Image src={storeRight} alt="Store" fill className="object-cover"/>
+                    <div className="w-full h-full bg-neutral-200"/>
                 </div>
 
                 {/* Text */}
                 <div>
                     <h2 className="text-[32px] font-normal uppercase tracking-[0.02em] leading-tight mb-5">
-                        Several Decades Late
+                        Взгляд в будущее
                     </h2>
                     <p className="text-[13px] leading-[1.8] text-neutral-700 mb-6 max-w-[480px]">
-                        Boasting a network of stores spanning North America and a robust global
-                        eCommerce platform, Innove remains dedicated to bringing everyday luxury
-                        to communities near and far.
+                        Мы продолжаем развивать бренд, сохраняя его основу — архитектуру как идею, минимализм как язык и
+                        культуру как источник вдохновения, позволяя Khiva Code органично меняться и расти вместе со
+                        временем..
                     </p>
                     <Link
                         href="#"
@@ -54,18 +54,19 @@ const AboutS3 = () => {
             <div className="hidden lg:flex justify-between items-start gap-0  mx-auto">
 
                 {/* ── LEFT: Images column ── */}
-                <div className="relative w-[50%] flex-shrink-0" style={{ minHeight: 620 }}>
+                <div className="relative w-[50%] flex-shrink-0" style={{minHeight: 620}}>
 
                     {/* Main large runway image — left, full height */}
                     <div className="absolute left-0 top-0 w-[65%] h-full overflow-hidden bg-neutral-900">
-                         <Image src={runwayMain} alt="Runway show" fill className="object-cover object-center" />
-                        <div className="w-full h-full bg-neutral-800" />
+                        <Image src={runwayMain} alt="Runway show" fill className="object-cover object-center"/>
+                        <div className="w-full h-full bg-neutral-800"/>
                     </div>
 
                     {/* Small model image — overlapping, center-top */}
-                    <div className="absolute left-[50%] top-[14%] w-[28%] aspect-[3/4] overflow-hidden bg-neutral-200 z-10">
-                         <Image src={modelSmall} alt="Model" fill className="object-cover object-top" />
-                        <div className="w-full h-full bg-neutral-300" />
+                    <div
+                        className="absolute left-[50%] top-[14%] w-[28%] aspect-[3/4] overflow-hidden bg-neutral-200 z-10">
+                        <Image src={modelSmall} alt="Model" fill className="object-cover object-top"/>
+                        <div className="w-full h-full bg-neutral-300"/>
                     </div>
                 </div>
 
@@ -73,19 +74,20 @@ const AboutS3 = () => {
                 <div className="flex-1 flex flex-col  pl-0 pt-0">
 
                     {/* Store image — top right */}
-                    <div className="w-[100%] aspect-[20/9] flex justify-end items-start relative right-0 overflow-hidden  mb-14">
-                         <Image src={storeRight} alt="Store"  className="object-cover w-[50%]" />
+                    <div
+                        className="w-[100%] aspect-[20/9] flex justify-end items-start relative right-0 overflow-hidden  mb-14">
+                        <Image src={storeRight} alt="Store" className="object-cover w-[50%]"/>
                     </div>
 
                     {/* Text block */}
                     <div className="pl-2">
                         <h2 className="text-[40px] xl:text-[40px] font-normal uppercase tracking-[0.02em] leading-tight mb-6">
-                            Several Decades <br /> Late
+                            Взгляд в будущее
                         </h2>
                         <p className="text-[14px] leading-[1.8] text-neutral-700 mb-8 max-w-[420px]">
-                            Boasting a network of stores spanning North America and a robust global
-                            eCommerce platform, Innove remains dedicated to bringing everyday luxury
-                            to communities near and far.
+                            Мы продолжаем развивать бренд, сохраняя его основу — архитектуру как идею, минимализм как
+                            язык и культуру как источник вдохновения, позволяя Khiva Code органично меняться и расти
+                            вместе со временем..
                         </p>
                         <Link
                             href="#"

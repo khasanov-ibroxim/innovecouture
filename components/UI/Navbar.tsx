@@ -138,7 +138,7 @@ const Navbar = ({ dict, lang }: Props) => {
                         href={`/${lang}`}
                         className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap select-none"
                     >
-                        <Image src={logo} alt="logo" />
+                        Khiva Code
                     </a>
 
                     {/* Right – icons */}
@@ -198,7 +198,7 @@ const Navbar = ({ dict, lang }: Props) => {
                             transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
                             className="hidden lg:block lg:flex-[0_0_50%]"
                         >
-                            <Image src={navMenuBg} alt="nav menu background" className="w-full h-full object-cover" />
+Khiva code
                         </motion.div>
 
                         {/* Right content panel */}
@@ -211,7 +211,7 @@ const Navbar = ({ dict, lang }: Props) => {
                         >
                             {/* Panel header: logo + lang switcher + close */}
                             <div className="flex items-center justify-between mb-12">
-                                <Image src={logo} alt="logo" />
+                                Khiva code
                                 <div className="flex items-center gap-5">
                                     {/* Lang switcher always visible inside menu */}
                                     <LangSwitcher lang={lang} />

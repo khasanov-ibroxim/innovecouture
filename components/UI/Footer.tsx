@@ -28,8 +28,8 @@ const Footer = () => {
                         className="text-[32px] md:text-[52px] font-normal tracking-[0.04em] uppercase leading-none select-none"
                         style={{ fontStyle: "italic", letterSpacing: "0.02em" }}
                     >
-                        <span style={{ fontStyle: "normal" }}>INNOVÉ </span>
-                        <span style={{ fontStyle: "italic" }}>COUTURE</span>
+                        <span style={{ fontStyle: "normal" }}>Khiva </span>
+                        <span style={{ fontStyle: "italic" }}>Code</span>
                     </span>
                 </div>
 

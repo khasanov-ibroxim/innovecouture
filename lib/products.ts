@@ -1,5 +1,5 @@
-import p_0_0 from "@/assets/products/p_0_0.jpg"
-import p_0_1 from "@/assets/products/p_0_1.jpg"
+import p_0_0 from "@/assets/products/IMG_9598.jpg"
+import p_0_1 from "@/assets/products/IMG_9599.jpg"
 import p_0_2 from "@/assets/products/p_0_2.jpg"
 import p_0_3 from "@/assets/products/p_0_3.jpg"
 import p_1_0 from "@/assets/products/p_1_0.jpg"
