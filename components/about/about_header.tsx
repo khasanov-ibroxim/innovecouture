@@ -7,8 +7,8 @@ import Image from "next/image";
 const AboutHeader = () => {
     return (
         <div className={"flex flex-col justify-center items-center gap-4 pt-18 px-2"}>
-            <span>About</span>
-            <h1 className={"text-3xl uppercase text-center"}>Everyday Luxury had to begin somewhere</h1>
+            <span>О нас</span>
+            <h1 className={"text-3xl uppercase text-center"}>Диалог между прошлым и настоящим</h1>
             <Image src={header} alt={"asd"} className={"w-full md:h-[500px] md:object-cover object-contain"} />
         </div>
     );
