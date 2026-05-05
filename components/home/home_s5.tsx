@@ -53,7 +53,7 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                             transition={{duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="other_font text-[14px] text-black tracking-wide"
                         >
-                            Sustainability
+                            Устойчивость
 
                         </motion.span>
 
@@ -85,7 +85,7 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                             href="#"
                             className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em] max-w-[200px] text-center"
                         >
-                            Explore collection
+                            Устойчивость
                         </Link>
                     </div>
 

@@ -115,18 +115,18 @@ const Navbar = ({ dict, lang }: Props) => {
                     </button>
 
                     {/* ── DESKTOP LEFT: Nav links ── */}
-                    <nav className="hidden lg:flex items-center gap-9 flex-1">
+                    <nav className="hidden lg:flex items-center gap-5 flex-1">
                         {[
-                            { link: `/${lang}`, label: "H." },
-                            { link: `/${lang}/shop`, label: "Shop" },
-                            { link: `/${lang}/about`, label: "About" },
-                            { link: `/${lang}/sustainability`, label: "Sustainability" },
-                            { link: `/${lang}/contact`, label: "Contact" },
+                            { link: `/${lang}`, label: "Главная" },
+                            { link: `/${lang}/shop`, label: "Магазин" },
+                            { link: `/${lang}/about`, label: "О нас" },
+                            { link: `/${lang}/sustainability`, label: "Устойчивость" },
+                            { link: `/${lang}/contact`, label: "Контакты" },
                         ].map((item, index) => (
                             <Link
                                 key={index}
                                 href={item.link}
-                                className="text-[14px] font-medium tracking-[0.12em] uppercase text-neutral-900 hover:opacity-50 transition-opacity"
+                                className="text-[14px] font-medium  uppercase text-neutral-900 hover:opacity-50 transition-opacity"
                             >
                                 {item.label}
                             </Link>
@@ -138,7 +138,13 @@ const Navbar = ({ dict, lang }: Props) => {
                         href={`/${lang}`}
                         className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap select-none"
                     >
-                        Khiva Code
+                        <span
+                            className="text-[22px] md:text-[22px] ml-10 font-normal tracking-[0.04em] uppercase leading-none select-none"
+                            style={{ fontStyle: "italic", letterSpacing: "0.02em" }}
+                        >
+                        <span style={{ fontStyle: "normal" }}>Khiva </span>
+                        <span style={{ fontStyle: "italic" }}>Code</span>
+                    </span>
                     </a>
 
                     {/* Right – icons */}
@@ -228,11 +234,11 @@ Khiva code
                             {/* Mobile only – nav links inside menu */}
                             <div className="flex lg:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
                                 {[
-                                    { link: `/${lang}`, label: "H." },
-                                    { link: `/${lang}/shop`, label: "Shop" },
-                                    { link: `/${lang}/about`, label: "About" },
-                                    { link: `/${lang}/sustainability`, label: "Sustainability" },
-                                    { link: `/${lang}/contact`, label: "Contact" },
+                                    { link: `/${lang}`, label: "Главная" },
+                                    { link: `/${lang}/shop`, label: "Магазин" },
+                                    { link: `/${lang}/about`, label: "О нас" },
+                                    { link: `/${lang}/sustainability`, label: "Устойчивость" },
+                                    { link: `/${lang}/contact`, label: "Контакты" },
                                 ].map((item, index) => (
                                     <Link
                                         href={item.link}

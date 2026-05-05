@@ -25,13 +25,14 @@ const SusS1 = () => {
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-widest leading-tight">
                             APPROACH
                         </h2>
-                        <p className="text-sm md:text-base text-gray-700 leading-relaxed max-w-lg">
-                            For over five decades, Innove Couture has epitomized enduring
-                            craftsmanship, crafting products designed to withstand the test of
-                            time. Embracing an unwavering commitment to uncompromising quality,
-                            the brand ensures that each creation is a testament to longevity and
-                            responsible manufacturing practices, paving the way for a more
-                            sustainable and conscientious future.
+                        <p className="text-sm md:text-base text-gray-700 leading-relaxed ">
+                            Осознанный подход в Khiva Code — это система, а не отдельный этап. Устойчивость заложена во
+                            всём: от идеи и дизайна до производства, материалов и срока жизни изделия. Мы создаём вещи
+                            вне времени — с минималистичной формой, выверенными пропорциями и продуманной конструкцией.
+                            В основе — качество тканей, точность кроя и долговечность в повседневной носке. Производство
+                            выстроено рационально: без избыточных объёмов, с контролем процессов и минимизацией отходов.
+                            Даже упаковка подчинена принципу функциональности и чистоты. Каждая вещь имеет ценность не
+                            только в момент покупки, но и в длительном использовании.
                         </p>
                     </div>
 
@@ -39,20 +40,20 @@ const SusS1 = () => {
                     <div className="flex flex-row gap-3 md:gap-4">
                         {/* Sketch image */}
                         <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-gray-200">
-                             <Image src={sketchImg} alt="Design sketching" fill className="object-cover" />
+                            <Image src={sketchImg} alt="Design sketching" fill className="object-cover"/>
 
                         </div>
 
                         {/* Cutting image */}
                         <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-gray-200">
-                             <Image src={cuttingImg} alt="Fabric cutting" fill className="object-cover" />
+                            <Image src={cuttingImg} alt="Fabric cutting" fill className="object-cover"/>
                         </div>
                     </div>
                 </div>
 
                 {/* RIGHT SIDE — big sewing image, full height */}
                 <div className="relative w-full lg:w-[48%] min-h-[350px] lg:min-h-0 overflow-hidden bg-gray-200">
-                     <Image src={sewingImg} alt="Sewing machine" fill className="object-cover" />
+                    <Image src={sewingImg} alt="Sewing machine" fill className="object-cover"/>
 
                 </div>
 

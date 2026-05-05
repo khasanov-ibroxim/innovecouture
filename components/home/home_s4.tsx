@@ -37,8 +37,7 @@ const HomeS4 = () => {
 
             {/* Quote text — top left */}
             <p className=" absolute top-[10%] font-normal text-[16px] ml-0 md:ml-10 uppercase   leading-[1.9] ">
-                Is about you being confident self, no matter <br/>
-                what others say or think
+                Минимализм, выстроенный по законам города
             </p>
 
             {/* Grid */}

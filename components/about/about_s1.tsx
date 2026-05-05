@@ -57,7 +57,7 @@ const AboutS1 = () => {
                 {/* Main content */}
                 <div className="pl-[240px] pr-[240px]">
                     <h2 className="text-[48px] font-normal uppercase tracking-[0.04em] leading-none mb-10">
-                        ИСТОРИЯ (HISTORY)
+                        ИСТОРИЯ
                     </h2>
                     <div className="flex flex-col gap-5">
                         <p className="text-[15px] leading-[1.8] text-neutral-700">

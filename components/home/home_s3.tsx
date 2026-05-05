@@ -116,9 +116,7 @@ const HomeS3 = () => {
 
                     {/* Text block */}
                     <div className="md:pl-8 lg:pl-14">
-                        <p className="text-[11px] tracking-[0.14em] text-neutral-500 mb-3 uppercase">
-                            Fall/Winter 23
-                        </p>
+
                         <h2 className="text-[32px] sm:text-[36px] md:text-[40px] lg:text-[50px] font-normal uppercase tracking-tight leading-none mb-5">
                             Мы не создаём вещи ради трендов
                         </h2>
@@ -135,7 +133,7 @@ const HomeS3 = () => {
                                        after:transition-all after:duration-300
                                        hover:after:w-[55%]"
                         >
-                            Explore Collection
+                            товары
                         </Link>
                     </div>
                 </div>
