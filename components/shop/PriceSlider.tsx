@@ -119,7 +119,7 @@ export default function PriceSlider({
       </div>
 
       <p className="text-[11px] text-neutral-600 tracking-[0.06em] mt-3">
-        ${minVal}.00 – ${maxVal}.00
+        {minVal.toLocaleString()} UZS – {maxVal.toLocaleString()} UZS
       </p>
     </div>
   );

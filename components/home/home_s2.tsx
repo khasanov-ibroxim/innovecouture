@@ -1,14 +1,15 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { products } from "@/lib/products";
+import { getProducts } from "@/lib/products";
+import type { Product } from "@/lib/products";
 import Image from "next/image";
 import {HomeDictionary} from "@/lib/dictionary";
 
 interface CardProps {
-    product: (typeof products)[0];
+    product: Product;
     index: number;
     lang:string;
     dict:HomeDictionary['s2'];
@@ -90,24 +91,46 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
 
 
                 {/* Default image */}
-                <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                        isHovered ? "opacity-0" : "opacity-100"
-                    }`}
-                    draggable={false}
-                />
+                {typeof product.images[0] === 'string' ? (
+                    <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                            isHovered ? "opacity-0" : "opacity-100"
+                        }`}
+                        draggable={false}
+                    />
+                ) : (
+                    <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                            isHovered ? "opacity-0" : "opacity-100"
+                        }`}
+                        draggable={false}
+                    />
+                )}
 
                 {/* Hover image (image[activeIndex]) */}
-                <Image
-                    src={isHovered ? product.images[activeIndex] : hoverImage}
-                    alt={product.name + " hover"}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                        isHovered ? "opacity-100" : "opacity-0"
-                    }`}
-                    draggable={false}
-                />
+                {typeof (isHovered ? product.images[activeIndex] : hoverImage) === 'string' ? (
+                    <img
+                        src={isHovered ? product.images[activeIndex] : hoverImage}
+                        alt={product.name + " hover"}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                            isHovered ? "opacity-100" : "opacity-0"
+                        }`}
+                        draggable={false}
+                    />
+                ) : (
+                    <Image
+                        src={isHovered ? product.images[activeIndex] : hoverImage}
+                        alt={product.name + " hover"}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                            isHovered ? "opacity-100" : "opacity-0"
+                        }`}
+                        draggable={false}
+                    />
+                )}
 
                 {/* Swipe arrows — visible only when hovered */}
                 {isHovered && (
@@ -174,6 +197,33 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
 };
 
 export const HomeS2 = ({lang , dict}:HomeS2Props) => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadProducts() {
+            try {
+                const data = await getProducts();
+                setProducts(data.slice(0, 4)); // Show first 4 products
+            } catch (error) {
+                console.error('Failed to load products:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadProducts();
+    }, []);
+
+    if (loading) {
+        return (
+            <section className="w-full px-5 md:px-10 py-16">
+                <div className="flex items-center justify-center py-12">
+                    <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">Loading...</p>
+                </div>
+            </section>
+        );
+    }
+
     return (
         <section className="w-full px-5 md:px-10 py-16">
             {/* Section header */}
@@ -182,7 +232,7 @@ export const HomeS2 = ({lang , dict}:HomeS2Props) => {
                     Whats New
                 </h2>
                 <Link
-                    href="#"
+                    href={`/${lang}/shop`}
                     className="relative text-[11px] tracking-[0.14em] uppercase font-medium after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:origin-left after:scale-x-100 hover:after:scale-x-50 after:transition-transform after:duration-300"
                 >
                     View All

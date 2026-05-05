@@ -19,9 +19,11 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
   const touchStartX = useRef<number | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (product.images.length <= 1) return; // Don't handle swipe if only 1 image
     touchStartX.current = e.touches[0].clientX;
   };
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (product.images.length <= 1) return; // Don't handle swipe if only 1 image
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) {
@@ -44,16 +46,19 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
   };
 
   const hoverImage = product.images[1] ?? product.images[0];
+  const hasMultipleImages = product.images.length > 1;
 
   return (
     <Link href={`/${lang}/shop/${product.id}`} className="group flex flex-col">
       <div
         className="relative overflow-hidden bg-[#f4f3f1] aspect-[2.5/4] cursor-pointer"
         onMouseEnter={() => {
+          if (!hasMultipleImages) return; // Don't change on hover if only 1 image
           setIsHovered(true);
           setActiveIndex(1);
         }}
         onMouseLeave={() => {
+          if (!hasMultipleImages) return;
           setIsHovered(false);
           setActiveIndex(0);
         }}
@@ -75,27 +80,49 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
         </div>
 
         {/* Default image */}
-        <Image
-          src={product.images[0]}
-          alt={product.name}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            isHovered ? "opacity-0" : "opacity-100"
-          }`}
-          draggable={false}
-        />
+        {typeof product.images[0] === 'string' ? (
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? "opacity-0" : "opacity-100"
+            }`}
+            draggable={false}
+          />
+        ) : (
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? "opacity-0" : "opacity-100"
+            }`}
+            draggable={false}
+          />
+        )}
 
         {/* Hover image */}
-        <Image
-          src={isHovered ? product.images[activeIndex] : hoverImage}
-          alt={`${product.name} hover`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
-          draggable={false}
-        />
+        {hasMultipleImages && (typeof (isHovered ? product.images[activeIndex] : hoverImage) === 'string' ? (
+          <img
+            src={isHovered ? product.images[activeIndex] : hoverImage}
+            alt={`${product.name} hover`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
+            draggable={false}
+          />
+        ) : (
+          <Image
+            src={isHovered ? product.images[activeIndex] : hoverImage}
+            alt={`${product.name} hover`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
+            draggable={false}
+          />
+        ))}
 
         {/* Arrow controls */}
-        {isHovered && (
+        {isHovered && hasMultipleImages && (
           <>
             <button
               onClick={prev}
@@ -143,12 +170,12 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
           {product.isSale && product.originalPrice ? (
             <>
               <span className="text-[12px] text-neutral-400 line-through">
-                ${product.originalPrice}
+                {product.originalPrice.toLocaleString()} UZS
               </span>
-              <span className="text-[12px] text-neutral-900">${product.price}</span>
+              <span className="text-[12px] text-neutral-900">{product.price.toLocaleString()} UZS</span>
             </>
           ) : (
-            <span className="text-[12px] text-neutral-900">${product.price}</span>
+            <span className="text-[12px] text-neutral-900">{product.price.toLocaleString()} UZS</span>
           )}
         </div>
       </div>

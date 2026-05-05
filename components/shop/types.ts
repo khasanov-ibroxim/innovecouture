@@ -12,26 +12,26 @@ export const SORT_OPTIONS: SortOption[] = [
 ];
 
 export interface Filters {
-  productType: string[];
+  collections: string[];
   sizes: string[];
   colors: string[];
-  brands: string[];
+  categories: string[];
   priceMin: number;
   priceMax: number;
 }
 
-export const PRODUCT_TYPES = ["Blazer", "Dress", "Top", "Bustier", "Longsleeve"];
-export const SIZES = ["XS", "S", "M", "L", "XL"];
-export const COLORS = ["Black", "Ivory", "Camel", "Charcoal", "Midnight Navy"];
-export const BRANDS = ["Innové Couture", "One Vintage"];
+export const PRODUCT_TYPES: string[] = []; // Will be loaded from server (collections)
+export const SIZES: string[] = []; // Will be loaded from server
+export const COLORS: string[] = []; // Will be loaded from server
+export const BRANDS: string[] = []; // Will be loaded from server (categories)
 export const PRICE_MIN_LIMIT = 0;
-export const PRICE_MAX_LIMIT = 600;
+export const PRICE_MAX_LIMIT = 500000;
 
 export const DEFAULT_FILTERS: Filters = {
-  productType: [],
+  collections: [],
   sizes: [],
   colors: [],
-  brands: [],
+  categories: [],
   priceMin: PRICE_MIN_LIMIT,
   priceMax: PRICE_MAX_LIMIT,
 };

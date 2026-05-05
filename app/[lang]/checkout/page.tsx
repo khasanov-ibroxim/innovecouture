@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getCart, CartItem } from "@/lib/cart";
+import { apiClient } from "@/lib/api/client";
+import type { CreateOrderRequest } from "@/lib/api/types";
 import click from "@/assets/icons/click.png"
 import payme from "@/assets/icons/payme.png"
 import uzcard from "@/assets/icons/uzcard.png"
@@ -91,7 +93,9 @@ export default function CheckoutPage() {
     const [agreedToTerms, setAgreedToTerms] = useState(false);
 
     const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [orderId, setOrderId] = useState<number | null>(null);
 
     // Billing
     const [billing, setBilling] = useState({
@@ -123,12 +127,61 @@ export default function CheckoutPage() {
         return Object.keys(e).length === 0;
     };
 
-    const handlePlaceOrder = () => {
+    const handlePlaceOrder = async () => {
         if (!validate()) return;
-        // Clear cart
-        localStorage.setItem("cart", JSON.stringify([]));
-        window.dispatchEvent(new Event("cartUpdated"));
-        setSubmitted(true);
+
+        setSubmitting(true);
+        setErrors({});
+
+        try {
+            // Map payment method to API format
+            let paymentMethod: 'click' | 'payme' | 'cash' = 'cash';
+            if (payment === 'click') paymentMethod = 'click';
+            else if (payment === 'payme') paymentMethod = 'payme';
+
+            // Prepare order items - need to map cart items to API format
+            const orderItems = items.map(item => {
+                if (!item.product_item_id) {
+                    throw new Error(`Missing product_item_id for ${item.name}`);
+                }
+                return {
+                    product_id: typeof item.productId === 'string' ? parseInt(item.productId) : item.productId,
+                    product_item_id: item.product_item_id,
+                    count: item.quantity
+                };
+            });
+
+            const orderData: CreateOrderRequest = {
+                first_name: billing.firstName,
+                last_name: billing.lastName,
+                country: billing.country,
+                address: billing.street1 + (billing.street2 ? ', ' + billing.street2 : ''),
+                town_city: billing.city,
+                contact: billing.phone,
+                postcode_zip: parseInt(billing.postcode) || 0,
+                payment: paymentMethod,
+                items: orderItems,
+                email_address: billing.email,
+                state_county: billing.state || undefined,
+            };
+
+            const response = await apiClient.createOrder(orderData);
+
+            if (response.ok && response.data) {
+                setOrderId(response.data.order_id);
+                // Clear cart
+                localStorage.setItem("cart", JSON.stringify([]));
+                window.dispatchEvent(new Event("cartUpdated"));
+                setSubmitted(true);
+            } else {
+                setErrors({ submit: 'Failed to create order. Please try again.' });
+            }
+        } catch (error) {
+            console.error('Order creation failed:', error);
+            setErrors({ submit: 'An error occurred while placing your order. Please try again.' });
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     if (submitted) {
@@ -141,9 +194,14 @@ export default function CheckoutPage() {
                         </svg>
                     </div>
                     <h1 className="text-[22px] uppercase tracking-[0.06em] font-normal mb-3">Order Complete</h1>
-                    <p className="text-[12px] text-neutral-500 leading-relaxed mb-8">
+                    <p className="text-[12px] text-neutral-500 leading-relaxed mb-2">
                         Thank you for your purchase. A confirmation email will be sent to {billing.email || "your email"}.
                     </p>
+                    {orderId && (
+                        <p className="text-[11px] text-neutral-400 mb-8">
+                            Order ID: #{orderId}
+                        </p>
+                    )}
                     <Link
                         href="/en"
                         className="inline-block bg-black text-white px-10 py-3.5 text-[10px] tracking-[0.18em] uppercase hover:bg-neutral-700 transition-colors"
@@ -317,7 +375,7 @@ export default function CheckoutPage() {
                                             </p>
                                         </div>
                                         <span className="text-[11px] text-neutral-800 whitespace-nowrap">
-                      ${(item.price * item.quantity).toFixed(0)}
+                      {(item.price * item.quantity).toLocaleString()} UZS
                     </span>
                                     </div>
                                 ))}
@@ -328,8 +386,7 @@ export default function CheckoutPage() {
                             <div className="flex justify-between py-3 border-t border-neutral-200">
                                 <span className="text-[13px] tracking-[0.1em] uppercase font-medium text-neutral-900">Total</span>
                                 <div className="text-right">
-                                    <span className="text-[14px] font-medium text-neutral-900">${total.toFixed(0)}</span>
-                                    <span className="block text-[10px] text-neutral-400">USD</span>
+                                    <span className="text-[14px] font-medium text-neutral-900">{total.toLocaleString()} UZS</span>
                                 </div>
                             </div>
 
@@ -407,13 +464,17 @@ export default function CheckoutPage() {
                             {errors.terms && (
                                 <p className="text-[10px] text-red-400 mb-4">{errors.terms}</p>
                             )}
+                            {errors.submit && (
+                                <p className="text-[10px] text-red-400 mb-4">{errors.submit}</p>
+                            )}
 
                             {/* Place order */}
                             <button
                                 onClick={handlePlaceOrder}
-                                className="w-full bg-black text-white py-4 text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-neutral-700 transition-colors cursor-pointer"
+                                disabled={submitting}
+                                className="w-full bg-black text-white py-4 text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-neutral-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Place Order
+                                {submitting ? 'Processing...' : 'Place Order'}
                             </button>
                         </div>
                     </div>

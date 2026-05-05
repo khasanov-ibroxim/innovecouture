@@ -1,6 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 
+  // ✅ Image optimization for remote URLs
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'textile.okach-admin.uz',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/**',
+      },
+    ],
+    unoptimized: false,
+  },
 
   // ✅ Production optimizations
   compress: true,

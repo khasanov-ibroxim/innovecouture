@@ -118,11 +118,21 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                         <div key={idx} className="py-5 flex gap-4">
                                             {/* Image */}
                                             <div className="w-[88px] h-[110px] bg-neutral-100 flex-shrink-0 overflow-hidden">
-                                                <Image
-                                                    src={item.image}
-                                                    alt={item.name}
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                {typeof item.image === 'string' ? (
+                                                    <img
+                                                        src={item.image}
+                                                        alt={item.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <Image
+                                                        src={item.image}
+                                                        alt={item.name}
+                                                        width={88}
+                                                        height={110}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                )}
                                             </div>
 
                                             {/* Info */}
@@ -167,7 +177,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                                     </div>
                                                     {/* Price */}
                                                     <span className="text-[12px] font-medium text-neutral-900">
-                            ${(item.price * item.quantity).toFixed(0)}
+                            {(item.price * item.quantity).toLocaleString()} UZS
                           </span>
                                                 </div>
                                             </div>
@@ -183,7 +193,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                 {/* Subtotal */}
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">Subtotal:</span>
-                                    <span className="text-[14px] font-medium text-neutral-900">${subtotal.toFixed(0)}</span>
+                                    <span className="text-[14px] font-medium text-neutral-900">{subtotal.toLocaleString()} UZS</span>
                                 </div>
 
                                 {/* Buttons */}
@@ -202,7 +212,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                     <p className="text-[10px] tracking-[0.1em] text-neutral-500 mb-2">
                                         {hasFreeShipping
                                             ? "You have free shipping!"
-                                            : `$${(FREE_SHIPPING_THRESHOLD - subtotal).toFixed(0)} away from free shipping`}
+                                            : `${(FREE_SHIPPING_THRESHOLD - subtotal).toLocaleString()} UZS away from free shipping`}
                                     </p>
                                     <div className="h-[2px] bg-neutral-200 rounded-full overflow-hidden">
                                         <div

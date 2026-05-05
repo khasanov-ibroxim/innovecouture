@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { products as allProducts } from "@/lib/products";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { getProducts, getCollections, getCategories } from "@/lib/products";
+import type { Product } from "@/lib/products";
 import {
   Filters,
   SortOption,
@@ -13,10 +14,34 @@ import {
 export function useShopFilters() {
   const [sort, setSort] = useState<SortOption>("Popularity");
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [collections, setCollections] = useState<Array<{id: number; name_eng: string}>>([]);
+  const [categories, setCategories] = useState<Array<{id: number; name_eng: string}>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [products, collectionsData, categoriesData] = await Promise.all([
+          getProducts(),
+          getCollections(),
+          getCategories()
+        ]);
+        setAllProducts(products);
+        setCollections(collectionsData);
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
 
   const toggleArray = useCallback(
     (
-      key: keyof Pick<Filters, "productType" | "sizes" | "colors" | "brands">,
+      key: keyof Pick<Filters, "collections" | "sizes" | "colors" | "categories">,
       val: string
     ) => {
       setFilters((prev) => {
@@ -62,12 +87,17 @@ export function useShopFilters() {
       );
     }
 
-    // Product Type
-    if (filters.productType.length > 0) {
+    // Collection - filter by collection_id
+    if (filters.collections.length > 0) {
       list = list.filter((p) =>
-        filters.productType.some((t) =>
-          p.name.toLowerCase().includes(t.toLowerCase())
-        )
+        filters.collections.includes(String(p.collection_id))
+      );
+    }
+
+    // Category - filter by category_id
+    if (filters.categories.length > 0) {
+      list = list.filter((p) =>
+        filters.categories.includes(String(p.category_id))
       );
     }
 
@@ -78,13 +108,16 @@ export function useShopFilters() {
       list.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
 
     return list;
-  }, [filters, sort]);
+  }, [allProducts, filters, sort]);
 
   const activeTags: { label: string; remove: () => void }[] = [
-    ...filters.productType.map((v) => ({
-      label: v,
-      remove: () => toggleArray("productType", v),
-    })),
+    ...filters.collections.map((id) => {
+      const collection = collections.find(c => String(c.id) === id);
+      return {
+        label: collection?.name_eng || id,
+        remove: () => toggleArray("collections", id),
+      };
+    }),
     ...filters.sizes.map((v) => ({
       label: `Size: ${v}`,
       remove: () => toggleArray("sizes", v),
@@ -93,15 +126,18 @@ export function useShopFilters() {
       label: v,
       remove: () => toggleArray("colors", v),
     })),
-    ...filters.brands.map((v) => ({
-      label: v,
-      remove: () => toggleArray("brands", v),
-    })),
+    ...filters.categories.map((id) => {
+      const category = categories.find(c => String(c.id) === id);
+      return {
+        label: category?.name_eng || id,
+        remove: () => toggleArray("categories", id),
+      };
+    }),
     ...(filters.priceMin !== PRICE_MIN_LIMIT ||
     filters.priceMax !== PRICE_MAX_LIMIT
       ? [
           {
-            label: `$${filters.priceMin}–$${filters.priceMax}`,
+            label: `${filters.priceMin.toLocaleString()}–${filters.priceMax.toLocaleString()} UZS`,
             remove: () => {
               setFilters((p) => ({
                 ...p,
@@ -124,5 +160,6 @@ export function useShopFilters() {
     clearAll,
     filteredProducts,
     activeTags,
+    loading,
   };
 }

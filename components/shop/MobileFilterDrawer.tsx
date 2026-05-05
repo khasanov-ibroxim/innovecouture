@@ -10,7 +10,7 @@ interface MobileFilterDrawerProps {
   onClose: () => void;
   filters: Filters;
   onToggleArray: (
-    key: keyof Pick<Filters, "productType" | "sizes" | "colors" | "brands">,
+    key: keyof Pick<Filters, "collections" | "sizes" | "colors" | "categories">,
     val: string
   ) => void;
   onPriceMin: (v: number) => void;

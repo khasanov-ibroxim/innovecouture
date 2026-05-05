@@ -4,8 +4,11 @@ import React, {useState, useEffect, useRef} from "react";
 import {useParams} from "next/navigation";
 import Link from "next/link";
 import {ChevronLeft, ChevronRight, Plus, Minus} from "lucide-react";
-import {getProductById} from "@/lib/products";
+import {getProductById, getProducts} from "@/lib/products";
+import type {Product} from "@/lib/products";
 import {addToCart} from "@/lib/cart";
+import Image from "next/image";
+import CartDrawer from "@/components/UI/CartDrawer";
 
 /* ─── Accordion ─────────────────────────────────────────────── */
 function Accordion({
@@ -103,10 +106,15 @@ function Dropdown({
 export default function ProductPage() {
     const params = useParams();
     const id = params?.id as string;
-    const product = getProductById(id);
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [colorsData, setColorsData] = useState<Array<{id: number; color_code: string}>>([]);
+    const [sizesData, setSizesData] = useState<Array<{id: number; name: string}>>([]);
 
     const [selectedColor, setSelectedColor] = useState("");
+    const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
     const [selectedSize, setSelectedSize] = useState("");
+    const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
     const [qty, setQty] = useState(1);
     const [activeImg, setActiveImg] = useState(0);
     const [added, setAdded] = useState(false);
@@ -118,6 +126,36 @@ export default function ProductPage() {
     // Sticky sidebar refs
     const imageColRef = useRef<HTMLDivElement>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        async function loadProduct() {
+            try {
+                const [productData, colors, sizes] = await Promise.all([
+                    getProductById(id),
+                    fetch('https://textile.okach-admin.uz/color').then(r => r.json()),
+                    fetch('https://textile.okach-admin.uz/size').then(r => r.json())
+                ]);
+                setProduct(productData || null);
+                setColorsData(colors);
+                setSizesData(sizes);
+            } catch (error) {
+                console.error('Failed to load product:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadProduct();
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-500 mb-4">Loading...</p>
+                </div>
+            </div>
+        );
+    }
 
     if (!product) {
         return (
@@ -143,8 +181,19 @@ export default function ProductPage() {
         }
         setError("");
 
+        // Find the product_item_id based on selected color_id and size_id
+        const productItem = product.product_items.find(item =>
+            item.color_id === selectedColorId && item.size_id === selectedSizeId
+        );
+
+        if (!productItem) {
+            setError("Selected combination is not available");
+            return;
+        }
+
         addToCart({
             productId: product.id,
+            product_item_id: productItem.id,
             name: product.name,
             price: product.price,
             color: selectedColor,
@@ -194,14 +243,25 @@ export default function ProductPage() {
                             }}
                         >
                             {product.images.map((src, i) => (
-                                <Image
-                                    key={i}
-                                    src={src}
-                                    alt={`${product.name} ${i + 1}`}
-                                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${
-                                        i === activeImg ? "opacity-100" : "opacity-0"
-                                    }`}
-                                />
+                                typeof src === 'string' ? (
+                                    <img
+                                        key={i}
+                                        src={src}
+                                        alt={`${product.name} ${i + 1}`}
+                                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${
+                                            i === activeImg ? "opacity-100" : "opacity-0"
+                                        }`}
+                                    />
+                                ) : (
+                                    <Image
+                                        key={i}
+                                        src={src}
+                                        alt={`${product.name} ${i + 1}`}
+                                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${
+                                            i === activeImg ? "opacity-100" : "opacity-0"
+                                        }`}
+                                    />
+                                )
                             ))}
                             {/* Mobile arrows */}
                             <button onClick={prevImg} disabled={activeImg === 0}
@@ -232,13 +292,23 @@ export default function ProductPage() {
                                     className={`bg-[#f4f3f1] overflow-hidden cursor-pointer aspect-[3/4]`}
                                     onClick={() => setActiveImg(i)}
                                 >
-                                    <Image
-                                        src={src}
-                                        alt={`${product.name} ${i + 1}`}
-                                        className={`w-full h-full object-cover transition-opacity duration-300 ${
-                                            activeImg === i ? "ring-1 ring-neutral-400" : ""
-                                        }`}
-                                    />
+                                    {typeof src === 'string' ? (
+                                        <img
+                                            src={src}
+                                            alt={`${product.name} ${i + 1}`}
+                                            className={`w-full h-full object-cover transition-opacity duration-300 ${
+                                                activeImg === i ? "ring-1 ring-neutral-400" : ""
+                                            }`}
+                                        />
+                                    ) : (
+                                        <Image
+                                            src={src}
+                                            alt={`${product.name} ${i + 1}`}
+                                            className={`w-full h-full object-cover transition-opacity duration-300 ${
+                                                activeImg === i ? "ring-1 ring-neutral-400" : ""
+                                            }`}
+                                        />
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -256,48 +326,82 @@ export default function ProductPage() {
                                     {product.name}
                                 </h1>
                                 <div className="flex items-center gap-3">
-                                    <span className="text-[15px] text-neutral-900">${product.price}</span>
+                                    <span className="text-[15px] text-neutral-900">{product.price.toLocaleString()} UZS</span>
                                     {product.originalPrice && (
                                         <span className="text-[13px] text-neutral-400 line-through">
-                      ${product.originalPrice}
+                      {product.originalPrice.toLocaleString()} UZS
                     </span>
                                     )}
                                 </div>
                             </div>
 
                             {/* Color selector */}
-                            <div className="mb-4">
-                                <p className="text-[10px] tracking-[0.14em] uppercase text-neutral-500 mb-2">
-                                    Color{selectedColor &&
-                                    <span className="text-neutral-900 ml-1">— {selectedColor}</span>}
-                                </p>
-                                <Dropdown
-                                    label="Choose an option"
-                                    options={product.colors}
-                                    value={selectedColor}
-                                    onChange={setSelectedColor}
-                                />
-                            </div>
+                            {product.colors.length > 0 && (
+                                <div className="mb-4">
+                                    <p className="text-[10px] tracking-[0.14em] uppercase text-neutral-500 mb-2">
+                                        Color{selectedColor &&
+                                        <span className="text-neutral-900 ml-1">— Selected</span>}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {product.colors.map((color) => {
+                                            const colorData = colorsData.find(c => c.color_code === color);
+                                            return (
+                                                <button
+                                                    key={color}
+                                                    onClick={() => {
+                                                        setSelectedColor(color);
+                                                        setSelectedColorId(colorData?.id || null);
+                                                    }}
+                                                    className={`w-10 h-10 rounded-full border-2 transition-all cursor-pointer ${
+                                                        selectedColor === color
+                                                            ? "border-neutral-900 scale-110"
+                                                            : "border-neutral-300 hover:border-neutral-700"
+                                                    }`}
+                                                    style={{ backgroundColor: color }}
+                                                    title={color}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Size selector */}
-                            <div className="mb-5">
-                                <div className="flex items-center justify-between mb-2">
-                                    <p className="text-[10px] tracking-[0.14em] uppercase text-neutral-500">
-                                        Size{selectedSize &&
-                                        <span className="text-neutral-900 ml-1">— {selectedSize}</span>}
-                                    </p>
-                                    <button
-                                        className="text-[10px] tracking-[0.1em] uppercase underline text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer">
-                                        Size &amp; Fit Guide
-                                    </button>
+                            {product.sizes.length > 0 && (
+                                <div className="mb-5">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <p className="text-[10px] tracking-[0.14em] uppercase text-neutral-500">
+                                            Size{selectedSize &&
+                                            <span className="text-neutral-900 ml-1">— {selectedSize}</span>}
+                                        </p>
+                                        <button
+                                            className="text-[10px] tracking-[0.1em] uppercase underline text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer">
+                                            Size &amp; Fit Guide
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {product.sizes.map((size) => {
+                                            const sizeData = sizesData.find(s => s.name === size);
+                                            return (
+                                                <button
+                                                    key={size}
+                                                    onClick={() => {
+                                                        setSelectedSize(size);
+                                                        setSelectedSizeId(sizeData?.id || null);
+                                                    }}
+                                                    className={`px-4 h-10 text-[11px] tracking-[0.1em] uppercase border transition-colors cursor-pointer ${
+                                                        selectedSize === size
+                                                            ? "bg-neutral-900 text-white border-neutral-900"
+                                                            : "border-neutral-300 text-neutral-700 hover:border-neutral-700"
+                                                    }`}
+                                                >
+                                                    {size}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                                <Dropdown
-                                    label="Choose an option"
-                                    options={product.sizes}
-                                    value={selectedSize}
-                                    onChange={setSelectedSize}
-                                />
-                            </div>
+                            )}
 
                             {/* Quantity */}
                             <div className="flex items-center gap-3 mb-5">
@@ -368,13 +472,22 @@ export default function ProductPage() {
 }
 
 /* ─── You Might Also Like ────────────────────────────────────── */
-import {products} from "@/lib/products";
-import Image from "next/image";
-import CartDrawer from "@/components/UI/CartDrawer";
-
-function YouMightAlsoLike({currentId}: { currentId: string }) {
-    const related = products.filter((p) => p.id !== currentId).slice(0, 4);
+function YouMightAlsoLike({currentId}: { currentId: number }) {
+    const [related, setRelated] = useState<Product[]>([]);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        async function loadRelated() {
+            try {
+                const products = await getProducts();
+                const filtered = products.filter((p) => p.id !== currentId).slice(0, 4);
+                setRelated(filtered);
+            } catch (error) {
+                console.error('Failed to load related products:', error);
+            }
+        }
+        loadRelated();
+    }, [currentId]);
 
     return (
         <section className="px-5 md:px-10 py-16 border-t border-neutral-200">
@@ -410,7 +523,7 @@ function YouMightAlsoLike({currentId}: { currentId: string }) {
                 {related.map((p) => (
                     <Link
                         key={p.id}
-                        href={`/en/product/${p.id}`}
+                        href={`/en/shop/${p.id}`}
                         className="flex-shrink-0 w-[65vw] md:w-auto snap-start group"
                     >
                         <div className="aspect-[3/4] bg-[#f4f3f1] overflow-hidden mb-3 relative">
@@ -420,14 +533,22 @@ function YouMightAlsoLike({currentId}: { currentId: string }) {
                   New!
                 </span>
                             )}
-                            <Image
-                                src={p.images[0]}
-                                alt={p.name}
-                                className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                            />
+                            {typeof p.images[0] === 'string' ? (
+                                <img
+                                    src={p.images[0]}
+                                    alt={p.name}
+                                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                                />
+                            ) : (
+                                <Image
+                                    src={p.images[0]}
+                                    alt={p.name}
+                                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                                />
+                            )}
                         </div>
                         <h3 className="text-[11px] tracking-[0.06em] uppercase font-normal">{p.name}</h3>
-                        <p className="text-[11px] text-neutral-600 mt-0.5">${p.price}</p>
+                        <p className="text-[11px] text-neutral-600 mt-0.5">{p.price.toLocaleString()} UZS</p>
                     </Link>
                 ))}
             </div>

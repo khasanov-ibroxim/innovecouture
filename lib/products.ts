@@ -1,24 +1,9 @@
-import p_0_0 from "@/assets/products/IMG_9598.jpg"
-import p_0_1 from "@/assets/products/IMG_9599.jpg"
-import p_0_2 from "@/assets/products/p_0_2.jpg"
-import p_0_3 from "@/assets/products/p_0_3.jpg"
-import p_1_0 from "@/assets/products/p_1_0.jpg"
-import p_1_1 from "@/assets/products/p_1_1.jpg"
-import p_1_2 from "@/assets/products/p_1_2.jpg"
-import p_1_3 from "@/assets/products/p_1_3.jpg"
-import p_2_0 from "@/assets/products/p_2_0.jpg"
-import p_2_1 from "@/assets/products/p_2_1.jpg"
-import p_2_2 from "@/assets/products/p_2_2.jpg"
-import p_2_3 from "@/assets/products/p_2_3.jpg"
-import p_3_0 from "@/assets/products/p_3_0.jpg"
-import p_3_1 from "@/assets/products/p_3_1.jpg"
-import p_3_2 from "@/assets/products/p_3_2.jpg"
-import p_3_3 from "@/assets/products/p_3_3.jpg"
-import {StaticImageData} from "next/image";
-
+import { apiClient } from './api/client';
+import type { Product as ApiProduct } from './api/types';
+import { StaticImageData } from "next/image";
 
 export interface Product {
-    id: string;
+    id: number;
     name: string;
     price: number;
     originalPrice?: number;
@@ -26,106 +11,239 @@ export interface Product {
     isSale?: boolean;
     colors: string[];
     sizes: string[];
-    images: StaticImageData[] | string[]; // placeholder image URLs
+    images: string[];
     description: string;
     details: string[];
     delivery: string;
+    category_id: number;
+    collection_id: number;
+    is_active: boolean;
+    product_items: Array<{
+        id: number;
+        product_id: number;
+        color_id: number;
+        size_id: number;
+        total_count: number;
+    }>;
 }
 
-// Using placeholder images from picsum for demo
-export const products: Product[] = [
-    {
-        id: "contour-mockneck-longsleeve",
-        name: "Contour Mockneck Longsleeve",
-        price: 285,
-        isNew: true,
-        isSale: true,
-        colors: ["Ivory", "Black", "Camel"],
-        sizes: ["XS", "S", "M", "L", "XL"],
-        images: [
-         p_0_0, p_0_1 , p_0_2 , p_0_3
-        ],
-        description:
-            "A refined mockneck longsleeve crafted from premium stretch fabric. The contoured silhouette flatters the figure while maintaining effortless comfort. Perfect for both casual and elevated styling.",
-        details: [
-            "95% Viscose, 5% Elastane",
-            "Slim contoured fit",
-            "Mock neckline",
-            "Dry clean recommended",
-            "Model is 178cm wearing size S",
-        ],
-        delivery:
-            "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
-    },
-    {
-        id: "generation-blazer",
-        name: "Generation Blazer",
-        price: 510,
-        colors: ["Black", "Midnight Navy", "Ivory"],
-        sizes: ["XS", "S", "M", "L"],
-        images: [
-            p_1_0, p_1_1 , p_1_2 , p_1_3
-        ],
-        description:
-            "The Generation Blazer redefines power dressing. Tailored in a luxurious fluid fabric with a deep V-wrap front and dramatic flared cuffs. A statement piece that commands attention.",
-        details: [
-            "100% Cupro lining",
-            "Wrap-front silhouette",
-            "Flared cuff detail",
-            "Fully lined",
-            "Dry clean only",
-            "Model is 178cm wearing size S",
-        ],
-        delivery:
-            "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
-    },
-    {
-        id: "oversized-blazer",
-        name: "Oversized Blazer",
-        price: 375,
-        colors: ["Black", "Charcoal"],
-        sizes: ["XS", "S", "M", "L", "XL"],
-        images: [
-            p_2_0, p_2_1 , p_2_2 , p_2_3
-        ],
-        description:
-            "Classic oversized blazer with a contemporary edge. Features a double-breasted front and peak lapels with contrast stitching. The ultimate in understated luxury.",
-        details: [
-            "60% Wool, 40% Polyester",
-            "Double-breasted front",
-            "Peak lapel construction",
-            "Fully lined",
-            "Dry clean only",
-            "Model is 178cm wearing size S",
-        ],
-        delivery:
-            "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
-    },
-    {
-        id: "dazzle-bustier",
-        name: "Dazzle Bustier",
-        price: 455,
-        isNew: true,
-        colors: ["Ivory", "Black"],
-        sizes: ["XS", "S", "M", "L"],
-        images: [
-            p_3_0, p_3_1 , p_3_2 , p_3_3
-        ],
-        description:
-            "An architectural bustier dress that sculpts the silhouette with precision. Crafted in a heavy crepe fabric with subtle texture, it demands presence without effort.",
-        details: [
-            "100% Polyester crepe",
-            "Structured boning at bodice",
-            "Midi length",
-            "Back zip closure",
-            "Dry clean only",
-            "Model is 178cm wearing size S",
-        ],
-        delivery:
-            "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
-    },
-];
+interface ApiProductResponse {
+    id: number;
+    category_id: number;
+    collection_id: number;
+    name_uz: string;
+    name_ru: string;
+    name_eng: string;
+    description_uz: string;
+    description_ru: string;
+    description_eng: string;
+    price: number;
+    is_active: boolean;
+    clothing_type: string;
+    product_details: Array<{
+        id: number;
+        product_id: number;
+        name_uz: string;
+        name_ru: string;
+        name_eng: string;
+    }>;
+    product_photos: {
+        id: number;
+        product_id: number;
+        photo: string;
+    } | null;
+    product_items: Array<{
+        id: number;
+        product_id: number;
+        color_id: number;
+        size_id: number;
+        total_count: number;
+    }>;
+}
 
-export function getProductById(id: string): Product | undefined {
-    return products.find((p) => p.id === id);
+interface ApiProductPhotosResponse {
+    id: number;
+    product_id: number;
+    photo: string;
+}
+
+let cachedProducts: Product[] | null = null;
+let cachedColors: Array<{id: number; color_code: string}> | null = null;
+let cachedSizes: Array<{id: number; name: string}> | null = null;
+
+const API_BASE = 'https://textile.okach-admin.uz';
+
+export async function getProducts(): Promise<Product[]> {
+    if (cachedProducts) {
+        return cachedProducts;
+    }
+
+    try {
+        // Fetch products
+        const productsResponse = await fetch(`${API_BASE}/products`);
+        if (!productsResponse.ok) {
+            throw new Error(`HTTP error! status: ${productsResponse.status}`);
+        }
+        const productsData: ApiProductResponse[] = await productsResponse.json();
+
+        // Fetch all colors and sizes
+        const [colorsData, sizesData] = await Promise.all([
+            fetchColors(),
+            fetchSizes()
+        ]);
+
+        const products = await Promise.all(productsData.map(async product => {
+            // Fetch additional photos for this product
+            let additionalPhotos: string[] = [];
+            try {
+                const photosResponse = await fetch(`${API_BASE}/product-photos?product_id=${product.id}`);
+                if (photosResponse.ok) {
+                    const photos: ApiProductPhotosResponse[] = await photosResponse.json();
+                    additionalPhotos = photos.map(p => `${API_BASE}/${p.photo}`);
+                }
+            } catch (error) {
+                console.error(`Failed to fetch photos for product ${product.id}:`, error);
+            }
+
+            // Extract unique colors and sizes from product_items with actual data
+            const colors = product.product_items
+                .map(item => {
+                    const color = colorsData.find(c => c.id === item.color_id);
+                    return color?.color_code || null;
+                })
+                .filter((v, i, a) => v && a.indexOf(v) === i) as string[];
+
+            const sizes = product.product_items
+                .map(item => {
+                    const size = sizesData.find(s => s.id === item.size_id);
+                    return size?.name || null;
+                })
+                .filter((v, i, a) => v && a.indexOf(v) === i) as string[];
+
+            // Build images array - main photo + additional photos
+            const images: string[] = [];
+            const mainPhoto = product.product_photos?.photo ? `${API_BASE}/${product.product_photos.photo}` : null;
+
+            if (mainPhoto) {
+                images.push(mainPhoto);
+            }
+
+            // Add additional photos, but skip if it's the same as main photo
+            additionalPhotos.forEach(photo => {
+                if (photo !== mainPhoto) {
+                    images.push(photo);
+                }
+            });
+
+            return {
+                id: product.id,
+                name: product.name_eng,
+                price: product.price,
+                isNew: false,
+                isSale: false,
+                colors,
+                sizes,
+                images: images.length > 0 ? images : ['https://via.placeholder.com/400x600'],
+                description: product.description_eng,
+                details: product.product_details.map(d => d.name_eng),
+                delivery: "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
+                category_id: product.category_id,
+                collection_id: product.collection_id,
+                is_active: product.is_active,
+                product_items: product.product_items,
+            };
+        }));
+
+        cachedProducts = products;
+        return products;
+    } catch (error) {
+        console.error('Failed to get products:', error);
+        return [];
+    }
+}
+
+async function fetchColors() {
+    if (cachedColors) return cachedColors;
+    try {
+        const response = await fetch(`${API_BASE}/color`);
+        if (response.ok) {
+            cachedColors = await response.json();
+            return cachedColors || [];
+        }
+    } catch (error) {
+        console.error('Failed to fetch colors:', error);
+    }
+    return [];
+}
+
+async function fetchSizes() {
+    if (cachedSizes) return cachedSizes;
+    try {
+        const response = await fetch(`${API_BASE}/size`);
+        if (response.ok) {
+            cachedSizes = await response.json();
+            return cachedSizes || [];
+        }
+    } catch (error) {
+        console.error('Failed to fetch sizes:', error);
+    }
+    return [];
+}
+
+export async function getProductById(id: string | number): Promise<Product | undefined> {
+    try {
+        const products = await getProducts();
+        const numId = typeof id === 'string' ? parseInt(id, 10) : id;
+        return products.find(p => p.id === numId);
+    } catch (error) {
+        console.error('Failed to get product by id:', error);
+        return undefined;
+    }
+}
+
+export async function getCategories() {
+    try {
+        const response = await fetch(`${API_BASE}/categories`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to get categories:', error);
+        return [];
+    }
+}
+
+export async function getCollections() {
+    try {
+        const response = await fetch(`${API_BASE}/collections`);
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (error) {
+        console.error('Failed to get collections:', error);
+    }
+    return [];
+}
+
+export async function getColors() {
+    return fetchColors();
+}
+
+export async function getSizes() {
+    return fetchSizes();
+}
+
+export async function getBanners() {
+    try {
+        const response = await fetch(`${API_BASE}/banners/`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data.photos || [];
+    } catch (error) {
+        console.error('Failed to get banners:', error);
+        return [];
+    }
 }
