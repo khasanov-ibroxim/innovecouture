@@ -41,7 +41,7 @@ export function useShopFilters() {
 
   const toggleArray = useCallback(
     (
-      key: keyof Pick<Filters, "collections" | "sizes" | "colors" | "categories">,
+      key: keyof Pick<Filters, "collections" | "sizes" | "colors" | "categories" | "clothingTypes">,
       val: string
     ) => {
       setFilters((prev) => {
@@ -101,6 +101,13 @@ export function useShopFilters() {
       );
     }
 
+    // Clothing Type - filter by clothing_type
+    if (filters.clothingTypes.length > 0) {
+      list = list.filter((p) =>
+        filters.clothingTypes.includes(p.clothing_type)
+      );
+    }
+
     // Sort
     if (sort === "Price: Low to High") list.sort((a, b) => a.price - b.price);
     else if (sort === "Price: High to Low") list.sort((a, b) => b.price - a.price);
@@ -131,6 +138,13 @@ export function useShopFilters() {
       return {
         label: category?.name_eng || id,
         remove: () => toggleArray("categories", id),
+      };
+    }),
+    ...filters.clothingTypes.map((type) => {
+      const typeLabel = type === "erkak" ? "Men" : type === "ayol" ? "Women" : "Unisex";
+      return {
+        label: typeLabel,
+        remove: () => toggleArray("clothingTypes", type),
       };
     }),
     ...(filters.priceMin !== PRICE_MIN_LIMIT ||

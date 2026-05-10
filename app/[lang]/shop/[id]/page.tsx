@@ -132,8 +132,8 @@ export default function ProductPage() {
             try {
                 const [productData, colors, sizes] = await Promise.all([
                     getProductById(id),
-                    fetch('https://textile.okach-admin.uz/color').then(r => r.json()),
-                    fetch('https://textile.okach-admin.uz/size').then(r => r.json())
+                    fetch('https://textile.okach-admin.uz/api/color').then(r => r.json()),
+                    fetch('https://textile.okach-admin.uz/api/size').then(r => r.json())
                 ]);
                 setProduct(productData || null);
                 setColorsData(colors);
@@ -215,7 +215,11 @@ export default function ProductPage() {
             <div className="px-5 md:px-10 py-3 text-[10px] tracking-[0.12em] uppercase text-neutral-400">
                 <Link href="/en" className="hover:text-neutral-700 transition-colors">Home</Link>
                 {" / "}
-                <Link href="#" className="hover:text-neutral-700 transition-colors">Women</Link>
+                <Link href="/en/shop" className="hover:text-neutral-700 transition-colors">Shop</Link>
+                {" / "}
+                <Link href="/en/shop" className="hover:text-neutral-700 transition-colors">
+                    {product.clothing_type === "erkak" ? "Men" : product.clothing_type === "ayol" ? "Women" : "Unisex"}
+                </Link>
                 {" / "}
                 <span className="text-neutral-700">{product.name}</span>
             </div>

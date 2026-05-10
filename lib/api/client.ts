@@ -52,17 +52,17 @@ class ApiClient {
   // Frontend Bootstrap API
   async getBootstrap(includeInactive: boolean = false): Promise<BootstrapResponse> {
     return this.request<BootstrapResponse>(
-      `/frontend/bootstrap?include_inactive=${includeInactive}`
+      `/api/frontend/bootstrap?include_inactive=${includeInactive}`
     );
   }
 
   // Products API
   async getProducts(): Promise<Product[]> {
-    return this.request<Product[]>('/products');
+    return this.request<Product[]>('/api/products');
   }
 
   async getProductById(productId: number): Promise<{ product: Product }> {
-    return this.request<{ product: Product }>(`/products/${productId}`);
+    return this.request<{ product: Product }>(`/api/products/${productId}`);
   }
 
   async searchProducts(params: {
@@ -74,7 +74,7 @@ class ApiClient {
     if (params.category_id) queryParams.append('category_id', params.category_id.toString());
 
     return this.request<ApiResponse<Product[]>>(
-      `/products/search?${queryParams.toString()}`
+      `/api/products/search?${queryParams.toString()}`
     );
   }
 
@@ -95,71 +95,71 @@ class ApiClient {
     });
 
     return this.request<ApiResponse<Product[]>>(
-      `/products/search/advanced?${queryParams.toString()}`
+      `/api/products/search/advanced?${queryParams.toString()}`
     );
   }
 
   async getProductsByCategory(categoryId: number): Promise<Product[]> {
-    return this.request<Product[]>(`/products/category/${categoryId}`);
+    return this.request<Product[]>(`/api/products/category/${categoryId}`);
   }
 
   // Product Photos API
   async getProductPhotos(productId?: number): Promise<ProductPhoto[]> {
     const query = productId ? `?product_id=${productId}` : '';
-    return this.request<ProductPhoto[]>(`/product-photos${query}`);
+    return this.request<ProductPhoto[]>(`/api/product-photos${query}`);
   }
 
   // Product Items API
   async getProductItems(productId?: number): Promise<ProductItem[]> {
     const query = productId ? `?product_id=${productId}` : '';
-    return this.request<ProductItem[]>(`/product-items${query}`);
+    return this.request<ProductItem[]>(`/api/product-items${query}`);
   }
 
   // Product Details API
   async getProductDetails(productId?: number): Promise<ProductDetail[]> {
     const query = productId ? `?product_id=${productId}` : '';
-    return this.request<ProductDetail[]>(`/product-details${query}`);
+    return this.request<ProductDetail[]>(`/api/product-details${query}`);
   }
 
   // Categories API
   async getCategories(): Promise<Category[]> {
-    return this.request<Category[]>('/categories');
+    return this.request<Category[]>('/api/categories');
   }
 
   async getCategoryById(categoryId: number): Promise<Category> {
-    return this.request<Category>(`/categories/${categoryId}`);
+    return this.request<Category>(`/api/categories/${categoryId}`);
   }
 
   // Collections API
   async getCollections(): Promise<Collection[]> {
-    return this.request<Collection[]>('/collections/');
+    return this.request<Collection[]>('/api/collections/');
   }
 
   async getCollectionById(collectionId: number): Promise<Collection> {
-    return this.request<Collection>(`/collections/${collectionId}`);
+    return this.request<Collection>(`/api/collections/${collectionId}`);
   }
 
   // Colors API
   async getColors(): Promise<Color[]> {
-    return this.request<Color[]>('/color');
+    return this.request<Color[]>('/api/color');
   }
 
   async getColorById(colorId: number): Promise<Color> {
-    return this.request<Color>(`/color/${colorId}`);
+    return this.request<Color>(`/api/color/${colorId}`);
   }
 
   // Sizes API
   async getSizes(): Promise<Size[]> {
-    return this.request<Size[]>('/size');
+    return this.request<Size[]>('/api/size');
   }
 
   async getSizeById(sizeId: number): Promise<Size> {
-    return this.request<Size>(`/size/${sizeId}`);
+    return this.request<Size>(`/api/size/${sizeId}`);
   }
 
   // Banners API
   async getBanners(): Promise<{ photos: Banner[] }> {
-    return this.request<{ photos: Banner[] }>('/banners/');
+    return this.request<{ photos: Banner[] }>('/api/banners/');
   }
 
   // Orders API
@@ -172,7 +172,7 @@ class ApiClient {
       order_id: number;
       status: string;
       order_items: any[];
-    }>>('/order', {
+    }>>('/api/order', {
       method: 'POST',
       body: JSON.stringify(orderData),
     });
@@ -180,11 +180,11 @@ class ApiClient {
 
   // System API
   async healthCheck(): Promise<{ ok: boolean; service: string }> {
-    return this.request<{ ok: boolean; service: string }>('/system/health');
+    return this.request<{ ok: boolean; service: string }>('/api/system/health');
   }
 
   async readyCheck(): Promise<{ ok: boolean; database: string }> {
-    return this.request<{ ok: boolean; database: string }>('/system/ready');
+    return this.request<{ ok: boolean; database: string }>('/api/system/ready');
   }
 }
 

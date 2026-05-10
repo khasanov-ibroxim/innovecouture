@@ -16,6 +16,7 @@ export interface Filters {
   sizes: string[];
   colors: string[];
   categories: string[];
+  clothingTypes: string[];
   priceMin: number;
   priceMax: number;
 }
@@ -32,6 +33,7 @@ export const DEFAULT_FILTERS: Filters = {
   sizes: [],
   colors: [],
   categories: [],
+  clothingTypes: [],
   priceMin: PRICE_MIN_LIMIT,
   priceMax: PRICE_MAX_LIMIT,
 };

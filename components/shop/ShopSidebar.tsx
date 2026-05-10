@@ -10,7 +10,7 @@ import { getColors, getSizes, getCategories, getCollections } from "@/lib/produc
 interface ShopSidebarProps {
   filters: Filters;
   onToggleArray: (
-    key: keyof Pick<Filters, "collections" | "sizes" | "colors" | "categories">,
+    key: keyof Pick<Filters, "collections" | "sizes" | "colors" | "categories" | "clothingTypes">,
     val: string
   ) => void;
   onPriceMin: (v: number) => void;
@@ -27,7 +27,7 @@ export default function ShopSidebar({
   onClearAll,
   activeTags,
 }: ShopSidebarProps) {
-  const [activeKey, setActiveKey] = useState<string | null>("collections");
+  const [activeKey, setActiveKey] = useState<string | null>("clothingTypes");
   const [sizes, setSizes] = useState<Array<{id: number; name: string}>>([]);
   const [colors, setColors] = useState<Array<{id: number; color_code: string}>>([]);
   const [categories, setCategories] = useState<Array<{id: number; name_eng: string}>>([]);
@@ -71,6 +71,31 @@ export default function ShopSidebar({
           Clear All
         </button>
       )}
+
+      <FilterSection
+        title="Type"
+        openKey="clothingTypes"
+        activeKey={activeKey}
+        onToggle={handleToggle}
+      >
+        <div className="flex flex-col">
+          <CheckItem
+            label="Men"
+            checked={filters.clothingTypes.includes("erkak")}
+            onChange={() => onToggleArray("clothingTypes", "erkak")}
+          />
+          <CheckItem
+            label="Women"
+            checked={filters.clothingTypes.includes("ayol")}
+            onChange={() => onToggleArray("clothingTypes", "ayol")}
+          />
+          <CheckItem
+            label="Unisex"
+            checked={filters.clothingTypes.includes("unisex")}
+            onChange={() => onToggleArray("clothingTypes", "unisex")}
+          />
+        </div>
+      </FilterSection>
 
       <FilterSection
         title="Collection"

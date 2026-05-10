@@ -18,6 +18,7 @@ export interface Product {
     category_id: number;
     collection_id: number;
     is_active: boolean;
+    clothing_type: string;
     product_items: Array<{
         id: number;
         product_id: number;
@@ -80,7 +81,7 @@ export async function getProducts(): Promise<Product[]> {
 
     try {
         // Fetch products
-        const productsResponse = await fetch(`${API_BASE}/products`);
+        const productsResponse = await fetch(`${API_BASE}/api/products`);
         if (!productsResponse.ok) {
             throw new Error(`HTTP error! status: ${productsResponse.status}`);
         }
@@ -96,7 +97,7 @@ export async function getProducts(): Promise<Product[]> {
             // Fetch additional photos for this product
             let additionalPhotos: string[] = [];
             try {
-                const photosResponse = await fetch(`${API_BASE}/product-photos?product_id=${product.id}`);
+                const photosResponse = await fetch(`${API_BASE}/api/product-photos?product_id=${product.id}`);
                 if (photosResponse.ok) {
                     const photos: ApiProductPhotosResponse[] = await photosResponse.json();
                     additionalPhotos = photos.map(p => `${API_BASE}/${p.photo}`);
@@ -122,7 +123,7 @@ export async function getProducts(): Promise<Product[]> {
 
             // Build images array - main photo + additional photos
             const images: string[] = [];
-            const mainPhoto = product.product_photos?.photo ? `${API_BASE}/${product.product_photos.photo}` : null;
+            const mainPhoto = product.product_photos?.photo ? `https://textile.okach-admin.uz/${product.product_photos.photo}` : null;
 
             if (mainPhoto) {
                 images.push(mainPhoto);
@@ -143,13 +144,14 @@ export async function getProducts(): Promise<Product[]> {
                 isSale: false,
                 colors,
                 sizes,
-                images: images.length > 0 ? images : ['https://via.placeholder.com/400x600'],
+                images: images.length > 0 ? images : ['https://placehold.net/product-400x600.png'],
                 description: product.description_eng,
                 details: product.product_details.map(d => d.name_eng),
                 delivery: "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
                 category_id: product.category_id,
                 collection_id: product.collection_id,
                 is_active: product.is_active,
+                clothing_type: product.clothing_type,
                 product_items: product.product_items,
             };
         }));
@@ -165,7 +167,7 @@ export async function getProducts(): Promise<Product[]> {
 async function fetchColors() {
     if (cachedColors) return cachedColors;
     try {
-        const response = await fetch(`${API_BASE}/color`);
+        const response = await fetch(`${API_BASE}/api/color`);
         if (response.ok) {
             cachedColors = await response.json();
             return cachedColors || [];
@@ -179,7 +181,7 @@ async function fetchColors() {
 async function fetchSizes() {
     if (cachedSizes) return cachedSizes;
     try {
-        const response = await fetch(`${API_BASE}/size`);
+        const response = await fetch(`${API_BASE}/api/size`);
         if (response.ok) {
             cachedSizes = await response.json();
             return cachedSizes || [];
@@ -203,7 +205,7 @@ export async function getProductById(id: string | number): Promise<Product | und
 
 export async function getCategories() {
     try {
-        const response = await fetch(`${API_BASE}/categories`);
+        const response = await fetch(`${API_BASE}/api/categories`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -216,7 +218,7 @@ export async function getCategories() {
 
 export async function getCollections() {
     try {
-        const response = await fetch(`${API_BASE}/collections`);
+        const response = await fetch(`${API_BASE}/api/collections`);
         if (response.ok) {
             return await response.json();
         }
@@ -236,7 +238,7 @@ export async function getSizes() {
 
 export async function getBanners() {
     try {
-        const response = await fetch(`${API_BASE}/banners/`);
+        const response = await fetch(`${API_BASE}/api/banners/`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
