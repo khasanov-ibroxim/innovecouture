@@ -23,7 +23,7 @@ const SusS1 = () => {
                     {/* Title + Description */}
                     <div className="flex flex-col gap-5">
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-widest leading-tight">
-                            APPROACH
+                            Approach - система создания
                         </h2>
                         <p className="text-sm md:text-base text-gray-700 leading-relaxed ">
                             Осознанный подход в Khiva Code — это система, а не отдельный этап. Устойчивость заложена во
