@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import modelLeft from "@/assets/about/about_s1/model_left.jpg";
 import sketchRight from "@/assets/about/about_s1/sketch_right.jpg";
-import bgImage from "@/assets/about/about_s1/imgi_21_malicki-m-beser-PKMvkg7vnUo-unsplash-scaled.jpg"
+import bgImage from "@/assets/about/about_s1/DGH_8578.jpg"
 
 const AboutS1 = () => {
     return (
@@ -83,7 +83,7 @@ const AboutS1 = () => {
                 </div>
 
             </div>
-            <div className="w-full mt-15 overflow-hidden">
+            <div className="w-full max-h-screen mt-15 overflow-hidden">
                 <Image src={bgImage} alt={"sda"} className={"w-full h-full object-cover object-top"}/>
             </div>
 

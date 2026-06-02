@@ -38,7 +38,7 @@ const Footer = () => {
                     {/* Left label */}
                     <div className="flex items-center justify-center md:justify-start px-6 py-5 border-b md:border-b-0 md:border-r border-neutral-300 md:w-[45%]">
                         <p className="text-[11px] tracking-[0.18em] uppercase font-medium text-neutral-800">
-                            Sign up to get 10% off your first order
+                            Зарегистрируйтесь и получите скидку 10% на первый заказ.
                         </p>
                     </div>
 
@@ -52,7 +52,7 @@ const Footer = () => {
                             <div className="flex items-center w-full gap-3">
                                 <input
                                     type="email"
-                                    placeholder="Enter your email address"
+                                    placeholder="Введите адрес электронной почты."
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}

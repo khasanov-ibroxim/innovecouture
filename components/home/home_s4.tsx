@@ -3,9 +3,9 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import readyToWear from "@/assets/home/home_s4/ready_to_wear.jpg";
-import accessories from "@/assets/home/home_s4/accessories.jpg";
-import onSale from "@/assets/home/home_s4/on_sale.jpg";
+import readyToWear from "@/assets/home/home_s4/DGH_7992.jpg";
+import accessories from "@/assets/home/home_s4/DGH_8531.jpg";
+import onSale from "@/assets/home/home_s4/DGH_7751_1.jpg";
 
 const categories = [
     {

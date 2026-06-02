@@ -3,9 +3,9 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import modelMain from "@/assets/home/home_s3/model_main.jpg";
-import modelSecond from "@/assets/home/home_s3/model_second.jpg";
-import fabricTexture from "@/assets/home/home_s3/fabric_texture.jpg";
+import modelMain from "@/assets/home/home_s3/DGH_8072.jpg";
+import modelSecond from "@/assets/home/home_s3/DGH_8072.jpg";
+import fabricTexture from "@/assets/home/home_s3/1111.jpg";
 
 const HomeS3 = () => {
     return (

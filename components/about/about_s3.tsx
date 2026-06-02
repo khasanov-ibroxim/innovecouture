@@ -2,9 +2,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import runwayMain from "@/assets/about/about_s3/runway_main.jpg";
-import modelSmall from "@/assets/about/about_s3/model_small.jpg";
-import storeRight from "@/assets/about/about_s3/store_right.jpg";
+import runwayMain from "@/assets/about/about_s3/DGH_8614(1).jpg";
+import modelSmall from "@/assets/about/about_s3/DGH_8620.jpg";
+import storeRight from "@/assets/about/about_s3/DGH_8485.jpg";
 
 const AboutS3 = () => {
     return (

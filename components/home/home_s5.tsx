@@ -3,8 +3,8 @@ import React, {useRef} from 'react';
 import {motion, useInView} from 'framer-motion';
 import Image, {StaticImageData} from 'next/image';
 
-import left_img from "@/assets/home/home_s5/imgi_121_GettyImages-1758107153.jpg"
-import right_img from "@/assets/home/home_s5/imgi_26_GettyImages-1068216038.jpg"
+import left_img from "@/assets/home/home_s5/DGH_8215.jpg"
+import right_img from "@/assets/home/home_s5/DGH_8284.jpg"
 import Link from "next/link";
 
 

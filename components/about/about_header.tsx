@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import header from "@/assets/about/about_header/imgi_21_pedro-vit-nxssxDuytMA-unsplash-scaled.jpg"
+import header from "@/assets/about/about_header/DGH_8444.jpg"
 import Image from "next/image";
 
 

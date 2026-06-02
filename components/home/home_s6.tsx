@@ -3,8 +3,8 @@ import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
-import img1 from "@/assets/home/home_s6/1.jpg"
-import img2 from "@/assets/home/home_s6/2.jpg"
+import img1 from "@/assets/home/home_s6/7698.jpg"
+import img2 from "@/assets/home/home_s6/155.jpg"
 import Link from "next/link";
 
 interface HomeS6Props {

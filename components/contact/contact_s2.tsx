@@ -28,8 +28,7 @@ const ContactS2 = () => {
         <section className="w-full px-5 md:px-10 lg:px-24 xl:px-40 py-14 md:py-20">
             {/* Heading */}
             <p className="text-[14px] md:text-[18px] tracking-[0.1em] uppercase font-medium text-neutral-900 text-center leading-relaxed mb-10 md:mb-12 max-w-2xl mx-auto">
-                Please complete the form below, and your query will be sent
-                directly to our customer support team
+                Отправьте запрос через форму ниже — мы скоро с вами свяжемся.
             </p>
 
             {submitted ? (
@@ -42,20 +41,20 @@ const ContactS2 = () => {
                 <div className="flex flex-col gap-6 max-w-3xl mx-auto">
                     {/* Row 1 */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Field label="Your name" value={form.name} onChange={set("name")} />
-                        <Field label="Email address" type="email" value={form.email} onChange={set("email")} />
+                        <Field label="Ваше имя " value={form.name} onChange={set("name")} />
+                        <Field label="Электронная почта " type="email" value={form.email} onChange={set("email")} />
                     </div>
 
                     {/* Row 2 */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Field label="Phone number" type="tel" value={form.phone} onChange={set("phone")} />
-                        <Field label="Order number" value={form.order} onChange={set("order")} />
+                        <Field label="Номер телефона " type="tel" value={form.phone} onChange={set("phone")} />
+                        <Field label="Номер заказа" value={form.order} onChange={set("order")} />
                     </div>
 
                     {/* Message */}
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[12px] tracking-[0.06em] text-neutral-800">
-                            Your message
+                            Сообщение
                         </label>
                         <textarea
                             value={form.message}
@@ -71,7 +70,7 @@ const ContactS2 = () => {
                             onClick={handleSubmit}
                             className="bg-neutral-900 text-white px-10 py-4 text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-neutral-700 transition-colors cursor-pointer"
                         >
-                            Submit
+                            Отправить
                         </button>
                     </div>
                 </div>

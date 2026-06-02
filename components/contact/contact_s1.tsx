@@ -28,10 +28,10 @@ const ContactS1 = () => {
             {/* Header */}
             <div className="text-center mb-12 md:mb-16">
                 <p className="text-[11px] tracking-[0.18em] uppercase text-neutral-500 mb-3">
-                    Contact
+                    Контакты
                 </p>
                 <h1 className="text-[32px] md:text-[44px] font-normal uppercase tracking-[0.04em] leading-none">
-                    We're Here to Help
+                    Пространство для общения
                 </h1>
             </div>
 

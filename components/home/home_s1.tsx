@@ -1,6 +1,6 @@
 import React from 'react';
-import left_img from "@/assets/home/home_s1/left.jpg"
-import right_img from "@/assets/home/home_s1/IMG_9593.jpg"
+import left_img from "@/assets/home/home_s1/DGH_8614.jpg"
+import right_img from "@/assets/home/home_s1/DGH_8404.jpg"
 import Image from "next/image";
 import Link from "next/link";
 

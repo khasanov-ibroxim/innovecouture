@@ -1,13 +1,34 @@
 "use client"
-import React from 'react';
-import bg from "@/assets/home/home_header/IMG_0539.jpg"
+import React, { useState, useEffect } from 'react';
+import bg1 from "@/assets/home/home_header/DGH_7582.jpg"
+import bg2 from "@/assets/home/home_header/DGH_7706_1.jpg"
 import Image from "next/image";
 import Link from "next/link";
 
 const HomeHeader = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const images = [bg1, bg2];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % images.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className={"w-full h-screen overflow-hidden relative"}>
-            <Image src={bg} alt={"home header"} className={"w-full h-full object-cover object-top absolute z-[-10]"} />
+            {images.map((img, index) => (
+                <Image
+                    key={index}
+                    src={img}
+                    alt={`home header ${index + 1}`}
+                    className={`w-full h-full object-cover object-top absolute z-[-10] transition-opacity duration-1000 ${
+                        index === currentIndex ? 'opacity-100' : 'opacity-0'
+                    }`}
+                />
+            ))}
 
             <div className="z-10 absolute flex flex-col text-center top-[30%] left-0 md:left-6 items-center w-full">
                 <h3 className={"text-2xl md:text-[37px] font-normal  leading-[49px]   uppercase "} >Архитектура, <br/> оживающая в ткани</h3>

@@ -6,6 +6,7 @@ import { ShoppingBag, X } from 'lucide-react'
 import logo from "@/assets/logo.svg"
 import navMenuBg from "@/assets/navbar/nav_menu_bg.jpg"
 import Image from "next/image"
+import cart from "@/assets/cart.png"
 import CartDrawer from "@/components/UI/CartDrawer"
 import { getCartCount } from "@/lib/cart"
 import Link from "next/link";
@@ -161,7 +162,7 @@ const Navbar = ({ dict, lang }: Props) => {
                             onClick={() => setCartOpen(true)}
                             className="relative p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity"
                         >
-                            <ShoppingBag size={20} strokeWidth={1.5} />
+                            <Image src={cart} alt={"cart"} width={40} height={40}/>
                             {cartCount > 0 && (
                                 <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none font-medium">
                                     {cartCount}
