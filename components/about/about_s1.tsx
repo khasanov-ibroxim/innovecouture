@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
 
-import modelLeft from "@/assets/about/about_s1/model_left.jpg";
-import sketchRight from "@/assets/about/about_s1/sketch_right.jpg";
+import modelLeft from "@/assets/about/about_s1/left.jpg";
+import sketchRight from "@/assets/about/about_s1/right.jpg";
 import bgImage from "@/assets/about/about_s1/DGH_8578.jpg"
 
 const AboutS1 = () => {

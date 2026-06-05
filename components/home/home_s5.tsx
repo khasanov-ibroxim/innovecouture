@@ -53,7 +53,7 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                             transition={{duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="other_font text-[14px] text-black tracking-wide"
                         >
-                            Устойчивость
+                            Философия бренда
 
                         </motion.span>
 
@@ -94,7 +94,7 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                         initial={{opacity: 0, y: 24}}
                         animate={inView ? {opacity: 1, y: 0} : {}}
                         transition={{duration: 0.7, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94]}}
-                        className="relative w-full h-[320px] md:h-[380px] p-5 rounded-sm overflow-hidden bg-gray-100"
+                        className="relative w-full h-[320px] md:h-[450px] p-5 rounded-sm overflow-hidden bg-gray-100"
                     >
                         <Image
                             src={right_img}

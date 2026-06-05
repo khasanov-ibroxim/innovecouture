@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import modelMain from "@/assets/home/home_s3/DGH_8072.jpg";
-import modelSecond from "@/assets/home/home_s3/DGH_8072.jpg";
+import modelSecond from "@/assets/home/home_s3/DGH_8056.jpg";
 import fabricTexture from "@/assets/home/home_s3/1111.jpg";
 
 const HomeS3 = () => {
@@ -133,7 +133,7 @@ const HomeS3 = () => {
                                        after:transition-all after:duration-300
                                        hover:after:w-[55%]"
                         >
-                            товары
+                            изделия
                         </Link>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
 import img1 from "@/assets/home/home_s6/7698.jpg"
-import img2 from "@/assets/home/home_s6/155.jpg"
+
 import Link from "next/link";
 
 interface HomeS6Props {
@@ -34,7 +34,7 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                             className="title_font text-[32px] sm:text-[38px] md:text-[44px] font-light uppercase leading-[1.1] tracking-tight text-[#1a1a1a] mb-8 md:mb-10"
                         >
-                            Innove Couture New York
+                            Адрес фабрики
 
                         </motion.h2>
 
@@ -45,11 +45,12 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                             className="flex flex-col gap-0.5 mb-8 md:mb-10"
                         >
                             <p className="other_font text-[14px] text-black/65 leading-[1.7]">
-                                217 Tueri Junction, New York, NY 10002
+                                Узбекистан,Хорезмская область,
+
 
                             </p>
                             <p className="other_font text-[14px] text-black/65 leading-[1.7]">
-                                10:00 am – 7:00 pm Daily
+                                Шаватский район,улица Сахибкор 40.
                             </p>
                         </motion.div>
 
@@ -80,21 +81,7 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                             />
                         </motion.div>
 
-                        {/* Rasm 2 — o'ngda, to'liq balandlik */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                            className="relative flex-1 h-full overflow-hidden"
-                        >
-                            <Image
-                                src={img2}
-                                alt="Store interior 2"
-                                fill
-                                className="object-cover object-center"
-                                sizes="(max-width: 768px) 45vw, 24vw"
-                            />
-                        </motion.div>
+
 
                     </div>
 
