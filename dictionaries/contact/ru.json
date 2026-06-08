@@ -1,0 +1,41 @@
+{
+  "s1": {
+    "header": {
+      "subtitle": "Контакты",
+      "title": "Пространство для общения"
+    },
+    "contacts": [
+      {
+        "title": "Design Studio",
+        "lines": [
+          "217 Tueri Junction, New York, NY 10002",
+          "10:00 am – 7:00 pm Daily"
+        ]
+      },
+      {
+        "title": "Customer Care",
+        "lines": ["+1 212 532 8222", "shop@innovecouture.com"]
+      },
+      {
+        "title": "PR Inquiries",
+        "lines": ["+1 212 532 8222", "pr@innovecouture.com"]
+      },
+      {
+        "title": "Wholesale Inquiries",
+        "lines": ["+1 212 532 8222", "sales@innovecouture.com"]
+      }
+    ]
+  },
+  "s2": {
+    "heading": "Отправьте запрос через форму ниже — мы скоро с вами свяжемся.",
+    "thankYou": "Спасибо! Мы скоро с вами свяжемся.",
+    "fields": {
+      "name": "Ваше имя",
+      "email": "Электронная почта",
+      "phone": "Номер телефона",
+      "order": "Номер заказа",
+      "message": "Сообщение"
+    },
+    "submit": "Отправить"
+  }
+}

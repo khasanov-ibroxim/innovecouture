@@ -1,0 +1,34 @@
+{
+  "header": {
+    "subtitle": "About Us",
+    "title": "A Dialogue Between Past and Present"
+  },
+  "s1": {
+    "title": "HISTORY",
+    "paragraph1": "From Architecture to Clothing\nThe Khiva Code project did not start with clothing — its origins lie in observation. Attention was drawn to the architecture of Khiva, a city where every line, form and proportion is subordinated to an internal logic, filled with meaning and refined structure.",
+    "paragraph2": "The architecture of Khiva is not just a visual aesthetic, but a holistic system based on geometry, rhythm, repetition and balance. This unique code has been formed over centuries, passing through time without losing its essence, and has survived to this day as an expression of cultural precision and harmony."
+  },
+  "s2": {
+    "title": "Translation to Modernity",
+    "description": "The idea of Khiva Code is to rethink the architectural language of Khiva and translate it into clothing. This is not copying ornaments or ethnic style, but adapting key principles: clean lines, thoughtful form and structural minimalism. This approach preserves the depth and logic of tradition, revealing it in a modern context through restrained, refined and intellectual design.",
+    "timeline": [
+      {
+        "year": "Modern Context",
+        "text": "We create clothing for today — for the city, movement and real life, where Khiva Code becomes a dialogue between past and present."
+      },
+      {
+        "year": "Brand Formation",
+        "text": "From the very beginning, we build not just collections, but a holistic system in which knitwear serves as the foundation, accessories continue the idea, and shoes set the movement."
+      },
+      {
+        "year": "More Than Clothing",
+        "text": "Khiva Code is not about appearance, but about the inner feeling of confidence, calmness and structure — clothing that does not seek to attract attention, but remains for a long time."
+      }
+    ]
+  },
+  "s3": {
+    "title": "A Look to the Future",
+    "description": "We continue to develop the brand, preserving its foundation — architecture as an idea, minimalism as a language and culture as a source of inspiration, allowing Khiva Code to organically change and grow with time.",
+    "link": "See Our Stores"
+  }
+}
