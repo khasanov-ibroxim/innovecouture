@@ -27,7 +27,7 @@ export default function ShopClient({ lang }: ShopClientProps) {
     filteredProducts,
     activeTags,
     loading,
-  } = useShopFilters();
+  } = useShopFilters(lang);
 
   return (
     <div className="min-h-screen bg-white py-18">

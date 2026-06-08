@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { getProducts, getCollections, getCategories } from "@/lib/products";
 import type { Product } from "@/lib/products";
+import { getCurrencySymbol } from "@/lib/currency";
 import {
   Filters,
   SortOption,
@@ -11,7 +12,7 @@ import {
   PRICE_MAX_LIMIT,
 } from "./types";
 
-export function useShopFilters() {
+export function useShopFilters(lang: string = 'en') {
   const [sort, setSort] = useState<SortOption>("Popularity");
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -151,7 +152,7 @@ export function useShopFilters() {
     filters.priceMax !== PRICE_MAX_LIMIT
       ? [
           {
-            label: `${filters.priceMin.toLocaleString()}–${filters.priceMax.toLocaleString()} UZS`,
+            label: `${filters.priceMin.toLocaleString()}–${filters.priceMax.toLocaleString()} ${getCurrencySymbol(lang)}`,
             remove: () => {
               setFilters((p) => ({
                 ...p,

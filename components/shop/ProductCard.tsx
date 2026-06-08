@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Product } from "@/lib/products";
+import { formatPrice } from "@/lib/currency";
 
 interface ProductCardProps {
   product: Product;
@@ -170,12 +171,12 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
           {product.isSale && product.originalPrice ? (
             <>
               <span className="text-[12px] text-neutral-400 line-through">
-                {product.originalPrice.toLocaleString()} UZS
+                {formatPrice(product.originalPrice, lang)}
               </span>
-              <span className="text-[12px] text-neutral-900">{product.price.toLocaleString()} UZS</span>
+              <span className="text-[12px] text-neutral-900">{formatPrice(product.price, lang)}</span>
             </>
           ) : (
-            <span className="text-[12px] text-neutral-900">{product.price.toLocaleString()} UZS</span>
+            <span className="text-[12px] text-neutral-900">{formatPrice(product.price, lang)}</span>
           )}
         </div>
       </div>

@@ -9,6 +9,7 @@ import type {Product} from "@/lib/products";
 import {addToCart} from "@/lib/cart";
 import Image from "next/image";
 import CartDrawer from "@/components/UI/CartDrawer";
+import { formatPrice } from "@/lib/currency";
 
 /* ─── Accordion ─────────────────────────────────────────────── */
 function Accordion({
@@ -106,6 +107,7 @@ function Dropdown({
 export default function ProductPage() {
     const params = useParams();
     const id = params?.id as string;
+    const lang = params?.lang as string || 'en';
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [colorsData, setColorsData] = useState<Array<{id: number; color_code: string}>>([]);
@@ -330,10 +332,10 @@ export default function ProductPage() {
                                     {product.name}
                                 </h1>
                                 <div className="flex items-center gap-3">
-                                    <span className="text-[15px] text-neutral-900">{product.price.toLocaleString()} UZS</span>
+                                    <span className="text-[15px] text-neutral-900">{formatPrice(product.price, lang)}</span>
                                     {product.originalPrice && (
                                         <span className="text-[13px] text-neutral-400 line-through">
-                      {product.originalPrice.toLocaleString()} UZS
+                      {formatPrice(product.originalPrice, lang)}
                     </span>
                                     )}
                                 </div>
@@ -470,13 +472,13 @@ export default function ProductPage() {
             </div>
 
             {/* ── YOU MIGHT ALSO LIKE ── */}
-            <YouMightAlsoLike currentId={product.id}/>
+            <YouMightAlsoLike currentId={product.id} lang={lang}/>
         </div>
     );
 }
 
 /* ─── You Might Also Like ────────────────────────────────────── */
-function YouMightAlsoLike({currentId}: { currentId: number }) {
+function YouMightAlsoLike({currentId, lang}: { currentId: number, lang: string }) {
     const [related, setRelated] = useState<Product[]>([]);
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -552,7 +554,7 @@ function YouMightAlsoLike({currentId}: { currentId: number }) {
                             )}
                         </div>
                         <h3 className="text-[11px] tracking-[0.06em] uppercase font-normal">{p.name}</h3>
-                        <p className="text-[11px] text-neutral-600 mt-0.5">{p.price.toLocaleString()} UZS</p>
+                        <p className="text-[11px] text-neutral-600 mt-0.5">{formatPrice(p.price, lang)}</p>
                     </Link>
                 ))}
             </div>

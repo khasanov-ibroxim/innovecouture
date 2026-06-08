@@ -7,6 +7,7 @@ import { getProducts } from "@/lib/products";
 import type { Product } from "@/lib/products";
 import Image from "next/image";
 import {HomeDictionary} from "@/lib/dictionary";
+import { formatPrice } from "@/lib/currency";
 
 interface CardProps {
     product: Product;
@@ -183,12 +184,12 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
                     {product.isSale && product.originalPrice ? (
                         <>
               <span className="text-[12px] text-neutral-400 line-through">
-                ${product.originalPrice}
+                {formatPrice(product.originalPrice, lang)}
               </span>
-                            <span className="text-[12px] text-neutral-900">${product.price}</span>
+                            <span className="text-[12px] text-neutral-900">{formatPrice(product.price, lang)}</span>
                         </>
                     ) : (
-                        <span className="text-[12px] text-neutral-900">${product.price}</span>
+                        <span className="text-[12px] text-neutral-900">{formatPrice(product.price, lang)}</span>
                     )}
                 </div>
             </div>

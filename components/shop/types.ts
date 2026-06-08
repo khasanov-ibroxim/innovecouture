@@ -26,7 +26,7 @@ export const SIZES: string[] = []; // Will be loaded from server
 export const COLORS: string[] = []; // Will be loaded from server
 export const BRANDS: string[] = []; // Will be loaded from server (categories)
 export const PRICE_MIN_LIMIT = 0;
-export const PRICE_MAX_LIMIT = 500000;
+export const PRICE_MAX_LIMIT = 10000000;
 
 export const DEFAULT_FILTERS: Filters = {
   collections: [],

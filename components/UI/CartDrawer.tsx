@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { getCart, CartItem } from "@/lib/cart";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { formatPrice } from "@/lib/currency";
 
 interface CartDrawerProps {
     open: boolean;
@@ -14,6 +16,8 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     const [items, setItems] = useState<CartItem[]>([]);
+    const params = useParams();
+    const lang = (params?.lang as string) || 'en';
 
     const refresh = useCallback(() => {
         setItems(getCart());
@@ -54,7 +58,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     };
 
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const FREE_SHIPPING_THRESHOLD = 200;
+    const FREE_SHIPPING_THRESHOLD = 1000000;
     const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
     const hasFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
 
@@ -177,7 +181,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                                     </div>
                                                     {/* Price */}
                                                     <span className="text-[12px] font-medium text-neutral-900">
-                            {(item.price * item.quantity).toLocaleString()} UZS
+                            {formatPrice(item.price * item.quantity, lang)}
                           </span>
                                                 </div>
                                             </div>
@@ -193,7 +197,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                 {/* Subtotal */}
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">Subtotal:</span>
-                                    <span className="text-[14px] font-medium text-neutral-900">{subtotal.toLocaleString()} UZS</span>
+                                    <span className="text-[14px] font-medium text-neutral-900">{formatPrice(subtotal, lang)}</span>
                                 </div>
 
                                 {/* Buttons */}
@@ -212,7 +216,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                     <p className="text-[10px] tracking-[0.1em] text-neutral-500 mb-2">
                                         {hasFreeShipping
                                             ? "You have free shipping!"
-                                            : `${(FREE_SHIPPING_THRESHOLD - subtotal).toLocaleString()} UZS away from free shipping`}
+                                            : `${formatPrice(FREE_SHIPPING_THRESHOLD - subtotal, lang)} away from free shipping`}
                                     </p>
                                     <div className="h-[2px] bg-neutral-200 rounded-full overflow-hidden">
                                         <div

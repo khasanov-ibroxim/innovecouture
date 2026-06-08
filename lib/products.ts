@@ -147,7 +147,7 @@ export async function getProducts(): Promise<Product[]> {
                 images: images.length > 0 ? images : ['https://placehold.net/product-400x600.png'],
                 description: product.description_eng,
                 details: product.product_details.map(d => d.name_eng),
-                delivery: "Free standard delivery on orders over $200. Express delivery available. Returns accepted within 28 days.",
+                delivery: "Free standard delivery on orders over 1,000,000 UZS. Express delivery available. Returns accepted within 28 days.",
                 category_id: product.category_id,
                 collection_id: product.collection_id,
                 is_active: product.is_active,
