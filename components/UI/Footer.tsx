@@ -2,11 +2,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import logo from "@/assets/logo.svg"; // uncomment if logo asset exists
+import logo_long from "@/assets/logoLong.png";
+import logo_2Step from "@/assets/logo2step.png";
+import { CommonDictionary } from "@/lib/dictionary";
+import { useParams } from "next/navigation";
 
-const Footer = () => {
+interface FooterProps {
+    dict: CommonDictionary;
+}
+
+const Footer = ({ dict }: FooterProps) => {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
+    const params = useParams();
+    const lang = params?.lang || 'ru';
 
     const handleSubscribe = () => {
         if (email.trim()) {
@@ -38,7 +47,7 @@ const Footer = () => {
                     {/* Left label */}
                     <div className="flex items-center justify-center md:justify-start px-6 py-5 border-b md:border-b-0 md:border-r border-neutral-300 md:w-[45%]">
                         <p className="text-[11px] tracking-[0.18em] uppercase font-medium text-neutral-800">
-                            Зарегистрируйтесь и получите скидку 10% на первый заказ.
+                            {dict.footer.signup.title}
                         </p>
                     </div>
 
@@ -46,13 +55,13 @@ const Footer = () => {
                     <div className="flex flex-1 items-center px-6 py-4">
                         {subscribed ? (
                             <p className="text-[11px] tracking-[0.14em] uppercase text-neutral-500 w-full text-center md:text-left">
-                                Thank you for subscribing ✓
+                                {dict.footer.signup.subscribed}
                             </p>
                         ) : (
                             <div className="flex items-center w-full gap-3">
                                 <input
                                     type="email"
-                                    placeholder="Введите адрес электронной почты."
+                                    placeholder={dict.footer.signup.placeholder}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
@@ -84,13 +93,19 @@ const Footer = () => {
 
             {/* ── Nav links ── */}
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 pb-10 px-5">
-                {["About", "Sustainability", "Press", "Contact", "Delivery and returns"].map((item) => (
+                {[
+                    { link: `/${lang}`, label: dict.nav.home },
+                    { link: `/${lang}/shop`, label: dict.nav.shop },
+                    { link: `/${lang}/about`, label: dict.nav.about },
+                    { link: `/${lang}/sustainability`, label: dict.nav.sustainability },
+                    { link: `/${lang}/contact`, label: dict.nav.contact },
+                ].map((item) => (
                     <Link
-                        key={item}
-                        href="#"
+                        key={item.label}
+                        href={item.link}
                         className="text-[12px] tracking-[0.1em] text-neutral-700 hover:opacity-40 transition-opacity"
                     >
-                        {item}
+                        {item.label}
                     </Link>
                 ))}
             </div>
@@ -100,33 +115,45 @@ const Footer = () => {
 
                 {/* Copyright */}
                 <p className="text-[10px] tracking-[0.1em] text-neutral-400 order-2 md:order-1">
-                    © {new Date().getFullYear()}&nbsp; VamTam. All rights reserved.
+                    © {new Date().getFullYear()}&nbsp; {dict.footer.copyright}
                 </p>
 
                 {/* Social links */}
                 <div className="flex items-center gap-6 order-1 md:order-2">
-                    {["Instagram", "Facebook", "Pinterest"].map((social) => (
-                        <Link
-                            key={social}
-                            href="#"
-                            className="text-[11px] tracking-[0.12em] text-neutral-600 hover:opacity-40 transition-opacity"
-                        >
-                            {social}
-                        </Link>
-                    ))}
+                    <Link
+                        href="#"
+                        className="text-[11px] tracking-[0.12em] text-neutral-600 hover:opacity-40 transition-opacity"
+                    >
+                        {dict.footer.social.instagram}
+                    </Link>
+                    <Link
+                        href="#"
+                        className="text-[11px] tracking-[0.12em] text-neutral-600 hover:opacity-40 transition-opacity"
+                    >
+                        {dict.footer.social.facebook}
+                    </Link>
+                    <Link
+                        href="#"
+                        className="text-[11px] tracking-[0.12em] text-neutral-600 hover:opacity-40 transition-opacity"
+                    >
+                        {dict.footer.social.linkedin}
+                    </Link>
                 </div>
 
                 {/* Legal links */}
                 <div className="flex items-center gap-5 order-3">
-                    {["Terms & conditions", "Privacy policy"].map((link) => (
-                        <Link
-                            key={link}
-                            href="#"
-                            className="text-[10px] tracking-[0.1em] text-neutral-400 hover:opacity-60 transition-opacity"
-                        >
-                            {link}
-                        </Link>
-                    ))}
+                    <Link
+                        href="#"
+                        className="text-[10px] tracking-[0.1em] text-neutral-400 hover:opacity-60 transition-opacity"
+                    >
+                        {dict.footer.legal.terms}
+                    </Link>
+                    <Link
+                        href="#"
+                        className="text-[10px] tracking-[0.1em] text-neutral-400 hover:opacity-60 transition-opacity"
+                    >
+                        {dict.footer.legal.privacy}
+                    </Link>
                 </div>
             </div>
         </footer>

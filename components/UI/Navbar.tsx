@@ -12,9 +12,12 @@ import { getCartCount } from "@/lib/cart"
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { i18n, Locale } from "@/i18n-config";
+import logo_long from "@/assets/logoLong.png";
+import logo_2Step from "@/assets/logo2step.png";
+import {CommonDictionary} from "@/lib/dictionary";
 
 interface Props {
-    dict: string,
+    dict: CommonDictionary,
     lang: string
 }
 
@@ -103,7 +106,7 @@ const Navbar = ({ dict, lang }: Props) => {
                         : 'bg-white shadow-[0_1px_0_rgba(0,0,0,0.08)]',
                 ].join(' ')}
             >
-                <div className="relative flex items-center h-16 px-6 lg:px-10">
+                <div className="relative flex items-center justify-between h-16 px-6 lg:px-10">
 
                     {/* ── MOBILE LEFT: Hamburger ── */}
                     <button
@@ -115,42 +118,32 @@ const Navbar = ({ dict, lang }: Props) => {
                         <span className="block h-px w-4 bg-neutral-900" />
                     </button>
 
-                    {/* ── DESKTOP LEFT: Nav links ── */}
-                    <nav className="hidden lg:flex items-center gap-5 flex-1">
+                    {/* ── DESKTOP: Logo (left) ── */}
+                    <div className="hidden lg:block">
+                        <Image src={logo_long} alt={"Logo"} width={200} />
+                    </div>
+
+                    {/* ── DESKTOP: Nav links (center) ── */}
+                    <nav className="hidden lg:flex items-center justify-center gap-8 flex-1">
                         {[
-                            { link: `/${lang}`, label: "Главная" },
-                            { link: `/${lang}/shop`, label: "Магазин" },
-                            { link: `/${lang}/about`, label: "О нас" },
-                            { link: `/${lang}/sustainability`, label: "Устойчивость" },
-                            { link: `/${lang}/contact`, label: "Контакты" },
+                            { link: `/${lang}`, label: dict.nav.home },
+                            { link: `/${lang}/shop`, label: dict.nav.shop },
+                            { link: `/${lang}/about`, label: dict.nav.about },
+                            { link: `/${lang}/sustainability`, label: dict.nav.sustainability },
+                            { link: `/${lang}/contact`, label: dict.nav.contact },
                         ].map((item, index) => (
                             <Link
                                 key={index}
                                 href={item.link}
-                                className="text-[14px] font-medium  uppercase text-neutral-900 hover:opacity-50 transition-opacity"
+                                className="text-[14px] font-medium uppercase text-neutral-900 hover:opacity-50 transition-opacity"
                             >
                                 {item.label}
                             </Link>
                         ))}
                     </nav>
 
-                    {/* Center – logo */}
-                    <a
-                        href={`/${lang}`}
-                        className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap select-none"
-                    >
-                        <span
-                            className="text-[22px] md:text-[22px] ml-10 font-normal tracking-[0.04em] uppercase leading-none select-none"
-                            style={{ fontStyle: "italic", letterSpacing: "0.02em" }}
-                        >
-                        <span style={{ fontStyle: "normal" }}>Khiva </span>
-                        <span style={{ fontStyle: "italic" }}>Code</span>
-                    </span>
-                    </a>
-
-                    {/* Right – icons */}
-                    <div className="flex items-center gap-4 flex-1 justify-end">
-
+                    {/* ── RIGHT: Cart + Lang (desktop only lang) ── */}
+                    <div className="flex items-center gap-4">
                         {/* Lang switcher — ONLY on desktop in navbar */}
                         <div className="hidden lg:flex">
                             <LangSwitcher lang={lang} />
@@ -169,16 +162,6 @@ const Navbar = ({ dict, lang }: Props) => {
                                 </span>
                             )}
                         </button>
-
-                        {/* ── DESKTOP RIGHT: Hamburger ── */}
-                        {/*<button*/}
-                        {/*    aria-label="Open menu"*/}
-                        {/*    onClick={() => setMenuOpen(true)}*/}
-                        {/*    className="hidden lg:flex flex-col gap-[5px] items-end p-1 hover:opacity-50 transition-opacity cursor-pointer"*/}
-                        {/*>*/}
-                        {/*    <span className="block h-px w-6 bg-neutral-900" />*/}
-                        {/*    <span className="block h-px w-4 bg-neutral-900" />*/}
-                        {/*</button>*/}
                     </div>
                 </div>
             </motion.header>
@@ -218,7 +201,7 @@ Khiva code
                         >
                             {/* Panel header: logo + lang switcher + close */}
                             <div className="flex items-center justify-between mb-12">
-                                Khiva code
+                                <Image src={logo_long} alt={"Logo"} width={180} />
                                 <div className="flex items-center gap-5">
                                     {/* Lang switcher always visible inside menu */}
                                     <LangSwitcher lang={lang} />
@@ -235,11 +218,11 @@ Khiva code
                             {/* Mobile only – nav links inside menu */}
                             <div className="flex lg:hidden flex-col gap-3 mb-6 pb-6 border-b border-neutral-100">
                                 {[
-                                    { link: `/${lang}`, label: "Главная" },
-                                    { link: `/${lang}/shop`, label: "Магазин" },
-                                    { link: `/${lang}/about`, label: "О нас" },
-                                    { link: `/${lang}/sustainability`, label: "Устойчивость" },
-                                    { link: `/${lang}/contact`, label: "Контакты" },
+                                    { link: `/${lang}`, label: dict.nav.home },
+                                    { link: `/${lang}/shop`, label: dict.nav.shop },
+                                    { link: `/${lang}/about`, label: dict.nav.about },
+                                    { link: `/${lang}/sustainability`, label: dict.nav.sustainability },
+                                    { link: `/${lang}/contact`, label: dict.nav.contact },
                                 ].map((item, index) => (
                                     <Link
                                         href={item.link}
@@ -261,18 +244,23 @@ Khiva code
                                 className="mt-auto flex justify-between items-end"
                             >
                                 <div className="flex flex-col gap-2.5">
-                                    {['Order Status', 'Delivery and Returns'].map((link) => (
-                                        <a key={link} href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
-                                            {link}
-                                        </a>
-                                    ))}
+                                    <a href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
+                                        {dict.footer.menu.orderStatus}
+                                    </a>
+                                    <a href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
+                                        {dict.footer.menu.delivery}
+                                    </a>
                                 </div>
                                 <div className="flex flex-col gap-2.5 text-right">
-                                    {['Instagram', 'Facebook', 'Pinterest'].map((link) => (
-                                        <a key={link} href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
-                                            {link}
-                                        </a>
-                                    ))}
+                                    <a href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
+                                        {dict.footer.social.instagram}
+                                    </a>
+                                    <a href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
+                                        {dict.footer.social.facebook}
+                                    </a>
+                                    <a href="#" className="text-[10px] tracking-[0.12em] uppercase text-neutral-900 hover:opacity-40 transition-opacity">
+                                        {dict.footer.menu.pinterest}
+                                    </a>
                                 </div>
                             </motion.div>
                         </motion.div>

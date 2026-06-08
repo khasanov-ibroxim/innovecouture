@@ -15,13 +15,13 @@ const Home = async ({ params }: { params: Promise<{ lang: string }> }) => {
     const common = await getCommonDictionary(lang as Locale);
     return (
         <>
-            <HomeHeader/>
-            <HomeS1/>
-            <HomeS2 lang={lang as Locale} dict={dict}/>
-            <HomeS3/>
+            <HomeHeader lang={lang}/>
+            <HomeS1 lang={lang}/>
+            <HomeS2 lang={lang as Locale} dict={dict.s2}/>
+            <HomeS3 lang={lang}/>
             <HomeS4/>
-            <HomeS5 dict={dict} />
-            <HomeS6 dict={dict} />
+            <HomeS5 dict={dict.s5} lang={lang}/>
+            <HomeS6 dict={dict.s6} />
         </>
     );
 };

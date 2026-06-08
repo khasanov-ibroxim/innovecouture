@@ -1,37 +1,28 @@
 import React from "react";
 
-const contacts = [
-    {
-        title: "Design Studio",
-        lines: [
-            "217 Tueri Junction, New York, NY 10002",
-            "10:00 am – 7:00 pm Daily",
-        ],
-    },
-    {
-        title: "Customer Care",
-        lines: ["+1 212 532 8222", "shop@innovecouture.com"],
-    },
-    {
-        title: "PR Inquiries",
-        lines: ["+1 212 532 8222", "pr@innovecouture.com"],
-    },
-    {
-        title: "Wholesale Inquiries",
-        lines: ["+1 212 532 8222", "sales@innovecouture.com"],
-    },
-];
+interface ContactS1Props {
+    dict: {
+        header: {
+            subtitle: string;
+            title: string;
+        };
+        contacts: Array<{
+            title: string;
+            lines: string[];
+        }>;
+    };
+}
 
-const ContactS1 = () => {
+const ContactS1 = ({ dict }: ContactS1Props) => {
     return (
         <section className="w-full px-5 md:px-10 py-16 md:py-24">
             {/* Header */}
             <div className="text-center mb-12 md:mb-16">
                 <p className="text-[11px] tracking-[0.18em] uppercase text-neutral-500 mb-3">
-                    Контакты
+                    {dict.header.subtitle}
                 </p>
                 <h1 className="text-[32px] md:text-[44px] font-normal uppercase tracking-[0.04em] leading-none">
-                    Пространство для общения
+                    {dict.header.title}
                 </h1>
             </div>
 
@@ -39,7 +30,7 @@ const ContactS1 = () => {
 
             {/* Columns */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-6 pt-12 md:pt-14">
-                {contacts.map((col) => (
+                {dict.contacts.map((col) => (
                     <div key={col.title} className="flex flex-col gap-3">
                         <h2 className="text-[11px] tracking-[0.16em] uppercase font-semibold text-neutral-900">
                             {col.title}

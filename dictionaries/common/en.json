@@ -1,1 +1,31 @@
-{}
+{
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "about": "About",
+    "sustainability": "Sustainability",
+    "contact": "Contact"
+  },
+  "footer": {
+    "signup": {
+      "title": "Sign up and get 10% off your first order",
+      "placeholder": "Enter your email address",
+      "subscribed": "Thank you for subscribing ✓"
+    },
+    "copyright": "Khiva Code. All rights reserved.",
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "Linkedin"
+    },
+    "legal": {
+      "terms": "Terms & conditions",
+      "privacy": "Privacy policy"
+    },
+    "menu": {
+      "orderStatus": "Order Status",
+      "delivery": "Delivery and Returns",
+      "pinterest": "Pinterest"
+    }
+  }
+}

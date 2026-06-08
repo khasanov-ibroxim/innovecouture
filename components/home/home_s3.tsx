@@ -7,7 +7,11 @@ import modelMain from "@/assets/home/home_s3/DGH_8072.jpg";
 import modelSecond from "@/assets/home/home_s3/DGH_8056.jpg";
 import fabricTexture from "@/assets/home/home_s3/1111.jpg";
 
-const HomeS3 = () => {
+interface HomeS3Props {
+    lang?: string;
+}
+
+const HomeS3 = ({ lang = 'ru' }: HomeS3Props) => {
     return (
         <section className="w-full overflow-hidden py-10 lg:py-20 px-5 lg:px-10">
             <div className="flex flex-col lg:flex-row items-start lg:gap-0 max-w-[1400px] mx-auto">
@@ -45,9 +49,7 @@ const HomeS3 = () => {
                                 sizes="100vw"
                             />
                         </div>
-                        <p className=" hidden lg:block text-[10px] tracking-[0.22em] uppercase text-neutral-400 text-right">
-                            Cashmere — Wool Yarns
-                        </p>
+
                     </div>
 
                     {/* DESKTOP: overlapping */}
@@ -69,24 +71,7 @@ const HomeS3 = () => {
                             />
                         </div>
 
-                        {/* Back — second model, right, behind main */}
-                        <div
-                            className="absolute z-20"
-                            style={{
-                                top: "10%",
-                                left: "calc(30% + 120px)",
-                                width: "36%",
-                                height: "50%",
-                            }}
-                        >
-                            <Image
-                                src={modelSecond}
-                                alt="Fall Collection secondary"
-                                fill
-                                className="object-cover "
 
-                            />
-                        </div>
                     </div>
                 </div>
 
@@ -109,10 +94,7 @@ const HomeS3 = () => {
                         </div>
                     </div>
 
-                    {/* Label — desktop only */}
-                    <p className="hidden lg:block text-[10px] tracking-[0.22em] uppercase text-neutral-400 text-right mb-12 lg:mb-16">
-                        Cashmere — Wool Yarns
-                    </p>
+
 
                     {/* Text block */}
                     <div className="md:pl-8 lg:pl-14">
@@ -126,7 +108,7 @@ const HomeS3 = () => {
                             логике, а каждая деталь имеет значение.
                         </p>
                         <Link
-                            href="#"
+                            href={`/${lang}/shop`}
                             className="relative inline-block text-[11px] tracking-[0.2em] uppercase font-medium
                                        after:content-[''] after:absolute after:left-0 after:bottom-0
                                        after:h-[0.5px] after:w-full after:bg-black

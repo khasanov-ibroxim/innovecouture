@@ -2,19 +2,20 @@
 import React from 'react';
 import Image from "next/image";
 
-// Replace with your actual image imports:
-import sketchImg from "@/assets/sustainability/sus_s1/sketch.jpg"
-import cuttingImg from "@/assets/sustainability/sus_s1/cutting.jpg"
-import sewingImg from "@/assets/sustainability/sus_s1/sewing.jpg"
+import sketchImg from "@/assets/sustainability/sus_s1/abuphotographer-80.jpg"
+import cuttingImg from "@/assets/sustainability/sus_s1/abuphotographer-82.jpg"
+import sewingImg from "@/assets/sustainability/sus_s1/DEW06167.jpg"
 
-const SusS1 = () => {
+interface SusS1Props {
+    dict: {
+        title: string;
+        description: string;
+    };
+}
+
+const SusS1 = ({ dict }: SusS1Props) => {
     return (
         <section className="w-full px-2 md:px-3 lg:px-5 py-16 md:py-20">
-            {/*
-              Desktop layout (2 columns):
-              LEFT  column: [APPROACH title + text] then below [sketch + cutting images side by side]
-              RIGHT column: big sewing image spanning full height
-            */}
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
 
                 {/* LEFT SIDE */}
@@ -23,16 +24,10 @@ const SusS1 = () => {
                     {/* Title + Description */}
                     <div className="flex flex-col gap-5">
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-light uppercase tracking-widest leading-tight">
-                            Система создания
+                            {dict.title}
                         </h2>
                         <p className="text-sm md:text-base text-gray-700 leading-relaxed ">
-                            Осознанный подход в Khiva Code — это система, а не отдельный этап. Устойчивость заложена во
-                            всём: от идеи и дизайна до производства, материалов и срока жизни изделия. Мы создаём вещи
-                            вне времени — с минималистичной формой, выверенными пропорциями и продуманной конструкцией.
-                            В основе — качество тканей, точность кроя и долговечность в повседневной носке. Производство
-                            выстроено рационально: без избыточных объёмов, с контролем процессов и минимизацией отходов.
-                            Даже упаковка подчинена принципу функциональности и чистоты. Каждая вещь имеет ценность не
-                            только в момент покупки, но и в длительном использовании.
+                            {dict.description}
                         </p>
                     </div>
 

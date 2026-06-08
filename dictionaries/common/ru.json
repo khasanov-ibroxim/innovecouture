@@ -1,1 +1,31 @@
-{}
+{
+  "nav": {
+    "home": "Главная",
+    "shop": "Магазин",
+    "about": "О нас",
+    "sustainability": "Устойчивость",
+    "contact": "Контакты"
+  },
+  "footer": {
+    "signup": {
+      "title": "Зарегистрируйтесь и получите скидку 10% на первый заказ.",
+      "placeholder": "Введите адрес электронной почты.",
+      "subscribed": "Спасибо за подписку ✓"
+    },
+    "copyright": "Khiva Code. Все права защищены.",
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "Linkedin"
+    },
+    "legal": {
+      "terms": "Условия использования",
+      "privacy": "Политика конфиденциальности"
+    },
+    "menu": {
+      "orderStatus": "Статус заказа",
+      "delivery": "Доставка и возврат",
+      "pinterest": "Pinterest"
+    }
+  }
+}

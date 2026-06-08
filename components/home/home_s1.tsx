@@ -4,7 +4,11 @@ import right_img from "@/assets/home/home_s1/DGH_8404.jpg"
 import Image from "next/image";
 import Link from "next/link";
 
-const HomeS1 = () => {
+interface HomeS1Props {
+    lang?: string;
+}
+
+const HomeS1 = ({ lang = 'ru' }: HomeS1Props) => {
     return (
         <section className="w-full flex flex-col md:flex-row py-16 px-2 md:px-5">
 
@@ -31,7 +35,7 @@ const HomeS1 = () => {
                         Её культура, геометрия и система пропорций формировались веками, создавая уникальный визуальный
                         и смысловой код.</p>
                     <Link
-                        href="#"
+                        href={`/${lang}/about`}
                         className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em]"
                     >
                         о нас

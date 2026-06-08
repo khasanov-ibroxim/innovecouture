@@ -168,7 +168,7 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
                             }}
                             className="w-full bg-white border-black border text-center py-2.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
                         >
-                            Select Options
+                            {dict.selectOptions}
                         </button>
                     </div>
                 )}
@@ -218,7 +218,7 @@ export const HomeS2 = ({lang , dict}:HomeS2Props) => {
         return (
             <section className="w-full px-5 md:px-10 py-16">
                 <div className="flex items-center justify-center py-12">
-                    <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">Loading...</p>
+                    <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">{dict.loading}</p>
                 </div>
             </section>
         );
@@ -229,13 +229,13 @@ export const HomeS2 = ({lang , dict}:HomeS2Props) => {
             {/* Section header */}
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-[22px] md:text-[26px] font-normal uppercase tracking-[0.04em]">
-                    Whats New
+                   {dict.title}
                 </h2>
                 <Link
                     href={`/${lang}/shop`}
                     className="relative text-[11px] tracking-[0.14em] uppercase font-medium after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:origin-left after:scale-x-100 hover:after:scale-x-50 after:transition-transform after:duration-300"
                 >
-                    View All
+                    {dict.viewAll}
                 </Link>
             </div>
 

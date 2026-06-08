@@ -10,7 +10,22 @@ interface FormState {
     message: string;
 }
 
-const ContactS2 = () => {
+interface ContactS2Props {
+    dict: {
+        heading: string;
+        thankYou: string;
+        fields: {
+            name: string;
+            email: string;
+            phone: string;
+            order: string;
+            message: string;
+        };
+        submit: string;
+    };
+}
+
+const ContactS2 = ({ dict }: ContactS2Props) => {
     const [form, setForm] = useState<FormState>({
         name: "", email: "", phone: "", order: "", message: "",
     });
@@ -28,33 +43,33 @@ const ContactS2 = () => {
         <section className="w-full px-5 md:px-10 lg:px-24 xl:px-40 py-14 md:py-20">
             {/* Heading */}
             <p className="text-[14px] md:text-[18px] tracking-[0.1em] uppercase font-medium text-neutral-900 text-center leading-relaxed mb-10 md:mb-12 max-w-2xl mx-auto">
-                Отправьте запрос через форму ниже — мы скоро с вами свяжемся.
+                {dict.heading}
             </p>
 
             {submitted ? (
                 <div className="text-center py-12">
                     <p className="text-[13px] tracking-[0.12em] uppercase text-neutral-600">
-                        Thank you! We'll be in touch shortly.
+                        {dict.thankYou}
                     </p>
                 </div>
             ) : (
                 <div className="flex flex-col gap-6 max-w-3xl mx-auto">
                     {/* Row 1 */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Field label="Ваше имя " value={form.name} onChange={set("name")} />
-                        <Field label="Электронная почта " type="email" value={form.email} onChange={set("email")} />
+                        <Field label={dict.fields.name} value={form.name} onChange={set("name")} />
+                        <Field label={dict.fields.email} type="email" value={form.email} onChange={set("email")} />
                     </div>
 
                     {/* Row 2 */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Field label="Номер телефона " type="tel" value={form.phone} onChange={set("phone")} />
-                        <Field label="Номер заказа" value={form.order} onChange={set("order")} />
+                        <Field label={dict.fields.phone} type="tel" value={form.phone} onChange={set("phone")} />
+                        <Field label={dict.fields.order} value={form.order} onChange={set("order")} />
                     </div>
 
                     {/* Message */}
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[12px] tracking-[0.06em] text-neutral-800">
-                            Сообщение
+                            {dict.fields.message}
                         </label>
                         <textarea
                             value={form.message}
@@ -70,7 +85,7 @@ const ContactS2 = () => {
                             onClick={handleSubmit}
                             className="bg-neutral-900 text-white px-10 py-4 text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-neutral-700 transition-colors cursor-pointer"
                         >
-                            Отправить
+                            {dict.submit}
                         </button>
                     </div>
                 </div>

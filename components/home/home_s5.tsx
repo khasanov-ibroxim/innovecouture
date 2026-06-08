@@ -10,14 +10,15 @@ import Link from "next/link";
 
 interface HomeS5Props {
     dict: {
-        tag: string;           // "Sustainability"
-        title: string;         // "EVERY DETAIL MATTER"
-        description: string;   // "Since 2012, Innove Couture products..."
-        learnMore: string;     // "LEARN MORE"
+        tag: string;
+        title: string;
+        description: string;
+        learnMore: string;
     };
+    lang?: string;
 }
 
-const HomeS5 = ({dict}: HomeS5Props) => {
+const HomeS5 = ({dict, lang = 'ru'}: HomeS5Props) => {
     const ref = useRef(null);
     const inView = useInView(ref, {once: true, margin: '-60px'});
 
@@ -53,7 +54,7 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                             transition={{duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="other_font text-[14px] text-black tracking-wide"
                         >
-                            Философия бренда
+                            {dict.tag}
 
                         </motion.span>
 
@@ -64,7 +65,7 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                             transition={{duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="title_font text-[26px] md:text-[44px] font-medium uppercase leading-[1.08] tracking-[5] text-[#1a1a1a]"
                         >
-                            Каждая модель
+                            {dict.title}
 
                         </motion.h2>
 
@@ -75,17 +76,15 @@ const HomeS5 = ({dict}: HomeS5Props) => {
                             transition={{duration: 0.55, delay: 0.22, ease: [0.25, 0.46, 0.45, 0.94]}}
                             className="other_font text-[16px] leading-[1.65] text-black/65 max-w-[380px]"
                         >
-                            — часть единого языка, в котором форма, пропорции и структура работают как целостный код. От
-                            выбора ткани до последней строчки, от силуэта до тактильного и визуального опыта упаковки —
-                            всё выстроено как продолжение одной идеи.
+                            {dict.description}
                         </motion.p>
 
                         {/* Learn More link */}
                         <Link
-                            href="#"
+                            href={`/${lang}/sustainability`}
                             className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em] max-w-[200px] text-center"
                         >
-                            Устойчивость
+                            {dict.learnMore}
                         </Link>
                     </div>
 

@@ -6,7 +6,16 @@ import runwayMain from "@/assets/about/about_s3/DGH_8614(1).jpg";
 import modelSmall from "@/assets/about/about_s3/DGH_8620.jpg";
 import storeRight from "@/assets/about/about_s3/DGH_8485.jpg";
 
-const AboutS3 = () => {
+interface AboutS3Props {
+    lang?: string;
+    dict: {
+        title: string;
+        description: string;
+        link: string;
+    };
+}
+
+const AboutS3 = ({ lang = 'ru', dict }: AboutS3Props) => {
     return (
         <section className="w-full px-5  py-16 md:py-24 overflow-hidden">
 
@@ -34,18 +43,16 @@ const AboutS3 = () => {
                 {/* Text */}
                 <div>
                     <h2 className="text-[32px] font-normal uppercase tracking-[0.02em] leading-tight mb-5">
-                        Взгляд в будущее
+                        {dict.title}
                     </h2>
                     <p className="text-[13px] leading-[1.8] text-neutral-700 mb-6 max-w-[480px]">
-                        Мы продолжаем развивать бренд, сохраняя его основу — архитектуру как идею, минимализм как язык и
-                        культуру как источник вдохновения, позволяя Khiva Code органично меняться и расти вместе со
-                        временем..
+                        {dict.description}
                     </p>
                     <Link
-                        href="#"
+                        href={`/${lang}/contact`}
                         className="text-[11px] tracking-[0.18em] uppercase font-medium underline underline-offset-4 decoration-neutral-700 hover:opacity-50 transition-opacity"
                     >
-                        See Our Stores
+                        {dict.link}
                     </Link>
                 </div>
             </div>

@@ -11,7 +11,6 @@ interface HomeS6Props {
     dict: {
         storeName: string;
         address: string;
-        hours: string;
         direction: string;
     };
 }
@@ -34,7 +33,7 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                             className="title_font text-[32px] sm:text-[38px] md:text-[44px] font-light uppercase leading-[1.1] tracking-tight text-[#1a1a1a] mb-8 md:mb-10"
                         >
-                            Адрес фабрики
+                            {dict.storeName}
 
                         </motion.h2>
 
@@ -45,12 +44,7 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                             className="flex flex-col gap-0.5 mb-8 md:mb-10"
                         >
                             <p className="other_font text-[14px] text-black/65 leading-[1.7]">
-                                Узбекистан,Хорезмская область,
-
-
-                            </p>
-                            <p className="other_font text-[14px] text-black/65 leading-[1.7]">
-                                Шаватский район,улица Сахибкор 40.
+                                {dict.address}
                             </p>
                         </motion.div>
 
@@ -58,7 +52,7 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                             href="#"
                             className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em] max-w-[200px] text-center"
                         >
-                            Explore collection
+                           {dict.direction}
                         </Link>
                     </div>
 

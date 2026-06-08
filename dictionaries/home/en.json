@@ -1,1 +1,19 @@
-{}
+{
+  "s2": {
+    "title": "New Arrivals",
+    "viewAll": "View All",
+    "selectOptions": "Select Options",
+    "loading": "Loading..."
+  },
+  "s5": {
+    "tag": "Brand Philosophy",
+    "title": "Every Model",
+    "description": "is part of a unified language, where form, proportions and structure work as a holistic code. From fabric selection to the last stitch, from silhouette to the tactile and visual experience of packaging — everything is built as a continuation of one idea.",
+    "learnMore": "Sustainability"
+  },
+  "s6": {
+    "storeName": "Factory Address",
+    "address": "Uzbekistan, Khorezm region, Shavat district, Sahibkor street 40.",
+    "direction": "Location"
+  }
+}

@@ -5,7 +5,15 @@ import modelLeft from "@/assets/about/about_s1/left.jpg";
 import sketchRight from "@/assets/about/about_s1/right.jpg";
 import bgImage from "@/assets/about/about_s1/DGH_8578.jpg"
 
-const AboutS1 = () => {
+interface AboutS1Props {
+    dict: {
+        title: string;
+        paragraph1: string;
+        paragraph2: string;
+    };
+}
+
+const AboutS1 = ({ dict }: AboutS1Props) => {
     return (
         <section className="w-full px-5 py-16">
 
@@ -14,7 +22,7 @@ const AboutS1 = () => {
 
                 {/* Title */}
                 <h2 className="text-[32px] font-normal uppercase tracking-[0.04em] leading-none">
-                    ИСТОРИЯ (HISTORY)
+                    {dict.title}
                 </h2>
 
                 {/* Left image */}
@@ -25,16 +33,10 @@ const AboutS1 = () => {
                 {/* Text */}
                 <div className="flex flex-col gap-5">
                     <p className="text-[13px] leading-[1.8] text-neutral-700">
-                        От архитектуры к одежде
-                        Проект Khiva Code начался не с одежды — его истоки лежат в наблюдении. Внимание было обращено к
-                        архитектуре Хивы, города, где каждая линия, форма и пропорция подчинены внутренней логике,
-                        наполнены смыслом и выверенной структурой.
+                        {dict.paragraph1}
                     </p>
                     <p className="text-[13px] leading-[1.8] text-neutral-700">
-                        Архитектура Хивы — это не просто визуальная эстетика, а целостная система, основанная на
-                        геометрии, ритме, повторяемости и балансе. Этот своеобразный код формировался на протяжении
-                        веков, проходя через время без утраты своей сути, и сохранился до наших дней как выражение
-                        культурной точности и гармонии.
+                        {dict.paragraph2}
                     </p>
                 </div>
 
@@ -57,20 +59,14 @@ const AboutS1 = () => {
                 {/* Main content */}
                 <div className="pl-[240px] pr-[240px]">
                     <h2 className="text-[48px] font-normal uppercase tracking-[0.04em] leading-none mb-10">
-                        ИСТОРИЯ
+                        {dict.title}
                     </h2>
                     <div className="flex flex-col gap-5">
                         <p className="text-[15px] leading-[1.8] text-neutral-700">
-                            От архитектуры к одежде
-                            Проект Khiva Code начался не с одежды — его истоки лежат в наблюдении. Внимание было
-                            обращено к архитектуре Хивы, города, где каждая линия, форма и пропорция подчинены
-                            внутренней логике, наполнены смыслом и выверенной структурой.
+                            {dict.paragraph1}
                         </p>
                         <p className="text-[15px] leading-[1.8] text-neutral-700">
-                            Архитектура Хивы — это не просто визуальная эстетика, а целостная система, основанная на
-                            геометрии, ритме, повторяемости и балансе. Этот своеобразный код формировался на протяжении
-                            веков, проходя через время без утраты своей сути, и сохранился до наших дней как выражение
-                            культурной точности и гармонии.
+                            {dict.paragraph2}
                         </p>
                     </div>
                 </div>
