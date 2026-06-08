@@ -119,9 +119,9 @@ const Navbar = ({ dict, lang }: Props) => {
                     </button>
 
                     {/* ── DESKTOP: Logo (left) ── */}
-                    <div className="hidden lg:block">
+                    <Link href={`/${lang}`} className="hidden lg:block">
                         <Image src={logo_long} alt={"Logo"} width={200} />
-                    </div>
+                    </Link>
 
                     {/* ── DESKTOP: Nav links (center) ── */}
                     <nav className="hidden lg:flex items-center justify-center gap-8 flex-1">
@@ -201,7 +201,10 @@ Khiva code
                         >
                             {/* Panel header: logo + lang switcher + close */}
                             <div className="flex items-center justify-between mb-12">
-                                <Image src={logo_long} alt={"Logo"} width={180} />
+                                <Link href={`/${lang}`}>
+                                    <Image src={logo_long} alt={"Logo"} width={180} />
+                                </Link>
+
                                 <div className="flex items-center gap-5">
                                     {/* Lang switcher always visible inside menu */}
                                     <LangSwitcher lang={lang} />
