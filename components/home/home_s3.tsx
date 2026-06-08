@@ -30,15 +30,7 @@ const HomeS3 = ({ lang = 'ru' }: HomeS3Props) => {
                                 sizes="100vw"
                             />
                         </div>
-                        <div className="w-full aspect-[3/4] relative">
-                            <Image
-                                src={modelSecond}
-                                alt="Fall Collection secondary"
-                                fill
-                                className="object-cover object-top"
-                                sizes="100vw"
-                            />
-                        </div>
+
                         {/* Mobile: fabric texture full width */}
                         <div className="w-full aspect-[16/9] relative mt-1">
                             <Image
