@@ -205,7 +205,7 @@ export const HomeS2 = ({lang , dict}:HomeS2Props) => {
         async function loadProducts() {
             try {
                 const data = await getProducts();
-                setProducts(productIds.map(id => data.find(item => item.id === id)).filter(Boolean));
+                setProducts(productIds.map(id => data.find(item => item.id === id)).filter((p): p is Product => p !== undefined));
             } catch (error) {
                 console.error('Failed to load products:', error);
             } finally {
