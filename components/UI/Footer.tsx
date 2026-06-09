@@ -25,7 +25,7 @@ const Footer = ({ dict }: FooterProps) => {
     };
 
     return (
-        <footer className="w-full bg-[#f7f6f4] border-t border-neutral-200">
+        <footer className="w-full bg-[#E9D8D0] border-t border-white">
 
             {/* ── Brand + Email signup ── */}
             <div className="px-5 md:px-10 pt-14 pb-10 flex flex-col items-center text-center">
@@ -43,10 +43,10 @@ const Footer = ({ dict }: FooterProps) => {
                 </div>
 
                 {/* Email signup row */}
-                <div className="w-full max-w-[860px] border-t border-b border-neutral-300 flex flex-col md:flex-row items-stretch">
+                <div className="w-full max-w-[860px] border-t border-b border-white flex flex-col md:flex-row items-stretch">
                     {/* Left label */}
-                    <div className="flex items-center justify-center md:justify-start px-6 py-5 border-b md:border-b-0 md:border-r border-neutral-300 md:w-[45%]">
-                        <p className="text-[11px] tracking-[0.18em] uppercase font-medium text-neutral-800">
+                    <div className="flex items-center justify-center md:justify-start px-6 py-5 border-b md:border-b-0 md:border-r border-white md:w-[45%]">
+                        <p className="text-[11px] tracking-[0.18em] uppercase font-medium text-white-800">
                             {dict.footer.signup.title}
                         </p>
                     </div>
@@ -54,7 +54,7 @@ const Footer = ({ dict }: FooterProps) => {
                     {/* Right input */}
                     <div className="flex flex-1 items-center px-6 py-4">
                         {subscribed ? (
-                            <p className="text-[11px] tracking-[0.14em] uppercase text-neutral-500 w-full text-center md:text-left">
+                            <p className="text-[11px] tracking-[0.14em] uppercase text-white w-full text-center md:text-left">
                                 {dict.footer.signup.subscribed}
                             </p>
                         ) : (
@@ -111,10 +111,10 @@ const Footer = ({ dict }: FooterProps) => {
             </div>
 
             {/* ── Bottom bar ── */}
-            <div className="border-t border-neutral-200 px-5 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="border-t border-white px-5 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
 
                 {/* Copyright */}
-                <p className="text-[10px] tracking-[0.1em] text-neutral-400 order-2 md:order-1">
+                <p className="text-[10px] tracking-[0.1em] text-black-400 order-2 md:order-1">
                     © {new Date().getFullYear()}&nbsp; {dict.footer.copyright}
                 </p>
 
@@ -122,7 +122,7 @@ const Footer = ({ dict }: FooterProps) => {
                 <div className="flex items-center gap-6 order-1 md:order-2">
                     <Link
                         href="#"
-                        className="text-[11px] tracking-[0.12em] text-neutral-600 hover:opacity-40 transition-opacity"
+                        className="text-[11px] tracking-[0.12em] text-black-600 hover:opacity-40 transition-opacity"
                     >
                         {dict.footer.social.instagram}
                     </Link>

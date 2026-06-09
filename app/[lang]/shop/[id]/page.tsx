@@ -11,6 +11,42 @@ import Image from "next/image";
 import CartDrawer from "@/components/UI/CartDrawer";
 import { formatPrice } from "@/lib/currency";
 
+/* ─── Types ──────────────────────────────────────────────────── */
+interface ProductItemDetail {
+    id: number;
+    color_id: number;
+    size_id: number;
+    count: number;
+    color_code?: string;
+    size_name?: string;
+}
+
+interface ProductDetail {
+    id: number;
+    product_id: number;
+    name_uz: string;
+    name_ru: string;
+    name_eng: string;
+}
+
+/* ─── i18n Helper ───────────────────────────────────────────── */
+function getLocalizedText(
+    obj: { name_uz?: string; name_ru?: string; name_eng?: string; name?: string } |
+        { description_uz?: string; description_ru?: string; description_eng?: string; description?: string } |
+        Record<string, string>,
+    field: "name" | "description",
+    lang: string
+): string {
+    const uz = (obj as Record<string, string>)[`${field}_uz`];
+    const ru = (obj as Record<string, string>)[`${field}_ru`];
+    const eng = (obj as Record<string, string>)[`${field}_eng`];
+    const fallback = (obj as Record<string, string>)[field] ?? "";
+
+    if (lang === "uz") return uz || fallback;
+    if (lang === "ru") return ru || fallback;
+    return eng || fallback;
+}
+
 /* ─── Accordion ─────────────────────────────────────────────── */
 function Accordion({
                        title,
@@ -103,6 +139,65 @@ function Dropdown({
     );
 }
 
+/* ─── Product Details Content ────────────────────────────────── */
+function ProductDetailsContent({ productId, lang }: { productId: number; lang: string }) {
+    const [details, setDetails] = useState<ProductDetail[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        async function loadDetails() {
+            try {
+                const res = await fetch(
+                    `https://textile.okach-admin.uz/api/product-details/product/${productId}`
+                );
+                const data: ProductDetail[] = await res.json();
+                setDetails(data);
+            } catch {
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadDetails();
+    }, [productId]);
+
+    if (loading) {
+        return (
+            <p className="text-[11px] text-neutral-400 tracking-[0.06em]">Loading...</p>
+        );
+    }
+
+    if (error || details.length === 0) {
+        return (
+            <p className="text-[11px] text-neutral-400 tracking-[0.06em]">No details available.</p>
+        );
+    }
+
+    // Get the localised name based on current lang
+    const getName = (detail: ProductDetail) => {
+        if (lang === "uz") return detail.name_uz;
+        if (lang === "ru") return detail.name_ru;
+        return detail.name_eng;
+    };
+
+    return (
+        <div className="flex flex-col gap-0">
+            {details.map((detail) => (
+                <div
+                    key={detail.id}
+                    className="py-2 border-b border-neutral-50"
+                >
+                    <span className="text-[11px] text-neutral-700 tracking-[0.06em]">
+                        {getName(detail)}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+}
+
 /* ─── Main Product Page ──────────────────────────────────────── */
 export default function ProductPage() {
     const params = useParams();
@@ -121,7 +216,8 @@ export default function ProductPage() {
     const [activeImg, setActiveImg] = useState(0);
     const [added, setAdded] = useState(false);
     const [error, setError] = useState("");
-    const [cartOpen, setCartOpen] = useState(false)
+    const [cartOpen, setCartOpen] = useState(false);
+
     // Mobile swipe
     const touchStartX = useRef<number | null>(null);
 
@@ -183,7 +279,6 @@ export default function ProductPage() {
         }
         setError("");
 
-        // Find the product_item_id based on selected color_id and size_id
         const productItem = product.product_items.find(item =>
             item.color_id === selectedColorId && item.size_id === selectedSizeId
         );
@@ -204,7 +299,7 @@ export default function ProductPage() {
         });
 
         setAdded(true);
-        setCartOpen(true)
+        setCartOpen(true);
         setTimeout(() => setAdded(false), 2000);
     };
 
@@ -225,7 +320,9 @@ export default function ProductPage() {
                 {" / "}
                 <span className="text-neutral-700">{product.name}</span>
             </div>
+
             <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)}/>
+
             {/* Main content */}
             <div className="px-5 md:px-10 pb-20">
                 <div className="relative flex flex-col md:flex-row gap-8 md:gap-12 md:items-start">
@@ -329,14 +426,14 @@ export default function ProductPage() {
                             {/* Product info */}
                             <div className="mb-6">
                                 <h1 className="text-[18px] md:text-[22px] font-normal uppercase tracking-[0.06em] leading-snug mb-2">
-                                    {product.name}
+                                    {getLocalizedText(product, "name", lang)}
                                 </h1>
                                 <div className="flex items-center gap-3">
                                     <span className="text-[15px] text-neutral-900">{formatPrice(product.price, lang)}</span>
                                     {product.originalPrice && (
                                         <span className="text-[13px] text-neutral-400 line-through">
-                      {formatPrice(product.originalPrice, lang)}
-                    </span>
+                                            {formatPrice(product.originalPrice, lang)}
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -445,23 +542,17 @@ export default function ProductPage() {
                                 {added ? "✓ Added to Cart" : "Add to Cart"}
                             </button>
 
-
                             {/* Accordions */}
                             <div className="mt-6">
                                 <Accordion title="Description">
-                                    <p>{product.description}</p>
+                                    <p>{getLocalizedText(product, "description", lang)}</p>
                                 </Accordion>
+
+                                {/* ── Product Details — fetched from API ── */}
                                 <Accordion title="Product Details">
-                                    <ul className="flex flex-col gap-1">
-                                        {product.details.map((d, i) => (
-                                            <li key={i} className="flex items-start gap-2">
-                                                <span
-                                                    className="mt-1.5 w-1 h-1 rounded-full bg-neutral-400 flex-shrink-0"/>
-                                                {d}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <ProductDetailsContent productId={product.id} lang={lang} />
                                 </Accordion>
+
                                 <Accordion title="Delivery and Returns">
                                     <p>{product.delivery}</p>
                                 </Accordion>
@@ -529,31 +620,31 @@ function YouMightAlsoLike({currentId, lang}: { currentId: number, lang: string }
                 {related.map((p) => (
                     <Link
                         key={p.id}
-                        href={`/en/shop/${p.id}`}
+                        href={`/${lang}/shop/${p.id}`}
                         className="flex-shrink-0 w-[65vw] md:w-auto snap-start group"
                     >
                         <div className="aspect-[3/4] bg-[#f4f3f1] overflow-hidden mb-3 relative">
                             {p.isNew && (
                                 <span
                                     className="absolute top-2 right-2 text-[9px] tracking-[0.15em] uppercase bg-white px-2 py-0.5 z-10">
-                  New!
-                </span>
+                                    New!
+                                </span>
                             )}
                             {typeof p.images[0] === 'string' ? (
                                 <img
                                     src={p.images[0]}
-                                    alt={p.name}
+                                    alt={getLocalizedText(p, "name", lang)}
                                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                                 />
                             ) : (
                                 <Image
                                     src={p.images[0]}
-                                    alt={p.name}
+                                    alt={getLocalizedText(p, "name", lang)}
                                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                                 />
                             )}
                         </div>
-                        <h3 className="text-[11px] tracking-[0.06em] uppercase font-normal">{p.name}</h3>
+                        <h3 className="text-[11px] tracking-[0.06em] uppercase font-normal">{getLocalizedText(p, "name", lang)}</h3>
                         <p className="text-[11px] text-neutral-600 mt-0.5">{formatPrice(p.price, lang)}</p>
                     </Link>
                 ))}
