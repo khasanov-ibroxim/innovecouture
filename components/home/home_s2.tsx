@@ -200,12 +200,12 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
 export const HomeS2 = ({lang , dict}:HomeS2Props) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const productIds = [35 ,12 ,26 ,19];
     useEffect(() => {
         async function loadProducts() {
             try {
                 const data = await getProducts();
-                setProducts(data.slice(0, 4)); // Show first 4 products
+                setProducts(productIds.map(id => data.find(item => item.id === id)).filter(Boolean));
             } catch (error) {
                 console.error('Failed to load products:', error);
             } finally {
