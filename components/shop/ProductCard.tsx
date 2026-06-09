@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/currency";
+import { getTranslatedField } from "@/lib/translations";
 
 interface ProductCardProps {
   product: Product;
@@ -165,7 +166,7 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
       {/* Info */}
       <div className="mt-3 px-0.5">
         <h3 className="text-[12px] tracking-[0.06em] uppercase font-normal text-neutral-900 leading-snug">
-          {product.name}
+          {getTranslatedField(product, 'name', lang)}
         </h3>
         <div className="flex items-center gap-2 mt-1">
           {product.isSale && product.originalPrice ? (

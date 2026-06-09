@@ -8,6 +8,8 @@ import { getCart, CartItem } from "@/lib/cart";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { formatPrice } from "@/lib/currency";
+import { getShopDictionary, ShopDictionary } from "@/lib/dictionary";
+import { Locale } from "@/i18n-config";
 
 interface CartDrawerProps {
     open: boolean;
@@ -16,8 +18,17 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     const [items, setItems] = useState<CartItem[]>([]);
+    const [dict, setDict] = useState<ShopDictionary['cart'] | null>(null);
     const params = useParams();
     const lang = (params?.lang as string) || 'en';
+
+    useEffect(() => {
+        async function loadDict() {
+            const dictionary = await getShopDictionary(lang as Locale);
+            setDict(dictionary.cart);
+        }
+        loadDict();
+    }, [lang]);
 
     const refresh = useCallback(() => {
         setItems(getCart());
@@ -62,6 +73,8 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
     const hasFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
 
+    if (!dict) return null;
+
     return (
         <AnimatePresence>
             {open && (
@@ -89,7 +102,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                         {/* Header */}
                         <div className="flex items-center justify-between px-7 py-5 border-b border-neutral-100">
                             <h2 className="text-[14px] tracking-[0.12em] uppercase font-medium">
-                                Cart{" "}
+                                {dict.title}{" "}
                                 {items.length > 0 && (
                                     <span className="text-neutral-500 font-normal">({items.reduce((s, i) => s + i.quantity, 0)})</span>
                                 )}
@@ -108,12 +121,12 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                             {items.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
                                     <ShoppingBag size={36} strokeWidth={1} className="text-neutral-300" />
-                                    <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">Your cart is empty</p>
+                                    <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">{dict.empty}</p>
                                     <button
                                         onClick={onClose}
                                         className="text-[11px] tracking-[0.14em] uppercase underline underline-offset-4 text-neutral-700 hover:opacity-50 transition-opacity cursor-pointer"
                                     >
-                                        Continue Shopping
+                                        {dict.continueShopping}
                                     </button>
                                 </div>
                             ) : (
@@ -196,18 +209,18 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                             <div className="border-t border-neutral-100 px-7 py-5">
                                 {/* Subtotal */}
                                 <div className="flex items-center justify-between mb-4">
-                                    <span className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">Subtotal:</span>
+                                    <span className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">{dict.subtotal}:</span>
                                     <span className="text-[14px] font-medium text-neutral-900">{formatPrice(subtotal, lang)}</span>
                                 </div>
 
                                 {/* Buttons */}
                                 <div className="flex gap-2 mb-4">
                                     <Link
-                                        href="/en/checkout"
+                                        href={`/${lang}/checkout`}
                                         onClick={onClose}
                                         className="flex-1 bg-black text-white text-center py-3.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-neutral-800 transition-colors cursor-pointer"
                                     >
-                                        Checkout
+                                        {dict.checkout}
                                     </Link>
                                 </div>
 

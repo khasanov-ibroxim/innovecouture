@@ -4,6 +4,7 @@ import React from "react";
 import { X } from "lucide-react";
 import ShopSidebar from "./ShopSidebar";
 import { Filters } from "./types";
+import { ShopDictionary } from "@/lib/dictionary";
 
 interface MobileFilterDrawerProps {
   open: boolean;
@@ -18,6 +19,8 @@ interface MobileFilterDrawerProps {
   onClearAll: () => void;
   activeTags: { label: string; remove: () => void }[];
   resultCount: number;
+  lang?: string;
+  dict: ShopDictionary;
 }
 
 export default function MobileFilterDrawer({
@@ -30,6 +33,8 @@ export default function MobileFilterDrawer({
   onClearAll,
   activeTags,
   resultCount,
+  lang = "en",
+  dict,
 }: MobileFilterDrawerProps) {
   if (!open) return null;
 
@@ -44,7 +49,7 @@ export default function MobileFilterDrawer({
       {/* Drawer */}
       <div className="fixed left-0 top-0 bottom-0 z-[999] w-[85vw] max-w-[320px] bg-white flex flex-col shadow-2xl">
         <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-200">
-          <h2 className="text-[12px] tracking-[0.16em] uppercase font-medium">Filters</h2>
+          <h2 className="text-[12px] tracking-[0.16em] uppercase font-medium">{dict.filters}</h2>
           <button
             onClick={onClose}
             className="text-neutral-700 hover:opacity-40 transition-opacity cursor-pointer"
@@ -61,6 +66,8 @@ export default function MobileFilterDrawer({
             onPriceMax={onPriceMax}
             onClearAll={onClearAll}
             activeTags={activeTags}
+            lang={lang}
+            dict={dict}
           />
         </div>
 
@@ -69,7 +76,7 @@ export default function MobileFilterDrawer({
             onClick={onClose}
             className="w-full bg-black text-white py-3.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-neutral-700 transition-colors cursor-pointer"
           >
-            View {resultCount} Results
+            {dict.viewResults.replace('{count}', String(resultCount))}
           </button>
         </div>
       </div>

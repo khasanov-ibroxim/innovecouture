@@ -5,6 +5,13 @@ import { StaticImageData } from "next/image";
 export interface Product {
     id: number;
     name: string;
+    name_uz: string;
+    name_ru: string;
+    name_eng: string;
+    description: string;
+    description_uz: string;
+    description_ru: string;
+    description_eng: string;
     price: number;
     originalPrice?: number;
     isNew?: boolean;
@@ -12,7 +19,6 @@ export interface Product {
     colors: string[];
     sizes: string[];
     images: string[];
-    description: string;
     details: string[];
     delivery: string;
     category_id: number;
@@ -139,13 +145,19 @@ export async function getProducts(): Promise<Product[]> {
             return {
                 id: product.id,
                 name: product.name_eng,
+                name_uz: product.name_uz,
+                name_ru: product.name_ru,
+                name_eng: product.name_eng,
+                description: product.description_eng,
+                description_uz: product.description_uz,
+                description_ru: product.description_ru,
+                description_eng: product.description_eng,
                 price: product.price,
                 isNew: false,
                 isSale: false,
                 colors,
                 sizes,
                 images: images.length > 0 ? images : ['https://placehold.net/product-400x600.png'],
-                description: product.description_eng,
                 details: product.product_details.map(d => d.name_eng),
                 delivery: "Free standard delivery on orders over 1,000,000 UZS. Express delivery available. Returns accepted within 28 days.",
                 category_id: product.category_id,

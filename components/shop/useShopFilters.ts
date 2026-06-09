@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { getProducts, getCollections, getCategories } from "@/lib/products";
 import type { Product } from "@/lib/products";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getTranslatedField } from "@/lib/translations";
 import {
   Filters,
   SortOption,
@@ -16,8 +17,8 @@ export function useShopFilters(lang: string = 'en') {
   const [sort, setSort] = useState<SortOption>("Popularity");
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [collections, setCollections] = useState<Array<{id: number; name_eng: string}>>([]);
-  const [categories, setCategories] = useState<Array<{id: number; name_eng: string}>>([]);
+  const [collections, setCollections] = useState<Array<{id: number; name_uz: string; name_ru: string; name_eng: string}>>([]);
+  const [categories, setCategories] = useState<Array<{id: number; name_uz: string; name_ru: string; name_eng: string}>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -122,7 +123,7 @@ export function useShopFilters(lang: string = 'en') {
     ...filters.collections.map((id) => {
       const collection = collections.find(c => String(c.id) === id);
       return {
-        label: collection?.name_eng || id,
+        label: collection ? getTranslatedField(collection, 'name', lang) : id,
         remove: () => toggleArray("collections", id),
       };
     }),
@@ -137,7 +138,7 @@ export function useShopFilters(lang: string = 'en') {
     ...filters.categories.map((id) => {
       const category = categories.find(c => String(c.id) === id);
       return {
-        label: category?.name_eng || id,
+        label: category ? getTranslatedField(category, 'name', lang) : id,
         remove: () => toggleArray("categories", id),
       };
     }),

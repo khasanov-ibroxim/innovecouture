@@ -4,6 +4,7 @@ import React from "react";
 import { SlidersHorizontal } from "lucide-react";
 import SortDropdown from "./SortDropdown";
 import { SortOption } from "./types";
+import { ShopDictionary } from "@/lib/dictionary";
 
 interface ShopToolbarProps {
   totalCount: number;
@@ -11,6 +12,7 @@ interface ShopToolbarProps {
   onSortChange: (v: SortOption) => void;
   activeTagsCount: number;
   onMobileFilterOpen: () => void;
+  dict: ShopDictionary;
 }
 
 export default function ShopToolbar({
@@ -19,6 +21,7 @@ export default function ShopToolbar({
   onSortChange,
   activeTagsCount,
   onMobileFilterOpen,
+  dict,
 }: ShopToolbarProps) {
   return (
     <div className="flex items-center justify-between mb-5 gap-4 flex-wrap">
@@ -29,7 +32,7 @@ export default function ShopToolbar({
           className="flex md:hidden items-center gap-2 border border-neutral-300 px-3 py-2 text-[10px] tracking-[0.12em] uppercase hover:border-neutral-700 transition-colors cursor-pointer"
         >
           <SlidersHorizontal size={12} strokeWidth={1.5} />
-          Filters
+          {dict.filters}
           {activeTagsCount > 0 && (
             <span className="bg-neutral-900 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
               {activeTagsCount}
@@ -42,7 +45,7 @@ export default function ShopToolbar({
         </p>
       </div>
 
-      <SortDropdown value={sort} onChange={onSortChange} />
+      <SortDropdown value={sort} onChange={onSortChange} dict={dict} />
     </div>
   );
 }

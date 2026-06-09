@@ -3,13 +3,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { SortOption, SORT_OPTIONS } from "./types";
+import { ShopDictionary } from "@/lib/dictionary";
 
 interface SortDropdownProps {
   value: SortOption;
   onChange: (v: SortOption) => void;
+  dict: ShopDictionary;
 }
 
-export default function SortDropdown({ value, onChange }: SortDropdownProps) {
+export default function SortDropdown({ value, onChange, dict }: SortDropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -21,14 +23,29 @@ export default function SortDropdown({ value, onChange }: SortDropdownProps) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const getSortLabel = (sort: SortOption) => {
+    switch (sort) {
+      case "Popularity":
+        return dict.sortPopularity;
+      case "Price: Low to High":
+        return dict.sortPriceLowToHigh;
+      case "Price: High to Low":
+        return dict.sortPriceHighToLow;
+      case "Newest":
+        return dict.sortNewest;
+      default:
+        return sort;
+    }
+  };
+
   return (
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-neutral-700 hover:opacity-60 transition-opacity cursor-pointer"
       >
-        Sort by:{" "}
-        <span className="font-semibold text-neutral-900">{value}</span>
+        {dict.sortBy}:{" "}
+        <span className="font-semibold text-neutral-900">{getSortLabel(value)}</span>
         <ChevronDown
           size={12}
           strokeWidth={1.5}
@@ -50,7 +67,7 @@ export default function SortDropdown({ value, onChange }: SortDropdownProps) {
                   : "text-neutral-600"
               }`}
             >
-              {opt}
+              {getSortLabel(opt)}
             </button>
           ))}
         </div>

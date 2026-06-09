@@ -10,6 +10,9 @@ import {addToCart} from "@/lib/cart";
 import Image from "next/image";
 import CartDrawer from "@/components/UI/CartDrawer";
 import { formatPrice } from "@/lib/currency";
+import { getTranslatedField } from "@/lib/translations";
+import { getShopDictionary, ShopDictionary } from "@/lib/dictionary";
+import { Locale } from "@/i18n-config";
 
 /* ─── Types ──────────────────────────────────────────────────── */
 interface ProductItemDetail {
@@ -30,22 +33,7 @@ interface ProductDetail {
 }
 
 /* ─── i18n Helper ───────────────────────────────────────────── */
-function getLocalizedText(
-    obj: { name_uz?: string; name_ru?: string; name_eng?: string; name?: string } |
-        { description_uz?: string; description_ru?: string; description_eng?: string; description?: string } |
-        Record<string, string>,
-    field: "name" | "description",
-    lang: string
-): string {
-    const uz = (obj as Record<string, string>)[`${field}_uz`];
-    const ru = (obj as Record<string, string>)[`${field}_ru`];
-    const eng = (obj as Record<string, string>)[`${field}_eng`];
-    const fallback = (obj as Record<string, string>)[field] ?? "";
-
-    if (lang === "uz") return uz || fallback;
-    if (lang === "ru") return ru || fallback;
-    return eng || fallback;
-}
+// Removed - using getTranslatedField from lib/translations instead
 
 /* ─── Accordion ─────────────────────────────────────────────── */
 function Accordion({
@@ -175,13 +163,6 @@ function ProductDetailsContent({ productId, lang }: { productId: number; lang: s
         );
     }
 
-    // Get the localised name based on current lang
-    const getName = (detail: ProductDetail) => {
-        if (lang === "uz") return detail.name_uz;
-        if (lang === "ru") return detail.name_ru;
-        return detail.name_eng;
-    };
-
     return (
         <div className="flex flex-col gap-0">
             {details.map((detail) => (
@@ -190,7 +171,7 @@ function ProductDetailsContent({ productId, lang }: { productId: number; lang: s
                     className="py-2 border-b border-neutral-50"
                 >
                     <span className="text-[11px] text-neutral-700 tracking-[0.06em]">
-                        {getName(detail)}
+                        {getTranslatedField(detail, 'name', lang)}
                     </span>
                 </div>
             ))}
@@ -207,6 +188,7 @@ export default function ProductPage() {
     const [loading, setLoading] = useState(true);
     const [colorsData, setColorsData] = useState<Array<{id: number; color_code: string}>>([]);
     const [sizesData, setSizesData] = useState<Array<{id: number; name: string}>>([]);
+    const [dict, setDict] = useState<ShopDictionary['productDetail'] | null>(null);
 
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
@@ -224,6 +206,14 @@ export default function ProductPage() {
     // Sticky sidebar refs
     const imageColRef = useRef<HTMLDivElement>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        async function loadDict() {
+            const dictionary = await getShopDictionary(lang as Locale);
+            setDict(dictionary.productDetail);
+        }
+        loadDict();
+    }, [lang]);
 
     useEffect(() => {
         async function loadProduct() {
@@ -255,12 +245,12 @@ export default function ProductPage() {
         );
     }
 
-    if (!product) {
+    if (!product || !dict) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-500 mb-4">Product not found</p>
-                    <Link href="/en" className="text-[11px] tracking-[0.14em] uppercase underline">
+                    <Link href={`/${lang}`} className="text-[11px] tracking-[0.14em] uppercase underline">
                         Back to home
                     </Link>
                 </div>
@@ -270,11 +260,11 @@ export default function ProductPage() {
 
     const handleAddToCart = () => {
         if (!selectedColor) {
-            setError("Please select a color");
+            setError(dict.pleaseSelectColor);
             return;
         }
         if (!selectedSize) {
-            setError("Please select a size");
+            setError(dict.pleaseSelectSize);
             return;
         }
         setError("");
@@ -284,14 +274,14 @@ export default function ProductPage() {
         );
 
         if (!productItem) {
-            setError("Selected combination is not available");
+            setError(dict.notAvailable);
             return;
         }
 
         addToCart({
             productId: product.id,
             product_item_id: productItem.id,
-            name: product.name,
+            name: getTranslatedField(product, 'name', lang),
             price: product.price,
             color: selectedColor,
             size: selectedSize,
@@ -310,15 +300,15 @@ export default function ProductPage() {
         <div className="pt-16">
             {/* Breadcrumb */}
             <div className="px-5 md:px-10 py-3 text-[10px] tracking-[0.12em] uppercase text-neutral-400">
-                <Link href="/en" className="hover:text-neutral-700 transition-colors">Home</Link>
+                <Link href={`/${lang}`} className="hover:text-neutral-700 transition-colors">Home</Link>
                 {" / "}
-                <Link href="/en/shop" className="hover:text-neutral-700 transition-colors">Shop</Link>
+                <Link href={`/${lang}/shop`} className="hover:text-neutral-700 transition-colors">Shop</Link>
                 {" / "}
-                <Link href="/en/shop" className="hover:text-neutral-700 transition-colors">
-                    {product.clothing_type === "erkak" ? "Men" : product.clothing_type === "ayol" ? "Women" : "Unisex"}
+                <Link href={`/${lang}/shop`} className="hover:text-neutral-700 transition-colors">
+                    {product.clothing_type === "erkak" ? dict.men || "Men" : product.clothing_type === "ayol" ? dict.women || "Women" : dict.unisex || "Unisex"}
                 </Link>
                 {" / "}
-                <span className="text-neutral-700">{product.name}</span>
+                <span className="text-neutral-700">{getTranslatedField(product, 'name', lang)}</span>
             </div>
 
             <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)}/>
@@ -426,7 +416,7 @@ export default function ProductPage() {
                             {/* Product info */}
                             <div className="mb-6">
                                 <h1 className="text-[18px] md:text-[22px] font-normal uppercase tracking-[0.06em] leading-snug mb-2">
-                                    {getLocalizedText(product, "name", lang)}
+                                    {getTranslatedField(product, "name", lang)}
                                 </h1>
                                 <div className="flex items-center gap-3">
                                     <span className="text-[15px] text-neutral-900">{formatPrice(product.price, lang)}</span>
@@ -442,8 +432,8 @@ export default function ProductPage() {
                             {product.colors.length > 0 && (
                                 <div className="mb-4">
                                     <p className="text-[10px] tracking-[0.14em] uppercase text-neutral-500 mb-2">
-                                        Color{selectedColor &&
-                                        <span className="text-neutral-900 ml-1">— Selected</span>}
+                                        {dict.color}{selectedColor &&
+                                        <span className="text-neutral-900 ml-1">— {dict.colorSelected}</span>}
                                     </p>
                                     <div className="flex flex-wrap gap-2">
                                         {product.colors.map((color) => {
@@ -474,12 +464,12 @@ export default function ProductPage() {
                                 <div className="mb-5">
                                     <div className="flex items-center justify-between mb-2">
                                         <p className="text-[10px] tracking-[0.14em] uppercase text-neutral-500">
-                                            Size{selectedSize &&
+                                            {dict.size}{selectedSize &&
                                             <span className="text-neutral-900 ml-1">— {selectedSize}</span>}
                                         </p>
                                         <button
                                             className="text-[10px] tracking-[0.1em] uppercase underline text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer">
-                                            Size &amp; Fit Guide
+                                            {dict.sizeGuide}
                                         </button>
                                     </div>
                                     <div className="flex flex-wrap gap-2">
@@ -539,21 +529,21 @@ export default function ProductPage() {
                                         : "bg-black text-white hover:bg-neutral-700"
                                 }`}
                             >
-                                {added ? "✓ Added to Cart" : "Add to Cart"}
+                                {added ? dict.addedToCart : dict.addToCart}
                             </button>
 
                             {/* Accordions */}
                             <div className="mt-6">
-                                <Accordion title="Description">
-                                    <p>{getLocalizedText(product, "description", lang)}</p>
+                                <Accordion title={dict.description}>
+                                    <p>{getTranslatedField(product, "description", lang)}</p>
                                 </Accordion>
 
                                 {/* ── Product Details — fetched from API ── */}
-                                <Accordion title="Product Details">
+                                <Accordion title={dict.productDetails}>
                                     <ProductDetailsContent productId={product.id} lang={lang} />
                                 </Accordion>
 
-                                <Accordion title="Delivery and Returns">
+                                <Accordion title={dict.deliveryReturns}>
                                     <p>{product.delivery}</p>
                                 </Accordion>
                             </div>
@@ -563,13 +553,13 @@ export default function ProductPage() {
             </div>
 
             {/* ── YOU MIGHT ALSO LIKE ── */}
-            <YouMightAlsoLike currentId={product.id} lang={lang}/>
+            <YouMightAlsoLike currentId={product.id} lang={lang} dict={dict}/>
         </div>
     );
 }
 
 /* ─── You Might Also Like ────────────────────────────────────── */
-function YouMightAlsoLike({currentId, lang}: { currentId: number, lang: string }) {
+function YouMightAlsoLike({currentId, lang, dict}: { currentId: number, lang: string, dict: ShopDictionary['productDetail'] }) {
     const [related, setRelated] = useState<Product[]>([]);
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -590,7 +580,7 @@ function YouMightAlsoLike({currentId, lang}: { currentId: number, lang: string }
         <section className="px-5 md:px-10 py-16 border-t border-neutral-200">
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-[18px] md:text-[22px] font-normal uppercase tracking-[0.04em]">
-                    You Might Also Like
+                    {dict.youMightAlsoLike}
                 </h2>
                 <div className="hidden md:flex items-center gap-2">
                     <button
@@ -627,24 +617,24 @@ function YouMightAlsoLike({currentId, lang}: { currentId: number, lang: string }
                             {p.isNew && (
                                 <span
                                     className="absolute top-2 right-2 text-[9px] tracking-[0.15em] uppercase bg-white px-2 py-0.5 z-10">
-                                    New!
+                                    {dict.newBadge}
                                 </span>
                             )}
                             {typeof p.images[0] === 'string' ? (
                                 <img
                                     src={p.images[0]}
-                                    alt={getLocalizedText(p, "name", lang)}
+                                    alt={getTranslatedField(p, "name", lang)}
                                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                                 />
                             ) : (
                                 <Image
                                     src={p.images[0]}
-                                    alt={getLocalizedText(p, "name", lang)}
+                                    alt={getTranslatedField(p, "name", lang)}
                                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                                 />
                             )}
                         </div>
-                        <h3 className="text-[11px] tracking-[0.06em] uppercase font-normal">{getLocalizedText(p, "name", lang)}</h3>
+                        <h3 className="text-[11px] tracking-[0.06em] uppercase font-normal">{getTranslatedField(p, "name", lang)}</h3>
                         <p className="text-[11px] text-neutral-600 mt-0.5">{formatPrice(p.price, lang)}</p>
                     </Link>
                 ))}

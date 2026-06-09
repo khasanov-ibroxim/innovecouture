@@ -1,12 +1,12 @@
-import { getHomeDictionary } from "@/lib/dictionary";
+import { getHomeDictionary, getShopDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n-config";
 import ShopClient from "@/components/shop/ShopClient";
 
 const ShopPage = async ({ params }: { params: Promise<{ lang: string }> }) => {
     const { lang } = await params;
-    const dict = await getHomeDictionary(lang as Locale);
+    const dict = await getShopDictionary(lang as Locale);
 
-    return <ShopClient lang={lang}  />;
+    return <ShopClient lang={lang} dict={dict} />;
 };
 
 export default ShopPage;

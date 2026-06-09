@@ -8,12 +8,14 @@ import ActiveFilterTags from "@/components/shop/ActiveFilterTags";
 import ProductGrid from "@/components/shop/ProductGrid";
 import MobileFilterDrawer from "@/components/shop/MobileFilterDrawer";
 import { useShopFilters } from "@/components/shop/useShopFilters";
+import { ShopDictionary } from "@/lib/dictionary";
 
 interface ShopClientProps {
   lang: string;
+  dict: ShopDictionary;
 }
 
-export default function ShopClient({ lang }: ShopClientProps) {
+export default function ShopClient({ lang, dict }: ShopClientProps) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const {
@@ -34,22 +36,22 @@ export default function ShopClient({ lang }: ShopClientProps) {
       {/* Breadcrumb */}
       <div className="px-5 md:px-10 pt-6 pb-2 text-[10px] tracking-[0.12em] uppercase text-neutral-400">
         <Link href={`/${lang}`} className="hover:text-neutral-700 transition-colors">
-          Home
+          {dict.breadcrumb.home}
         </Link>
         {" / "}
-        <span className="text-neutral-700">Shop</span>
+        <span className="text-neutral-700">{dict.breadcrumb.shop}</span>
       </div>
 
       {/* Page title */}
       <div className="px-5 md:px-10 pb-6 border-b border-neutral-200">
         <h1 className="text-[32px] md:text-[38px] font-normal uppercase tracking-[0.04em]">
-          Shop
+          {dict.title}
         </h1>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">Loading products...</p>
+          <p className="text-[12px] tracking-[0.1em] uppercase text-neutral-400">{dict.loading}</p>
         </div>
       ) : (
         <>
@@ -64,6 +66,8 @@ export default function ShopClient({ lang }: ShopClientProps) {
                 onPriceMax={setMax}
                 onClearAll={clearAll}
                 activeTags={activeTags}
+                lang={lang}
+                dict={dict}
               />
             </aside>
 
@@ -75,6 +79,7 @@ export default function ShopClient({ lang }: ShopClientProps) {
                 onSortChange={setSort}
                 activeTagsCount={activeTags.length}
                 onMobileFilterOpen={() => setMobileFiltersOpen(true)}
+                dict={dict}
               />
 
               <ActiveFilterTags tags={activeTags} onClearAll={clearAll} />
@@ -83,6 +88,7 @@ export default function ShopClient({ lang }: ShopClientProps) {
                 products={filteredProducts}
                 onClearAll={clearAll}
                 lang={lang}
+                dict={dict}
               />
             </div>
           </div>
@@ -98,6 +104,8 @@ export default function ShopClient({ lang }: ShopClientProps) {
             onClearAll={clearAll}
             activeTags={activeTags}
             resultCount={filteredProducts.length}
+            lang={lang}
+            dict={dict}
           />
         </>
       )}

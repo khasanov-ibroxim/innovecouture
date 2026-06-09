@@ -8,6 +8,7 @@ import type { Product } from "@/lib/products";
 import Image from "next/image";
 import {HomeDictionary} from "@/lib/dictionary";
 import { formatPrice } from "@/lib/currency";
+import { getTranslatedField } from "@/lib/translations";
 
 interface CardProps {
     product: Product;
@@ -178,7 +179,7 @@ const ProductCard: React.FC<CardProps> = ({ product , lang , dict}) => {
             {/* Card info */}
             <div className="mt-3 px-0.5">
                 <h3 className="text-[12px] tracking-[0.06em] uppercase font-normal text-neutral-900 leading-snug">
-                    {product.name}
+                    {getTranslatedField(product, 'name', lang)}
                 </h3>
                 <div className="flex items-center gap-2 mt-1">
                     {product.isSale && product.originalPrice ? (

@@ -3,25 +3,27 @@
 import React from "react";
 import ProductCard from "./ProductCard";
 import { Product } from "@/lib/products";
+import { ShopDictionary } from "@/lib/dictionary";
 
 interface ProductGridProps {
   products: Product[];
   onClearAll: () => void;
   lang?: string;
+  dict: ShopDictionary;
 }
 
-export default function ProductGrid({ products, onClearAll, lang }: ProductGridProps) {
+export default function ProductGrid({ products, onClearAll, lang, dict }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-400 mb-4">
-          No products found
+          {dict.noProducts}
         </p>
         <button
           onClick={onClearAll}
           className="text-[11px] tracking-[0.14em] uppercase underline underline-offset-4 text-neutral-700 hover:opacity-50 transition-opacity cursor-pointer"
         >
-          Clear filters
+          {dict.clearFilters}
         </button>
       </div>
     );
