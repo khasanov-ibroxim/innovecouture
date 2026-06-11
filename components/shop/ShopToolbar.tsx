@@ -40,9 +40,7 @@ export default function ShopToolbar({
           )}
         </button>
 
-        <p className="text-[11px] text-neutral-500 tracking-[0.06em]">
-          Showing 1–{totalCount} of {totalCount} results
-        </p>
+
       </div>
 
       <SortDropdown value={sort} onChange={onSortChange} dict={dict} />

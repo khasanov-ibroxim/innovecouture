@@ -127,3 +127,41 @@ export interface ApiResponse<T> {
   meta?: Record<string, any>;
   error?: string | null;
 }
+
+export interface PaymentMethod {
+  method: string;
+  icon: string;
+  status: boolean;
+}
+
+export interface PaymentListResponse {
+  ok: boolean;
+  data: PaymentMethod[];
+  meta: Record<string, any>;
+  error: string | null;
+}
+
+export interface OrderPayRequest {
+  order_id: number;
+  payment: 'click' | 'payme' | 'cash';
+}
+
+export interface OrderPayResponse {
+  ok: boolean;
+  data: {
+    order_id: number;
+    payment: string;
+    total_sum: number;
+    amount_tiyin: number;
+    payment_url?: string;
+  };
+  meta?: Record<string, any>;
+  error?: string | null;
+}
+
+export interface PaymentUrlResponse {
+  payment_url: string;
+  order_id: number;
+  amount: number;
+  payment_system: string;
+}

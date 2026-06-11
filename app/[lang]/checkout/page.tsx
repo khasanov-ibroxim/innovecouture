@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getCart, CartItem } from "@/lib/cart";
 import { apiClient } from "@/lib/api/client";
-import type { CreateOrderRequest } from "@/lib/api/types";
+import type { CreateOrderRequest, PaymentMethod } from "@/lib/api/types";
+import { useParams } from "next/navigation";
 import click from "@/assets/icons/click.png"
 import payme from "@/assets/icons/payme.png"
 import uzcard from "@/assets/icons/uzcard.png"
@@ -85,12 +86,14 @@ function SelectField({
 
 /* ─── Main Checkout Page ──────────────────────────────────── */
 export default function CheckoutPage() {
+    const params = useParams();
+    const lang = params?.lang || 'en';
     const [items, setItems] = useState<CartItem[]>(() => getCart());
     const [shipping, setShipping] = useState<"free" | "flat" | "local">("free");
-    const [payment, setPayment] = useState<
-        "click" | "payme" | "uzcard" | "humo" | "visa" | "mastercard"
-    >("click");
+    const [payment, setPayment] = useState<string>("cash");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const [availablePayments, setAvailablePayments] = useState<PaymentMethod[]>([]);
+    const [loadingPayments, setLoadingPayments] = useState(true);
 
     const [submitted, setSubmitted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -107,6 +110,27 @@ export default function CheckoutPage() {
 
 
     const [orderNotes, setOrderNotes] = useState("");
+
+    // Load payment methods
+    useEffect(() => {
+        async function loadPaymentMethods() {
+            try {
+                const response = await apiClient.getPaymentMethods();
+                if (response.ok && response.data) {
+                    const activePayments = response.data.filter(p => p.status);
+                    setAvailablePayments(activePayments);
+                    if (activePayments.length > 0) {
+                        setPayment(activePayments[0].method);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load payment methods:', error);
+            } finally {
+                setLoadingPayments(false);
+            }
+        }
+        loadPaymentMethods();
+    }, []);
 
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
     const shippingCost = shipping === "free" ? 0 : 10;
@@ -134,12 +158,7 @@ export default function CheckoutPage() {
         setErrors({});
 
         try {
-            // Map payment method to API format
-            let paymentMethod: 'click' | 'payme' | 'cash' = 'cash';
-            if (payment === 'click') paymentMethod = 'click';
-            else if (payment === 'payme') paymentMethod = 'payme';
-
-            // Prepare order items - need to map cart items to API format
+            // Prepare order items
             const orderItems = items.map(item => {
                 if (!item.product_item_id) {
                     throw new Error(`Missing product_item_id for ${item.name}`);
@@ -151,6 +170,7 @@ export default function CheckoutPage() {
                 };
             });
 
+            // Step 1: Create order without payment
             const orderData: CreateOrderRequest = {
                 first_name: billing.firstName,
                 last_name: billing.lastName,
@@ -159,22 +179,47 @@ export default function CheckoutPage() {
                 town_city: billing.city,
                 contact: billing.phone,
                 postcode_zip: parseInt(billing.postcode) || 0,
-                payment: paymentMethod,
+                payment: 'cash', // temporary, will be updated
                 items: orderItems,
                 email_address: billing.email,
                 state_county: billing.state || undefined,
             };
 
-            const response = await apiClient.createOrder(orderData);
+            const orderResponse = await apiClient.createOrder(orderData);
 
-            if (response.ok && response.data) {
-                setOrderId(response.data.order_id);
+            if (!orderResponse.ok || !orderResponse.data) {
+                setErrors({ submit: 'Failed to create order. Please try again.' });
+                return;
+            }
+
+            const createdOrderId = orderResponse.data.order_id;
+            setOrderId(createdOrderId);
+
+            // Step 2: Select payment method
+            const paymentMethod = payment as 'click' | 'payme' | 'cash';
+
+            if (paymentMethod === 'cash') {
+                // For cash, redirect to success page
+                localStorage.setItem("cart", JSON.stringify([]));
+                window.dispatchEvent(new Event("cartUpdated"));
+                window.location.href = `/${lang}/order/${createdOrderId}/success?type=cash`;
+                return;
+            }
+
+            // For online payments (payme/click)
+            const paymentResponse = await apiClient.selectPayment({
+                order_id: createdOrderId,
+                payment: paymentMethod
+            });
+
+            if (paymentResponse.ok && paymentResponse.data?.payment_url) {
                 // Clear cart
                 localStorage.setItem("cart", JSON.stringify([]));
                 window.dispatchEvent(new Event("cartUpdated"));
-                setSubmitted(true);
+                // Redirect to payment gateway
+                window.location.href = paymentResponse.data.payment_url;
             } else {
-                setErrors({ submit: 'Failed to create order. Please try again.' });
+                setErrors({ submit: 'Failed to initialize payment. Please try again.' });
             }
         } catch (error) {
             console.error('Order creation failed:', error);
@@ -193,21 +238,15 @@ export default function CheckoutPage() {
                             <polyline points="20 6 9 17 4 12" />
                         </svg>
                     </div>
-                    <h1 className="text-[22px] uppercase tracking-[0.06em] font-normal mb-3">Order Complete</h1>
+                    <h1 className="text-[22px] uppercase tracking-[0.06em] font-normal mb-3">Processing Order</h1>
                     <p className="text-[12px] text-neutral-500 leading-relaxed mb-2">
-                        Thank you for your purchase. A confirmation email will be sent to {billing.email || "your email"}.
+                        Please wait while we redirect you to the payment page...
                     </p>
                     {orderId && (
                         <p className="text-[11px] text-neutral-400 mb-8">
                             Order ID: #{orderId}
                         </p>
                     )}
-                    <Link
-                        href="/en"
-                        className="inline-block bg-black text-white px-10 py-3.5 text-[10px] tracking-[0.18em] uppercase hover:bg-neutral-700 transition-colors"
-                    >
-                        Continue Shopping
-                    </Link>
                 </div>
             </div>
         );
@@ -396,41 +435,36 @@ export default function CheckoutPage() {
                         <div className="border border-t-0 border-neutral-200 p-6">
                             <div className="flex flex-col gap-3">
 
-                                {(
-                                    [
-                                        { key: "click", label: "Click", icon: click },
-                                        { key: "payme", label: "Payme", icon: payme },
-                                        { key: "uzcard", label: "Uzcard", icon: uzcard },
-                                        { key: "humo", label: "Humo", icon: humo },
-                                        { key: "visa", label: "Visa", icon: visa },
-                                        { key: "mastercard", label: "MasterCard", icon: mastercard },
-                                    ] as const
-                                ).map((method) => (
-                                    <label
-                                        key={method.key}
-                                        className={`flex items-center justify-between gap-3 border px-4 py-3 cursor-pointer transition 
-        ${payment === method.key ? "border-black bg-neutral-50" : "border-neutral-200"}`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <input
-                                                type="radio"
-                                                name="payment"
-                                                checked={payment === method.key}
-                                                onChange={() => setPayment(method.key)}
-                                                className="accent-black cursor-pointer"
-                                            />
-                                            <span className="text-[12px] text-neutral-800">{method.label}</span>
-                                        </div>
+                                {loadingPayments ? (
+                                    <p className="text-[11px] text-neutral-400">Loading payment methods...</p>
+                                ) : availablePayments.length === 0 ? (
+                                    <p className="text-[11px] text-neutral-400">No payment methods available</p>
+                                ) : (
+                                    availablePayments.map((method) => (
+                                        <label
+                                            key={method.method}
+                                            className={`flex items-center justify-between gap-3 border px-4 py-3 cursor-pointer transition
+        ${payment === method.method ? "border-black bg-neutral-50" : "border-neutral-200"}`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <input
+                                                    type="radio"
+                                                    name="payment"
+                                                    checked={payment === method.method}
+                                                    onChange={() => setPayment(method.method)}
+                                                    className="accent-black cursor-pointer"
+                                                />
+                                                <span className="text-[12px] text-neutral-800 capitalize">{method.method}</span>
+                                            </div>
 
-                                        <Image
-                                            src={method.icon}
-                                            alt={method.label}
-                                            width={80}
-                                            height={100}
-                                            className="h-6 object-cover object-center"
-                                        />
-                                    </label>
-                                ))}
+                                            <img
+                                                src={method.icon}
+                                                alt={method.method}
+                                                className="h-6 object-contain"
+                                            />
+                                        </label>
+                                    ))
+                                )}
 
                             </div>
 

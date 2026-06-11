@@ -11,7 +11,11 @@ import {
   ProductPhoto,
   ProductItem,
   ProductDetail,
-  Banner
+  Banner,
+  PaymentListResponse,
+  OrderPayRequest,
+  OrderPayResponse,
+  PaymentUrlResponse
 } from './types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -172,19 +176,35 @@ class ApiClient {
       order_id: number;
       status: string;
       order_items: any[];
-    }>>('/api/order', {
+    }>>('/order', {
       method: 'POST',
       body: JSON.stringify(orderData),
     });
   }
 
+  // Payment APIs
+  async getPaymentMethods(): Promise<PaymentListResponse> {
+    return this.request<PaymentListResponse>('/payments/list');
+  }
+
+  async selectPayment(paymentData: OrderPayRequest): Promise<OrderPayResponse> {
+    return this.request<OrderPayResponse>('/order/pay', {
+      method: 'POST',
+      body: JSON.stringify(paymentData),
+    });
+  }
+
+  async getPaymentUrl(orderId: number, paymentSystem: 'payme' | 'click'): Promise<PaymentUrlResponse> {
+    return this.request<PaymentUrlResponse>(`/payment-url/${orderId}/${paymentSystem}`);
+  }
+
   // System API
   async healthCheck(): Promise<{ ok: boolean; service: string }> {
-    return this.request<{ ok: boolean; service: string }>('/api/system/health');
+    return this.request<{ ok: boolean; service: string }>('/system/health');
   }
 
   async readyCheck(): Promise<{ ok: boolean; database: string }> {
-    return this.request<{ ok: boolean; database: string }>('/api/system/ready');
+    return this.request<{ ok: boolean; database: string }>('/system/ready');
   }
 }
 

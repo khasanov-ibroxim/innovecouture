@@ -157,7 +157,7 @@ export default function ProductCard({ product, lang = "en" }: ProductCardProps) 
               }}
               className="w-full bg-white border-black border text-center py-2.5 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
             >
-              Select Options
+              Выбрать опции
             </button>
           </div>
         )}
