@@ -1,0 +1,9 @@
+{
+  "success": {
+    "title": "Order Complete",
+    "messageCash": "Your order has been received. Our team will contact you shortly to confirm the payment.",
+    "messageOnline": "Thank you for your purchase. Your payment has been processed successfully.",
+    "orderId": "Order ID",
+    "continueButton": "Continue Shopping"
+  }
+}
