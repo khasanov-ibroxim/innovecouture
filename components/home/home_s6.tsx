@@ -49,7 +49,8 @@ const HomeS6 = ({ dict }: HomeS6Props) => {
                         </motion.div>
 
                         <Link
-                            href="#"
+                            target={"_blank"}
+                            href="https://yandex.uz/maps/org/artatex/143539350259/?ll=60.241539%2C41.695813&z=11"
                             className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em] max-w-[200px] text-center"
                         >
                            {dict.direction}

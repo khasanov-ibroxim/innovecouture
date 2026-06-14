@@ -95,11 +95,11 @@ export default function ShopSidebar({
             checked={filters.clothingTypes.includes("ayol")}
             onChange={() => onToggleArray("clothingTypes", "ayol")}
           />
-          <CheckItem
-            label={dict.unisex}
-            checked={filters.clothingTypes.includes("unisex")}
-            onChange={() => onToggleArray("clothingTypes", "unisex")}
-          />
+          {/*<CheckItem*/}
+          {/*  label={dict.unisex}*/}
+          {/*  checked={filters.clothingTypes.includes("unisex")}*/}
+          {/*  onChange={() => onToggleArray("clothingTypes", "unisex")}*/}
+          {/*/>*/}
         </div>
       </FilterSection>
 

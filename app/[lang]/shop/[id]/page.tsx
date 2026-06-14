@@ -189,6 +189,7 @@ export default function ProductPage() {
     const [loading, setLoading] = useState(true);
     const [colorsData, setColorsData] = useState<Array<{id: number; color_code: string}>>([]);
     const [sizesData, setSizesData] = useState<Array<{id: number; name: string}>>([]);
+    const [shopDict, setShopDict] = useState<ShopDictionary | null>(null);
     const [dict, setDict] = useState<ShopDictionary['productDetail'] | null>(null);
 
     const [selectedColor, setSelectedColor] = useState("");
@@ -216,6 +217,7 @@ export default function ProductPage() {
     useEffect(() => {
         async function loadDict() {
             const dictionary = await getShopDictionary(lang as Locale);
+            setShopDict(dictionary);
             setDict(dictionary.productDetail);
         }
         loadDict();
@@ -251,7 +253,7 @@ export default function ProductPage() {
         );
     }
 
-    if (!product || !dict) {
+    if (!product || !dict || !shopDict) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
@@ -302,16 +304,23 @@ export default function ProductPage() {
     const prevImg = () => setActiveImg((i) => Math.max(i - 1, 0));
     const nextImg = () => setActiveImg((i) => Math.min(i + 1, product.images.length - 1));
 
+    const clothingTypeLabel =
+        product.clothing_type === "erkak"
+            ? shopDict.men
+            : product.clothing_type === "ayol"
+                ? shopDict.women
+                : shopDict.unisex;
+
     return (
         <div className="pt-16">
             {/* Breadcrumb */}
             <div className="px-5 md:px-10 py-3 text-[10px] tracking-[0.12em] uppercase text-neutral-400">
-                <Link href={`/${lang}`} className="hover:text-neutral-700 transition-colors">Home</Link>
+                <Link href={`/${lang}`} className="hover:text-neutral-700 transition-colors">{shopDict.breadcrumb.home}</Link>
                 {" / "}
-                <Link href={`/${lang}/shop`} className="hover:text-neutral-700 transition-colors">Shop</Link>
+                <Link href={`/${lang}/shop`} className="hover:text-neutral-700 transition-colors">{shopDict.breadcrumb.shop}</Link>
                 {" / "}
                 <Link href={`/${lang}/shop`} className="hover:text-neutral-700 transition-colors">
-                    {product.clothing_type === "erkak" ? dict.men || "Men" : product.clothing_type === "ayol" ? dict.women || "Women" : dict.unisex || "Unisex"}
+                    {clothingTypeLabel}
                 </Link>
                 {" / "}
                 <span className="text-neutral-700">{getTranslatedField(product, 'name', lang)}</span>
