@@ -3,7 +3,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import {useParams, usePathname} from "next/navigation";
 import Link from "next/link";
-import {ChevronLeft, ChevronRight, Plus, Minus} from "lucide-react";
+import {ChevronLeft, ChevronRight, Plus, Minus, ZoomIn, ZoomOut} from "lucide-react";
 import {getProductById, getProducts} from "@/lib/products";
 import type {Product} from "@/lib/products";
 import {addToCart} from "@/lib/cart";
@@ -197,10 +197,14 @@ export default function ProductPage() {
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
     const [qty, setQty] = useState(1);
+    const [maxQty, setMaxQty] = useState<number>(999);
     const [activeImg, setActiveImg] = useState(0);
     const [added, setAdded] = useState(false);
     const [error, setError] = useState("");
     const [cartOpen, setCartOpen] = useState(false);
+    const [zoomOpen, setZoomOpen] = useState(false);
+    const [zoomImageIndex, setZoomImageIndex] = useState(0);
+    const [zoomLevel, setZoomLevel] = useState(1);
 
     // Mobile swipe
     const touchStartX = useRef<number | null>(null);
@@ -234,6 +238,22 @@ export default function ProductPage() {
                 setProduct(productData || null);
                 setColorsData(colors);
                 setSizesData(sizes);
+
+                // Set default color and size
+                if (productData && productData.product_items.length > 0) {
+                    const firstItem = productData.product_items[0];
+                    const firstColor = colors.find((c: any) => c.id === firstItem.color_id);
+                    const firstSize = sizes.find((s: any) => s.id === firstItem.size_id);
+
+                    if (firstColor) {
+                        setSelectedColor(firstColor.color_code);
+                        setSelectedColorId(firstColor.id);
+                    }
+                    if (firstSize) {
+                        setSelectedSize(firstSize.name);
+                        setSelectedSizeId(firstSize.id);
+                    }
+                }
             } catch (error) {
                 console.error('Failed to load product:', error);
             } finally {
@@ -242,6 +262,24 @@ export default function ProductPage() {
         }
         loadProduct();
     }, [id]);
+
+    // Update max quantity when color and size are selected
+    useEffect(() => {
+        if (selectedColorId && selectedSizeId && product) {
+            const productItem = product.product_items.find(item =>
+                item.color_id === selectedColorId && item.size_id === selectedSizeId
+            );
+            if (productItem && productItem.total_count !== undefined) {
+                setMaxQty(productItem.total_count);
+                // Reset quantity if it exceeds the new max
+                if (qty > productItem.total_count) {
+                    setQty(Math.max(1, productItem.total_count));
+                }
+            } else {
+                setMaxQty(999);
+            }
+        }
+    }, [selectedColorId, selectedSizeId, product, qty]);
 
     if (loading) {
         return (
@@ -286,15 +324,26 @@ export default function ProductPage() {
             return;
         }
 
-        addToCart({
-            productId: product.id,
-            product_item_id: productItem.id,
-            name: getTranslatedField(product, 'name', lang),
-            price: product.price,
-            color: selectedColor,
-            size: selectedSize,
-            image: product.images[0],
-        });
+        // Check if quantity exceeds available stock
+        if (productItem.total_count !== undefined && qty > productItem.total_count) {
+            setError(lang === 'ru'
+                ? `Доступно только ${productItem.total_count} шт.`
+                : `Only ${productItem.total_count} available`);
+            return;
+        }
+
+        // Add with quantity
+        for (let i = 0; i < qty; i++) {
+            addToCart({
+                productId: product.id,
+                product_item_id: productItem.id,
+                name: getTranslatedField(product, 'name', lang),
+                price: product.price,
+                color: selectedColor,
+                size: selectedSize,
+                image: product.images[0],
+            });
+        }
 
         setAdded(true);
         setCartOpen(true);
@@ -310,6 +359,45 @@ export default function ProductPage() {
             : product.clothing_type === "ayol"
                 ? shopDict.women
                 : shopDict.unisex;
+
+    // Helper function to check if a color/size combination is available
+    const isColorAvailable = (colorId: number) => {
+        return product.product_items.some(item => item.color_id === colorId);
+    };
+
+    const isSizeAvailable = (sizeId: number) => {
+        return product.product_items.some(item => item.size_id === sizeId);
+    };
+
+    const isCombinationAvailable = (colorId: number, sizeId: number) => {
+        return product.product_items.some(
+            item => item.color_id === colorId && item.size_id === sizeId
+        );
+    };
+
+    // Get available sizes for selected color
+    const getAvailableSizes = () => {
+        if (!selectedColorId) return product.sizes;
+        const availableSizeIds = product.product_items
+            .filter(item => item.color_id === selectedColorId)
+            .map(item => item.size_id);
+        return product.sizes.filter(size => {
+            const sizeData = sizesData.find(s => s.name === size);
+            return sizeData && availableSizeIds.includes(sizeData.id);
+        });
+    };
+
+    // Get available colors for selected size
+    const getAvailableColors = () => {
+        if (!selectedSizeId) return product.colors;
+        const availableColorIds = product.product_items
+            .filter(item => item.size_id === selectedSizeId)
+            .map(item => item.color_id);
+        return product.colors.filter(color => {
+            const colorData = colorsData.find(c => c.color_code === color);
+            return colorData && availableColorIds.includes(colorData.id);
+        });
+    };
 
     return (
         <div className="pt-16">
@@ -327,6 +415,107 @@ export default function ProductPage() {
             </div>
 
             <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)}/>
+
+            {/* Image Zoom Modal */}
+            {zoomOpen && (
+                <div
+                    className="fixed inset-0 z-[1000] bg-black/95 flex items-center justify-center"
+                    onClick={() => {
+                        setZoomOpen(false);
+                        setZoomLevel(1);
+                    }}
+                >
+                    <button
+                        onClick={() => {
+                            setZoomOpen(false);
+                            setZoomLevel(1);
+                        }}
+                        className="absolute top-4 right-4 text-white hover:opacity-60 transition-opacity z-10"
+                        aria-label="Close"
+                    >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    {/* Zoom controls */}
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/50 px-3 py-2 z-10">
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setZoomLevel((z) => Math.max(1, z - 0.25));
+                            }}
+                            disabled={zoomLevel <= 1}
+                            className="w-8 h-8 bg-white/10 hover:bg-white/20 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all text-white"
+                        >
+                            <ZoomOut size={16} strokeWidth={1.5} />
+                        </button>
+                        <span className="text-white text-[11px] tracking-[0.1em] min-w-[50px] text-center">
+                            {Math.round(zoomLevel * 100)}%
+                        </span>
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setZoomLevel((z) => Math.min(3, z + 0.25));
+                            }}
+                            disabled={zoomLevel >= 3}
+                            className="w-8 h-8 bg-white/10 hover:bg-white/20 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all text-white"
+                        >
+                            <ZoomIn size={16} strokeWidth={1.5} />
+                        </button>
+                    </div>
+
+                    {/* Previous button */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setZoomImageIndex((i) => Math.max(0, i - 1));
+                            setZoomLevel(1);
+                        }}
+                        disabled={zoomImageIndex === 0}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
+                    >
+                        <ChevronLeft size={24} strokeWidth={1.5} className="text-white" />
+                    </button>
+
+                    {/* Next button */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setZoomImageIndex((i) => Math.min(product.images.length - 1, i + 1));
+                            setZoomLevel(1);
+                        }}
+                        disabled={zoomImageIndex === product.images.length - 1}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
+                    >
+                        <ChevronRight size={24} strokeWidth={1.5} className="text-white" />
+                    </button>
+
+                    {/* Image */}
+                    <div className="max-w-[90vw] max-h-[90vh] overflow-auto relative" onClick={(e) => e.stopPropagation()}>
+                        {typeof product.images[zoomImageIndex] === 'string' ? (
+                            <img
+                                src={product.images[zoomImageIndex] as string}
+                                alt={`${product.name} ${zoomImageIndex + 1}`}
+                                className="max-w-full w-auto h-auto object-contain transition-transform duration-300"
+                                style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}
+                            />
+                        ) : (
+                            <Image
+                                src={product.images[zoomImageIndex]}
+                                alt={`${product.name} ${zoomImageIndex + 1}`}
+                                className="max-w-full w-auto h-auto object-contain transition-transform duration-300"
+                                style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}
+                            />
+                        )}
+                    </div>
+
+                    {/* Image counter */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-[11px] tracking-[0.1em] bg-black/50 px-3 py-1">
+                        {zoomImageIndex + 1} / {product.images.length}
+                    </div>
+                </div>
+            )}
 
             {/* Main content */}
             <div className="px-5 md:px-10 pb-20">
@@ -398,13 +587,16 @@ export default function ProductPage() {
                                 <div
                                     key={i}
                                     className={`bg-[#f4f3f1] overflow-hidden cursor-pointer aspect-[3/4]`}
-                                    onClick={() => setActiveImg(i)}
+                                    onClick={() => {
+                                        setZoomImageIndex(i);
+                                        setZoomOpen(true);
+                                    }}
                                 >
                                     {typeof src === 'string' ? (
                                         <img
                                             src={src}
                                             alt={`${product.name} ${i + 1}`}
-                                            className={`w-full h-full object-cover transition-opacity duration-300 ${
+                                            className={`w-full h-full object-cover transition-opacity duration-300 hover:opacity-90 ${
                                                 activeImg === i ? "ring-1 ring-neutral-400" : ""
                                             }`}
                                         />
@@ -412,7 +604,7 @@ export default function ProductPage() {
                                         <Image
                                             src={src}
                                             alt={`${product.name} ${i + 1}`}
-                                            className={`w-full h-full object-cover transition-opacity duration-300 ${
+                                            className={`w-full h-full object-cover transition-opacity duration-300 hover:opacity-90 ${
                                                 activeImg === i ? "ring-1 ring-neutral-400" : ""
                                             }`}
                                         />
@@ -453,17 +645,23 @@ export default function ProductPage() {
                                     <div className="flex flex-wrap gap-2">
                                         {product.colors.map((color) => {
                                             const colorData = colorsData.find(c => c.color_code === color);
+                                            const isAvailable = colorData && (!selectedSizeId || isCombinationAvailable(colorData.id, selectedSizeId));
                                             return (
                                                 <button
                                                     key={color}
                                                     onClick={() => {
-                                                        setSelectedColor(color);
-                                                        setSelectedColorId(colorData?.id || null);
+                                                        if (isAvailable) {
+                                                            setSelectedColor(color);
+                                                            setSelectedColorId(colorData?.id || null);
+                                                        }
                                                     }}
+                                                    disabled={!isAvailable}
                                                     className={`w-10 h-10 rounded-full border-2 transition-all cursor-pointer ${
                                                         selectedColor === color
                                                             ? "border-neutral-900 scale-110"
-                                                            : "border-neutral-300 hover:border-neutral-700"
+                                                            : isAvailable
+                                                                ? "border-neutral-300 hover:border-neutral-700"
+                                                                : "border-neutral-200 opacity-30 cursor-not-allowed"
                                                     }`}
                                                     style={{ backgroundColor: color }}
                                                     title={color}
@@ -490,17 +688,23 @@ export default function ProductPage() {
                                     <div className="flex flex-wrap gap-2">
                                         {product.sizes.map((size) => {
                                             const sizeData = sizesData.find(s => s.name === size);
+                                            const isAvailable = sizeData && (!selectedColorId || isCombinationAvailable(selectedColorId, sizeData.id));
                                             return (
                                                 <button
                                                     key={size}
                                                     onClick={() => {
-                                                        setSelectedSize(size);
-                                                        setSelectedSizeId(sizeData?.id || null);
+                                                        if (isAvailable) {
+                                                            setSelectedSize(size);
+                                                            setSelectedSizeId(sizeData?.id || null);
+                                                        }
                                                     }}
+                                                    disabled={!isAvailable}
                                                     className={`px-4 h-10 text-[11px] tracking-[0.1em] uppercase border transition-colors cursor-pointer ${
                                                         selectedSize === size
                                                             ? "bg-neutral-900 text-white border-neutral-900"
-                                                            : "border-neutral-300 text-neutral-700 hover:border-neutral-700"
+                                                            : isAvailable
+                                                                ? "border-neutral-300 text-neutral-700 hover:border-neutral-700"
+                                                                : "border-neutral-200 text-neutral-300 cursor-not-allowed opacity-40"
                                                     }`}
                                                 >
                                                     {size}
@@ -522,12 +726,18 @@ export default function ProductPage() {
                                     </button>
                                     <span className="w-8 text-center text-[12px]">{qty}</span>
                                     <button
-                                        onClick={() => setQty((q) => q + 1)}
-                                        className="w-9 h-9 flex items-center justify-center hover:bg-neutral-50 transition-colors cursor-pointer"
+                                        onClick={() => setQty((q) => Math.min(maxQty, q + 1))}
+                                        disabled={qty >= maxQty}
+                                        className="w-9 h-9 flex items-center justify-center hover:bg-neutral-50 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                                     >
                                         <Plus size={12} strokeWidth={1.5}/>
                                     </button>
                                 </div>
+                                {maxQty < 999 && (
+                                    <span className="text-[10px] text-neutral-500 tracking-[0.08em]">
+                                        {maxQty} {lang === 'ru' ? 'доступно' : 'available'}
+                                    </span>
+                                )}
                             </div>
 
                             {/* Error */}
