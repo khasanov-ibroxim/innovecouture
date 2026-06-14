@@ -20,10 +20,10 @@ const PrivacyPolicyPage = async ({ params }: { params: Promise<{ lang: string }>
                     {Object.entries(dict.sections).map(([key, section]) => (
                         <div key={key}>
                             <h2 className="text-[16px] uppercase tracking-[0.08em] font-medium mb-3">
-                                {section.title}
+                                {(section as { title: string; content: string }).title}
                             </h2>
                             <p className="text-[13px] leading-relaxed text-neutral-700">
-                                {section.content}
+                                {(section as { title: string; content: string }).content}
                             </p>
                         </div>
                     ))}
