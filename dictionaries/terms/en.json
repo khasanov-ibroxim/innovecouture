@@ -1,0 +1,39 @@
+{
+  "title": "Terms and Conditions",
+  "lastUpdated": "Last Updated: June 2026",
+  "backToHome": "Back to Home",
+  "sections": {
+    "introduction": {
+      "title": "Terms of Use",
+      "content": "Khiva Code (hereinafter referred to as \"Site\", \"Store\", \"we\") provides these terms of use (hereinafter referred to as \"Terms\") governing the relationship between Khiva Code and users of the website khivacode.vercel.app (hereinafter referred to as \"User\", \"Buyer\")."
+    },
+    "general": {
+      "title": "1. General Provisions",
+      "content": "1.1. By using this Site and making purchases, the User confirms that they have read these Terms and agrees to them in full. 1.2. Khiva Code reserves the right to change these Terms at any time without prior notice. The new version comes into effect from the moment it is published on the Site. 1.3. All materials presented on the Site (texts, images, logos, design, product photos) are the intellectual property of Khiva Code and may not be used without written permission."
+    },
+    "products": {
+      "title": "2. Products and Prices",
+      "content": "2.1. Khiva Code strives to display colors, sizes, and product descriptions as accurately as possible, but does not guarantee that the image on the User's device screen exactly matches the actual appearance of the product. 2.2. All prices on the Site are indicated in Uzbek sums (UZS) and may be changed without prior notice. The price valid at the time of order placement is final. 2.3. Product availability in stock may change. In case the selected product is unavailable, Khiva Code will contact the Buyer to clarify order details or cancel it."
+    },
+    "ordering": {
+      "title": "3. Order Placement",
+      "content": "3.1. To place an order, the Buyer provides accurate contact information (first name, last name, phone number, delivery address, email address). 3.2. After placing an order, the Buyer receives an order confirmation with the order number. 3.3. Khiva Code reserves the right to refuse to process an order in case of providing false information, suspected fraud, or inability to deliver goods to the specified address."
+    },
+    "payment": {
+      "title": "4. Payment",
+      "content": "4.1. Payment for the order can be made in cash upon receipt (for corresponding regions) or online through available payment systems (Payme, Click, etc.). 4.2. All payments are processed through secure payment gateways. Khiva Code does not store Buyers' bank card data."
+    },
+    "delivery": {
+      "title": "5. Delivery and Returns",
+      "content": "5.1. Delivery terms, timeframes, and costs are calculated individually depending on the region and are indicated during order placement. 5.2. The Buyer has the right to return or exchange goods within the specified period from the moment of receipt, provided that the product appearance, packaging, and proof of purchase document are preserved. 5.3. Refunds are processed using the same payment method that was used for payment, within a reasonable time after receiving and checking the returned goods."
+    },
+    "liability": {
+      "title": "6. Liability",
+      "content": "6.1. Khiva Code is not responsible for delivery delays caused by circumstances beyond Khiva Code's control (actions of transport companies, force majeure, actions of third parties). 6.2. Khiva Code is not responsible for temporary unavailability of the Site due to technical work or other technical reasons."
+    },
+    "contact": {
+      "title": "7. Contacts",
+      "content": "For all questions related to these Terms, orders, and Site operation, you can contact us: Address: Tashkent, Kukcha Darvoza 314, Phone: +998918661020, Email: shop@khivacode.com"
+    }
+  }
+}

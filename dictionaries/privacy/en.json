@@ -1,0 +1,43 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "Last Updated: June 2026",
+  "backToHome": "Back to Home",
+  "sections": {
+    "introduction": {
+      "title": "Privacy Policy",
+      "content": "This Privacy Policy (hereinafter referred to as \"Policy\") describes how Khiva Code collects, uses, stores, and protects personal data of Users of the website khivacode.vercel.app."
+    },
+    "dataCollection": {
+      "title": "1. What Data We Collect",
+      "content": "When using the Site and placing orders, Khiva Code may collect the following data: first and last name; phone number; email address; postal delivery address (country, city, street, postal code); order information (products, size, color, quantity, order amount); technical information (IP address, device type, cookie data)."
+    },
+    "dataUsage": {
+      "title": "2. Data Processing Purposes",
+      "content": "Users' personal data is used exclusively for: processing and fulfilling orders, including delivery and communication regarding orders; informing about order and payment status; improving the Site's operation and service quality; sending informational and promotional messages (only with User consent — for example, when subscribing to newsletters); complying with the legislation of the Republic of Uzbekistan."
+    },
+    "dataSharing": {
+      "title": "3. Data Transfer to Third Parties",
+      "content": "3.1. Khiva Code does not sell or transfer Users' personal data to third parties for marketing purposes. 3.2. Data may be transferred to third parties only in the following cases: to transport and courier services — for order delivery; to payment systems (Payme, Click, etc.) — for processing online payments; to government authorities — in cases provided by law."
+    },
+    "cookies": {
+      "title": "4. Cookies",
+      "content": "4.1. The Site uses cookies to ensure proper functioning (for example, saving cart contents), analyzing traffic, and improving user experience. 4.2. Users can disable the use of cookies in their browser settings, however, this may affect the Site's functionality."
+    },
+    "dataSecurity": {
+      "title": "5. Data Security",
+      "content": "5.1. Khiva Code applies technical and organizational measures to protect personal data from unauthorized access, modification, disclosure, or destruction. 5.2. Despite the measures taken, Khiva Code cannot guarantee absolute security of data transmission over the internet."
+    },
+    "userRights": {
+      "title": "6. User Rights",
+      "content": "Users have the right to: request information about stored personal data; demand correction of inaccurate data; demand deletion of their personal data, except in cases where storage is required by law; withdraw consent for data processing for marketing purposes at any time. To exercise these rights, Users can contact us using the contact information provided below."
+    },
+    "policyChanges": {
+      "title": "7. Policy Changes",
+      "content": "Khiva Code reserves the right to make changes to this Policy. The current version is always available on the Site."
+    },
+    "contact": {
+      "title": "8. Contacts",
+      "content": "For questions related to personal data processing, please contact: Address: Tashkent, Kukcha Darvoza 314, Phone: +998918661020, Email: shop@khivacode.com"
+    }
+  }
+}

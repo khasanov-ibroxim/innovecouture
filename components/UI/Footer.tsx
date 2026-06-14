@@ -143,13 +143,13 @@ const Footer = ({ dict }: FooterProps) => {
                 {/* Legal links */}
                 <div className="flex items-center gap-5 order-3">
                     <Link
-                        href="#"
+                        href={`/${lang}/terms-conditions`}
                         className="text-[10px] tracking-[0.1em] text-neutral-400 hover:opacity-60 transition-opacity"
                     >
                         {dict.footer.legal.terms}
                     </Link>
                     <Link
-                        href="#"
+                        href={`/${lang}/privacy-policy`}
                         className="text-[10px] tracking-[0.1em] text-neutral-400 hover:opacity-60 transition-opacity"
                     >
                         {dict.footer.legal.privacy}

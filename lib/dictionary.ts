@@ -27,6 +27,12 @@ export const getCheckoutDictionary = async (locale: Locale) =>
 export const getOrderDictionary = async (locale: Locale) =>
     (await import(`@/dictionaries/order/${locale}.json`)).default;
 
+export const getTermsDictionary = async (locale: Locale) =>
+    (await import(`@/dictionaries/terms/${locale}.json`)).default;
+
+export const getPrivacyDictionary = async (locale: Locale) =>
+    (await import(`@/dictionaries/privacy/${locale}.json`)).default;
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type CommonDictionary = Awaited<ReturnType<typeof getCommonDictionary>>;
@@ -37,3 +43,5 @@ export type SustainabilityDictionary = Awaited<ReturnType<typeof getSustainabili
 export type ContactDictionary = Awaited<ReturnType<typeof getContactDictionary>>;
 export type CheckoutDictionary = Awaited<ReturnType<typeof getCheckoutDictionary>>;
 export type OrderDictionary = Awaited<ReturnType<typeof getOrderDictionary>>;
+export type TermsDictionary = Awaited<ReturnType<typeof getTermsDictionary>>;
+export type PrivacyDictionary = Awaited<ReturnType<typeof getPrivacyDictionary>>;

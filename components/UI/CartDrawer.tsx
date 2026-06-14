@@ -160,10 +160,10 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                                             {item.name}
                                                         </p>
                                                         <p className="text-[10px] text-neutral-500 mt-0.5 tracking-[0.06em]">
-                                                            Color: {item.color}
+                                                            {dict.color}: {item.color}
                                                         </p>
                                                         <p className="text-[10px] text-neutral-500 tracking-[0.06em]">
-                                                            Size: {item.size}
+                                                            {dict.size}: {item.size}
                                                         </p>
                                                     </div>
                                                     <button
