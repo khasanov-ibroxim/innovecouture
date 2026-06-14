@@ -9,9 +9,14 @@ import fabricTexture from "@/assets/home/home_s3/1111.jpg";
 
 interface HomeS3Props {
     lang?: string;
+    dict: {
+        title: string;
+        description: string;
+        shopLink: string;
+    };
 }
 
-const HomeS3 = ({ lang = 'ru' }: HomeS3Props) => {
+const HomeS3 = ({ lang = 'ru', dict }: HomeS3Props) => {
     return (
         <section className="w-full overflow-hidden py-10 lg:py-20 px-5 lg:px-10">
             <div className="flex flex-col lg:flex-row items-start lg:gap-0 max-w-[1400px] mx-auto">
@@ -92,12 +97,10 @@ const HomeS3 = ({ lang = 'ru' }: HomeS3Props) => {
                     <div className="md:pl-8 lg:pl-14">
 
                         <h2 className="text-[32px] sm:text-[36px] md:text-[40px] lg:text-[50px] font-normal uppercase tracking-tight leading-none mb-5">
-                            Мы не создаём вещи ради трендов
+                            {dict.title}
                         </h2>
                         <p className="text-[13px] leading-[1.8] text-neutral-600 max-w-[440px] mb-8">
-                            мы выстраиваем систему, основанную на принципах формы, точности и времени. В основе Khiva
-                            Code лежит архитектурное мышление, унаследованное от Хива, где каждая линия подчинена
-                            логике, а каждая деталь имеет значение.
+                            {dict.description}
                         </p>
                         <Link
                             href={`/${lang}/shop`}
@@ -107,7 +110,7 @@ const HomeS3 = ({ lang = 'ru' }: HomeS3Props) => {
                                        after:transition-all after:duration-300
                                        hover:after:w-[55%]"
                         >
-                            изделия
+                            {dict.shopLink}
                         </Link>
                     </div>
                 </div>

@@ -31,20 +31,26 @@ const categories = [
     },
 ];
 
-const HomeS4 = () => {
+interface HomeS4Props {
+    dict: {
+        quote: string;
+    };
+}
+
+const HomeS4 = ({ dict }: HomeS4Props) => {
     return (
         <section className="w-full px-5 md:px-10 py-10 md:py-16 relative">
 
             {/* Quote text — top left */}
             <p className=" absolute top-[10%] font-normal text-[16px] ml-0 md:ml-10 uppercase   leading-[1.9] ">
-                Минимализм, выстроенный по законам города
+                {dict.quote}
             </p>
 
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 items-end">
-                {categories.map((cat) => (
+                {categories.map((cat, index) => (
                     <Link
-                        key={cat.label}
+                        key={cat.alt || index}
                         href={cat.href}
                         className="group flex flex-col"
                     >

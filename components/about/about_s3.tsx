@@ -89,19 +89,12 @@ const AboutS3 = ({ lang = 'ru', dict }: AboutS3Props) => {
                     {/* Text block */}
                     <div className="pl-2">
                         <h2 className="text-[40px] xl:text-[40px] font-normal uppercase tracking-[0.02em] leading-tight mb-6">
-                            Взгляд в будущее
+                            {dict.title}
                         </h2>
                         <p className="text-[14px] leading-[1.8] text-neutral-700 mb-8 max-w-[420px]">
-                            Мы продолжаем развивать бренд, сохраняя его основу — архитектуру как идею, минимализм как
-                            язык и культуру как источник вдохновения, позволяя Khiva Code органично меняться и расти
-                            вместе со временем..
+                            {dict.description}
                         </p>
-                        <Link
-                            href="#"
-                            className="text-[11px] tracking-[0.18em] uppercase font-medium underline underline-offset-4 decoration-neutral-700 hover:opacity-50 transition-opacity"
-                        >
-                            See Our Stores
-                        </Link>
+                    
                     </div>
                 </div>
             </div>

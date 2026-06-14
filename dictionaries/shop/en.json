@@ -42,7 +42,12 @@
     "deliveryReturns": "Delivery and Returns",
     "youMightAlsoLike": "You Might Also Like",
     "newBadge": "New!",
-    "saleBadge": "Sale!"
+    "saleBadge": "Sale!",
+    "loading": "Loading...",
+    "loadingProduct": "Loading...",
+    "noDetailsAvailable": "No details available.",
+    "productNotFound": "Product not found",
+    "backToHome": "Back to home"
   },
   "cart": {
     "title": "Shopping Cart",

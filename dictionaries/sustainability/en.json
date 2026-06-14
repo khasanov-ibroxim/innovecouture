@@ -15,5 +15,30 @@
       "rational production without excessive volumes"
     ],
     "closing": "We create clothing as a wardrobe foundation, not as a temporary product. Khiva Code is about conscious choice, where every detail matters and remains relevant beyond one season."
+  },
+  "s3": {
+    "title": "KHIVA CODE",
+    "materials": [
+      {
+        "name": "Form",
+        "description": "Clean silhouettes inspired by the architectural geometry of Khiva."
+      },
+      {
+        "name": "Fabric",
+        "description": "Fabrics selected for comfort, quality and durability."
+      },
+      {
+        "name": "Color",
+        "description": "A palette inspired by the sandy walls, ceramics and sky of the ancient city."
+      },
+      {
+        "name": "Details",
+        "description": "Minimalist elements where every detail has meaning."
+      },
+      {
+        "name": "Durability",
+        "description": "Pieces created beyond seasonal trends and designed for long-term use."
+      }
+    ]
   }
 }

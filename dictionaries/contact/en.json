@@ -6,23 +6,23 @@
     },
     "contacts": [
       {
-        "title": "Design Studio",
+        "title": "Design Center",
         "lines": [
-          "217 Tueri Junction, New York, NY 10002",
-          "10:00 am – 7:00 pm Daily"
+          "Tashkent, Kukcha Darvoza 314",
+          "+998938099998"
         ]
       },
       {
         "title": "Customer Care",
-        "lines": ["+1 212 532 8222", "shop@innovecouture.com"]
+        "lines": ["+998918661020", "shop@khivacode.com"]
       },
       {
-        "title": "PR Inquiries",
-        "lines": ["+1 212 532 8222", "pr@innovecouture.com"]
+        "title": "Collaboration",
+        "lines": ["+998909946507", "Info@khivacode.com"]
       },
       {
-        "title": "Wholesale Inquiries",
-        "lines": ["+1 212 532 8222", "sales@innovecouture.com"]
+        "title": "Wholesale",
+        "lines": ["Sales@khivacode.com"]
       }
     ]
   },

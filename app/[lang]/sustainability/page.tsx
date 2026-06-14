@@ -14,7 +14,7 @@ const Page = async ({ params }: { params: Promise<{ lang: string }> }) => {
             <SusHeader dict={dict.header}/>
             <SusS1 dict={dict.s1}/>
             <SusS2 dict={dict.s2}/>
-            <SusS3/>
+            <SusS3 dict={dict.s3}/>
         </>
     );
 };

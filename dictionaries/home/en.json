@@ -1,9 +1,26 @@
 {
+  "header": {
+    "title": "Architecture, <br/> coming alive in fabric",
+    "shopLink": "Shop"
+  },
+  "s1": {
+    "title": "Khiva Code",
+    "description": "is modern clothing based on the architecture of Khiva. Its culture, geometry and system of proportions have been formed over centuries, creating a unique visual and semantic code.",
+    "aboutLink": "about us"
+  },
   "s2": {
     "title": "New Arrivals",
     "viewAll": "View All",
     "selectOptions": "Select Options",
     "loading": "Loading..."
+  },
+  "s3": {
+    "title": "We don't create things for trends",
+    "description": "we build a system based on the principles of form, precision and time. Khiva Code is founded on architectural thinking inherited from Khiva, where every line follows logic and every detail has meaning.",
+    "shopLink": "products"
+  },
+  "s4": {
+    "quote": "Minimalism built by the laws of the city"
   },
   "s5": {
     "tag": "Brand Philosophy",

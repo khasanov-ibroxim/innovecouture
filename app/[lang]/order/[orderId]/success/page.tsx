@@ -1,14 +1,18 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { getOrderDictionary } from "@/lib/dictionary";
+import { Locale } from "@/i18n-config";
 
-export default function OrderSuccessPage() {
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const orderId = params?.orderId;
-  const paymentType = searchParams?.get("type");
+export default async function OrderSuccessPage({
+  params,
+  searchParams
+}: {
+  params: Promise<{ lang: string; orderId: string }>;
+  searchParams: Promise<{ type?: string }>;
+}) {
+  const { lang, orderId } = await params;
+  const { type: paymentType } = await searchParams;
+  const dict = await getOrderDictionary(lang as Locale);
 
   return (
     <div className="pt-16 min-h-screen flex items-center justify-center px-5 bg-white">
@@ -27,26 +31,26 @@ export default function OrderSuccessPage() {
         </div>
 
         <h1 className="text-[22px] uppercase tracking-[0.06em] font-normal mb-3">
-          Order Complete
+          {dict.success.title}
         </h1>
 
         <p className="text-[12px] text-neutral-500 leading-relaxed mb-2">
           {paymentType === "cash"
-            ? "Your order has been received. Our team will contact you shortly to confirm the payment."
-            : "Thank you for your purchase. Your payment has been processed successfully."}
+            ? dict.success.messageCash
+            : dict.success.messageOnline}
         </p>
 
         {orderId && (
           <p className="text-[11px] text-neutral-400 mb-8">
-            Order ID: #{orderId}
+            {dict.success.orderId}: #{orderId}
           </p>
         )}
 
         <Link
-          href="/en"
+          href={`/${lang}`}
           className="inline-block bg-black text-white px-10 py-3.5 text-[10px] tracking-[0.18em] uppercase hover:bg-neutral-700 transition-colors"
         >
-          Continue Shopping
+          {dict.success.continueButton}
         </Link>
       </div>
     </div>

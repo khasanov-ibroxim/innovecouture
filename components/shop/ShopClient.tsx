@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import ShopSidebar from "@/components/shop/ShopSidebar";
 import ShopToolbar from "@/components/shop/ShopToolbar";
@@ -16,6 +17,7 @@ interface ShopClientProps {
 }
 
 export default function ShopClient({ lang, dict }: ShopClientProps) {
+  const pathname = usePathname();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const {
@@ -30,6 +32,11 @@ export default function ShopClient({ lang, dict }: ShopClientProps) {
     activeTags,
     loading,
   } = useShopFilters(lang);
+
+  // Scroll to top when component mounts or pathname changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-white py-18">

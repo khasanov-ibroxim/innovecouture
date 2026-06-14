@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useState, useEffect, useRef} from "react";
-import {useParams} from "next/navigation";
+import {useParams, usePathname} from "next/navigation";
 import Link from "next/link";
 import {ChevronLeft, ChevronRight, Plus, Minus} from "lucide-react";
 import {getProductById, getProducts} from "@/lib/products";
@@ -128,7 +128,7 @@ function Dropdown({
 }
 
 /* ─── Product Details Content ────────────────────────────────── */
-function ProductDetailsContent({ productId, lang }: { productId: number; lang: string }) {
+function ProductDetailsContent({ productId, lang, dict }: { productId: number; lang: string; dict: ShopDictionary['productDetail'] }) {
     const [details, setDetails] = useState<ProductDetail[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -153,13 +153,13 @@ function ProductDetailsContent({ productId, lang }: { productId: number; lang: s
 
     if (loading) {
         return (
-            <p className="text-[11px] text-neutral-400 tracking-[0.06em]">Loading...</p>
+            <p className="text-[11px] text-neutral-400 tracking-[0.06em]">{dict.loading}</p>
         );
     }
 
     if (error || details.length === 0) {
         return (
-            <p className="text-[11px] text-neutral-400 tracking-[0.06em]">No details available.</p>
+            <p className="text-[11px] text-neutral-400 tracking-[0.06em]">{dict.noDetailsAvailable}</p>
         );
     }
 
@@ -182,6 +182,7 @@ function ProductDetailsContent({ productId, lang }: { productId: number; lang: s
 /* ─── Main Product Page ──────────────────────────────────────── */
 export default function ProductPage() {
     const params = useParams();
+    const pathname = usePathname();
     const id = params?.id as string;
     const lang = params?.lang as string || 'en';
     const [product, setProduct] = useState<Product | null>(null);
@@ -206,6 +207,11 @@ export default function ProductPage() {
     // Sticky sidebar refs
     const imageColRef = useRef<HTMLDivElement>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
+
+    // Scroll to top when page loads or route changes
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => {
         async function loadDict() {
@@ -239,7 +245,7 @@ export default function ProductPage() {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-500 mb-4">Loading...</p>
+                    <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-500 mb-4">{dict?.loadingProduct || "Loading product..."}</p>
                 </div>
             </div>
         );
@@ -249,9 +255,9 @@ export default function ProductPage() {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-500 mb-4">Product not found</p>
+                    <p className="text-[13px] tracking-[0.1em] uppercase text-neutral-500 mb-4">{dict?.productNotFound || "Product not found"}</p>
                     <Link href={`/${lang}`} className="text-[11px] tracking-[0.14em] uppercase underline">
-                        Back to home
+                        {dict?.backToHome || "Back to home"}
                     </Link>
                 </div>
             </div>
@@ -540,7 +546,7 @@ export default function ProductPage() {
 
                                 {/* ── Product Details — fetched from API ── */}
                                 <Accordion title={dict.productDetails}>
-                                    <ProductDetailsContent productId={product.id} lang={lang} />
+                                    <ProductDetailsContent productId={product.id} lang={lang} dict={dict} />
                                 </Accordion>
 
                                 <Accordion title={dict.deliveryReturns}>

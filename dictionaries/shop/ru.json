@@ -42,7 +42,12 @@
     "deliveryReturns": "Доставка и возврат",
     "youMightAlsoLike": "Вам также может понравиться",
     "newBadge": "Новинка!",
-    "saleBadge": "Скидка!"
+    "saleBadge": "Скидка!",
+    "loading": "Загрузка...",
+    "loadingProduct": "Загрузка...",
+    "noDetailsAvailable": "Детали недоступны.",
+    "productNotFound": "Товар не найден",
+    "backToHome": "Вернуться на главную"
   },
   "cart": {
     "title": "Корзина покупок",

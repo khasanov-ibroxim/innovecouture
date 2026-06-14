@@ -6,9 +6,14 @@ import Link from "next/link";
 
 interface HomeS1Props {
     lang?: string;
+    dict: {
+        title: string;
+        description: string;
+        aboutLink: string;
+    };
 }
 
-const HomeS1 = ({ lang = 'ru' }: HomeS1Props) => {
+const HomeS1 = ({ lang = 'ru', dict }: HomeS1Props) => {
     return (
         <section className="w-full flex flex-col md:flex-row py-16 px-2 md:px-5">
 
@@ -28,17 +33,14 @@ const HomeS1 = ({ lang = 'ru' }: HomeS1Props) => {
                 {/* Text block */}
                 <div className="max-w-[560px]">
                     <h2 className="text-[40px] md:text-[52px] font-normal uppercase tracking-tight leading-none mb-8">
-                        Khiva Code
+                        {dict.title}
                     </h2>
-                    <p className="text-[14px] font-normal leading-[1.65] text-neutral-800 mb-2 max-w-[480px]">это
-                        современная одежда, в основе которой лежит архитектура Хивы.
-                        Её культура, геометрия и система пропорций формировались веками, создавая уникальный визуальный
-                        и смысловой код.</p>
+                    <p className="text-[14px] font-normal leading-[1.65] text-neutral-800 mb-2 max-w-[480px]">{dict.description}</p>
                     <Link
                         href={`/${lang}/about`}
                         className="relative inline-block text-[13px] font-normal after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[0.5px] after:w-full after:bg-black after:transition-all after:duration-300 hover:after:w-[60%] uppercase mt-2 tracking-[0.12em]"
                     >
-                        о нас
+                        {dict.aboutLink}
                     </Link>
                 </div>
             </div>
