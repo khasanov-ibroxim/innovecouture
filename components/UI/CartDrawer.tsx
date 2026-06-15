@@ -47,8 +47,14 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
 
     // Lock body scroll
     useEffect(() => {
-        document.body.style.overflow = open ? "hidden" : "";
-        return () => { document.body.style.overflow = ""; };
+        if (typeof window !== 'undefined') {
+            document.body.style.overflow = open ? "hidden" : "";
+        }
+        return () => {
+            if (typeof window !== 'undefined') {
+                document.body.style.overflow = "";
+            }
+        };
     }, [open]);
 
     const removeItem = (index: number) => {

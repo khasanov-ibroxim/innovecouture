@@ -1,15 +1,28 @@
-import { i18n } from "@/i18n-config";
 import { Locale } from "@/i18n-config";
 import { getShopDictionary } from "@/lib/dictionary";
+import { getProducts } from "@/lib/products";
 import ProductClient from "./ProductClient";
 
-// Static export uchun barcha lang kombinatsiyalarini generatsiya qilamiz.
-// id "placeholder" — real id runtime'da URL'dan olinadi (client side).
 export async function generateStaticParams() {
-    return i18n.locales.map((lang) => ({
-        lang,
-        id: "placeholder",
-    }));
+    try {
+        const products = await getProducts();
+        const langs: Locale[] = ['ru', 'en'];
+
+        const params = [];
+        for (const lang of langs) {
+            for (const product of products) {
+                params.push({
+                    lang: lang,
+                    id: product.id.toString(),
+                });
+            }
+        }
+
+        return params;
+    } catch (error) {
+        console.error('Failed to generate static params:', error);
+        return [];
+    }
 }
 
 export default async function ProductPage({

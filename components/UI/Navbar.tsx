@@ -63,7 +63,12 @@ const Navbar = ({ dict, lang }: Props) => {
     const [hidden, setHidden] = useState(false)
     const [isTransparent, setIsTransparent] = useState(true)
     const [cartCount, setCartCount] = useState(0)
+    const [mounted, setMounted] = useState(false)
     const lastScrollY = useRef(0)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     useEffect(() => {
         const update = () => setCartCount(getCartCount())
@@ -89,8 +94,14 @@ const Navbar = ({ dict, lang }: Props) => {
     }, [])
 
     useEffect(() => {
-        document.body.style.overflow = menuOpen ? 'hidden' : ''
-        return () => { document.body.style.overflow = '' }
+        if (typeof window !== 'undefined') {
+            document.body.style.overflow = menuOpen ? 'hidden' : '';
+        }
+        return () => {
+            if (typeof window !== 'undefined') {
+                document.body.style.overflow = '';
+            }
+        };
     }, [menuOpen])
 
     return (
@@ -156,7 +167,7 @@ const Navbar = ({ dict, lang }: Props) => {
                             className="relative p-1 cursor-pointer text-neutral-900 hover:opacity-50 transition-opacity"
                         >
                             <Image src={cart} alt={"cart"} width={40} height={40}/>
-                            {cartCount > 0 && (
+                            {mounted && cartCount > 0 && (
                                 <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none font-medium">
                                     {cartCount}
                                 </span>
