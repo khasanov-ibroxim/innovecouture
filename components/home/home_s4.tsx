@@ -13,21 +13,18 @@ const categories = [
         alt: "Ready to Wear",
         label: "",
         href: "#",
-        tall: false,
     },
     {
         img: accessories,
         alt: "Accessories",
         label: "",
         href: "#",
-        tall: false,
     },
     {
         img: onSale,
         alt: "On Sale Now",
         label: "",
         href: "#",
-        tall: true,
     },
 ];
 
@@ -42,7 +39,7 @@ const HomeS4 = ({ dict }: HomeS4Props) => {
         <section className="w-full px-5 md:px-10 py-10 md:py-16 relative">
 
             {/* Quote text — top left */}
-            <p className=" absolute top-[10%] font-normal text-[16px] ml-0 md:ml-10 uppercase   leading-[1.9] ">
+            <p className="font-normal text-[16px] ml-0 md:ml-10 mb-6 md:mb-10 uppercase leading-[1.9]">
                 {dict.quote}
             </p>
 
@@ -55,19 +52,15 @@ const HomeS4 = ({ dict }: HomeS4Props) => {
                         className="group flex flex-col"
                     >
                         {/* Image */}
-                        <div
-                            className={`relative w-full overflow-hidden ${
-                                cat.tall
-                                    ? "aspect-[3/4] sm:aspect-auto sm:h-[520px] md:h-[600px] lg:h-[600px]"
-                                    : "aspect-[3/4] sm:aspect-auto sm:h-[380px] md:h-[440px] lg:h-[490px]"
-                            }`}
-                        >
+                        <div className="relative w-full overflow-hidden aspect-[3/4] sm:aspect-auto sm:h-[380px] md:h-[440px] lg:h-[490px]">
                             <Image
                                 src={cat.img}
                                 alt={cat.alt}
                                 fill
+                                quality={90}
+                                priority={index === 0}
                                 className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
-                                sizes="(max-width: 640px) 100vw, 33vw"
+                                sizes="(max-width: 639px) 100vw, (max-width: 1024px) 50vw, 700px"
                             />
                         </div>
 
