@@ -86,7 +86,6 @@ interface CheckoutClientProps {
 
 export default function CheckoutClient({ lang, dict }: CheckoutClientProps) {
     const [items, setItems] = useState<CartItem[]>(() => getCart());
-    const [shipping, setShipping] = useState<"free" | "flat" | "local">("free");
     const [payment, setPayment] = useState<string>("cash");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [availablePayments, setAvailablePayments] = useState<PaymentMethod[]>([]);
@@ -128,9 +127,7 @@ export default function CheckoutClient({ lang, dict }: CheckoutClientProps) {
     }, []);
 
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-    const shippingCost = shipping === "free" ? 0 : 10;
-    const vat = Math.round(subtotal * 0.2);
-    const total = subtotal + shippingCost + vat;
+    const total = subtotal;
 
     const validate = () => {
         const e: Record<string, string> = {};

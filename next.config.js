@@ -65,7 +65,6 @@ const nextConfig = {
         ];
     },
 
-    // ✅ Logging
     logging: {
         fetches: {
             fullUrl: true,
@@ -74,7 +73,7 @@ const nextConfig = {
 
     // ✅ Static export
     output: 'export',
-
+    trailingSlash: true,
     staticPageGenerationTimeout: 120,
 };
 
