@@ -75,9 +75,6 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     };
 
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const FREE_SHIPPING_THRESHOLD = 1000000;
-    const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
-    const hasFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
 
     if (!dict) return null;
 
@@ -122,7 +119,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                             </button>
                         </div>
 
-                        {/* Items */}
+
                         <div className="flex-1 overflow-y-auto px-7 py-4">
                             {items.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
@@ -230,23 +227,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                     </Link>
                                 </div>
 
-                                {/* Free shipping progress */}
-                                <div className="text-center">
-                                    <p className="text-[10px] tracking-[0.1em] text-neutral-500 mb-2">
-                                        {hasFreeShipping
-                                            ? "You have free shipping!"
-                                            : `${formatPrice(FREE_SHIPPING_THRESHOLD - subtotal, lang)} away from free shipping`}
-                                    </p>
-                                    <div className="h-[2px] bg-neutral-200 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-neutral-900 transition-all duration-500"
-                                            style={{ width: `${progress}%` }}
-                                        />
-                                    </div>
-                                    {hasFreeShipping && (
-                                        <p className="text-[10px] tracking-[0.1em] text-neutral-500 mt-1 text-right">100%</p>
-                                    )}
-                                </div>
+
                             </div>
                         )}
                     </motion.div>
