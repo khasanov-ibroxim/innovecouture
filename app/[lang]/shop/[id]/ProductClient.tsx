@@ -9,6 +9,7 @@ import type { Product } from "@/lib/products";
 import { addToCart } from "@/lib/cart";
 import Image from "next/image";
 import CartDrawer from "@/components/UI/CartDrawer";
+import SizeGuideDrawer from "@/components/UI/SizeGuideDrawer";
 import { formatPrice } from "@/lib/currency";
 import { getTranslatedField } from "@/lib/translations";
 import { ShopDictionary } from "@/lib/dictionary";
@@ -213,6 +214,7 @@ export default function ProductClient({
     const [added, setAdded] = useState(false);
     const [error, setError] = useState("");
     const [cartOpen, setCartOpen] = useState(false);
+    const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
     const [zoomOpen, setZoomOpen] = useState(false);
     const [zoomImageIndex, setZoomImageIndex] = useState(0);
     const [zoomLevel, setZoomLevel] = useState(1);
@@ -362,6 +364,14 @@ export default function ProductClient({
             </div>
 
             <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+            <SizeGuideDrawer
+                open={sizeGuideOpen}
+                onClose={() => setSizeGuideOpen(false)}
+                productName={product.name_eng}
+                clothingType={product.clothing_type}
+                lang={lang}
+                dict={dict}
+            />
 
             {/* Zoom Modal */}
             {zoomOpen && (
@@ -528,7 +538,9 @@ export default function ProductClient({
                                             {dict.size}
                                             {selectedSize && <span className="text-neutral-900 ml-1">— {selectedSize}</span>}
                                         </p>
-                                        <button className="text-[10px] tracking-[0.1em] uppercase underline text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer">
+                                        <button
+                                            onClick={() => setSizeGuideOpen(true)}
+                                            className="text-[10px] tracking-[0.1em] uppercase underline text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer">
                                             {dict.sizeGuide}
                                         </button>
                                     </div>
@@ -590,9 +602,6 @@ export default function ProductClient({
                                 </Accordion>
                                 <Accordion title={dict.productDetails}>
                                     <ProductDetailsContent productId={product.id} lang={lang} dict={dict} />
-                                </Accordion>
-                                <Accordion title={dict.deliveryReturns}>
-                                    <p>{product.delivery}</p>
                                 </Accordion>
                             </div>
                         </div>
