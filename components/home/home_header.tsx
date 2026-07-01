@@ -26,13 +26,13 @@ const HomeHeader = ({ lang = 'ru', dict }: HomeHeaderProps) => {
     }, []);
 
     return (
-        <div className={"w-full h-[120vh] overflow-hidden relative"}>
+        <div className={"w-full h-[320px] lg:h-[120vh] overflow-hidden relative"}>
             {images.map((img, index) => (
                 <Image
                     key={index}
                     src={img}
                     alt={`home header ${index + 1}`}
-                    className={`w-full h-full object-cover object-top absolute z-[-10] transition-opacity duration-1000 ${
+                    className={`w-full h-full  object-cover object-top absolute z-[-10] transition-opacity duration-1000 ${
                         index === currentIndex ? 'opacity-100' : 'opacity-0'
                     }`}
                 />
